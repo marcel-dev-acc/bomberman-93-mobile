@@ -8,125 +8,164 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { IntroImage, SplashImage } from '../../components/General';
+import { IntroImage, ServerStatus, SplashImage } from '../../components/General';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
+import { DEBUG } from '../../constants/app';
 
 type WelcomeScreenProps = {
-  socket: any;
+  showIntro: boolean;
+  serverStatus: ServerStatus;
 };
 
-function WelcomeScreen({ socket }: WelcomeScreenProps): JSX.Element {
+function WelcomeScreen({
+  showIntro,
+  serverStatus,
+}: WelcomeScreenProps): JSX.Element {
 
   const { height, width } = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   const dispatch = useDispatch();
 
-  const handleShowIntro = async () => {
-    await new Promise((resolve: any) => setTimeout(resolve, 8000));
-    setShowIntro(false);
-  };
-
-  const [showIntro, setShowIntro] = useState(true);
-
-  useEffect(() => {
-    if (showIntro) handleShowIntro();
-  }, [showIntro]);
-
   return (
     <View
       style={{
         ...styles.welcomeContainer,
         width: width,
-        justifyContent: isVertical ? 'center' : 'flex-end',
-        paddingBottom: isVertical ? 0 : 15,
+        justifyContent: !isVertical && serverStatus !== ServerStatus.unregistered ?
+          'flex-end' : 'center',
       }}
     >
-      {showIntro && <IntroImage />}
+      {!DEBUG && showIntro && <IntroImage />}
       <SplashImage includeHeader />
-      <View style={styles.welcomeButtonContainer}>
-        <TouchableHighlight
-          onPress={(pressEvent) => {
-            if (pressEvent.nativeEvent.target === undefined) return;
-            dispatch(changeScreen({
-              screen: ScreenType.createSession,
-            }));
-          }}
+      <View style={styles.forEducationalPurposesOnlyContainer}>
+        <Image
+          source={imageNames.forEducationalPurposesOnlyText}
+          resizeMode='contain'
           style={{
-            ...styles.welcomeButton,
-            width: isVertical ? width * 0.8 : width * 0.5,
+            width: isVertical ? 400 : 480,
+            height: 30,
           }}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
-          <Image
-            source={imageNames.createSessionText}
-            resizeMode='contain'
-            style={{
-              width: 260,
-              height: 50,
-            }}
-          />
-        </TouchableHighlight>
-      </View>
-      <View style={styles.welcomeButtonContainer}>
-        <TouchableHighlight
-          onPress={(pressEvent) => {
-            if (pressEvent.nativeEvent.target === undefined) return;
-            console.warn('[NOT IMPLEMENTED] Show join session');
-          }}
-          style={{
-            ...styles.welcomeButton,
-            width: isVertical ? width * 0.8 : width * 0.5,
-          }}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
-          <Image
-            source={imageNames.joinSessionText}
-            resizeMode='contain'
-            style={{
-              width: 210,
-              height: 50,
-            }}
-          />
-        </TouchableHighlight>
-      </View>
-      {/* <View style={styles.welcomeButtonContainer}>
-        <Button
-          onPress={(pressEvent) => {
-            if (pressEvent.nativeEvent.target === undefined) return;
-            dispatch(changeScreen({
-              screen: ScreenType.rules,
-            }));
-          }}
-          text='Rules'
         />
-      </View> */}
-      <View style={styles.welcomeButtonContainer}>
-        <TouchableHighlight
-          onPress={(pressEvent) => {
-            if (pressEvent.nativeEvent.target === undefined) return;
-            dispatch(changeScreen({
-              screen: ScreenType.remoteControls,
-            }));
-          }}
-          style={{
-            ...styles.welcomeButton,
-            width: isVertical ? width * 0.8 : width * 0.5,
-          }}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
-          <Image
-            source={imageNames.controlsText}
-            resizeMode='contain'
-            style={{
-              width: 145,
-              height: 50,
-            }}
-          />
-        </TouchableHighlight>
       </View>
+      {serverStatus === ServerStatus.unregistered && (
+        <View
+          style={{
+            ...styles.welcomeButtonContainer,
+            marginTop: isVertical ? 0 : 40,
+          }}
+        >
+          <TouchableHighlight
+            onPress={(pressEvent) => {
+              if (pressEvent.nativeEvent.target === undefined) return;
+              dispatch(changeScreen({
+                screen: ScreenType.register,
+              }));
+            }}
+            style={{
+              ...styles.welcomeButton,
+              width: isVertical ? width * 0.8 : width * 0.5,
+            }}
+            underlayColor='rgba(255,255,255,0.25)'
+          >
+            <Image
+              source={imageNames.registerText}
+              resizeMode='contain'
+              style={{
+                width: 240,
+                height: 40,
+              }}
+            />
+          </TouchableHighlight>
+        </View>
+      )}
+      {serverStatus !== ServerStatus.unregistered && (
+        <View>
+          <View style={styles.welcomeButtonContainer}>
+            <TouchableHighlight
+              onPress={(pressEvent) => {
+                if (pressEvent.nativeEvent.target === undefined) return;
+                dispatch(changeScreen({
+                  screen: ScreenType.createSession,
+                }));
+              }}
+              style={{
+                ...styles.welcomeButton,
+                width: isVertical ? width * 0.8 : width * 0.5,
+              }}
+              underlayColor='rgba(255,255,255,0.25)'
+            >
+              <Image
+                source={imageNames.createSessionText}
+                resizeMode='contain'
+                style={{
+                  width: 260,
+                  height: 50,
+                }}
+              />
+            </TouchableHighlight>
+          </View>
+          <View style={styles.welcomeButtonContainer}>
+            <TouchableHighlight
+              onPress={(pressEvent) => {
+                if (pressEvent.nativeEvent.target === undefined) return;
+                console.warn('[NOT IMPLEMENTED] Show join session');
+              }}
+              style={{
+                ...styles.welcomeButton,
+                width: isVertical ? width * 0.8 : width * 0.5,
+              }}
+              underlayColor='rgba(255,255,255,0.25)'
+            >
+              <Image
+                source={imageNames.joinSessionText}
+                resizeMode='contain'
+                style={{
+                  width: 210,
+                  height: 50,
+                }}
+              />
+            </TouchableHighlight>
+          </View>
+          {/* <View style={styles.welcomeButtonContainer}>
+            <Button
+              onPress={(pressEvent) => {
+                if (pressEvent.nativeEvent.target === undefined) return;
+                dispatch(changeScreen({
+                  screen: ScreenType.rules,
+                }));
+              }}
+              text='Rules'
+            />
+          </View> */}
+          <View style={styles.welcomeButtonContainer}>
+            <TouchableHighlight
+              onPress={(pressEvent) => {
+                if (pressEvent.nativeEvent.target === undefined) return;
+                dispatch(changeScreen({
+                  screen: ScreenType.settings,
+                }));
+              }}
+              style={{
+                ...styles.welcomeButton,
+                width: isVertical ? width * 0.8 : width * 0.5,
+              }}
+              underlayColor='rgba(255,255,255,0.25)'
+            >
+              <Image
+                source={imageNames.settingsText}
+                resizeMode='contain'
+                style={{
+                  width: 135,
+                  height: 50,
+                }}
+              />
+            </TouchableHighlight>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -143,6 +182,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  forEducationalPurposesOnlyContainer: {
+    position: 'absolute',
+    top: 0,
   },
 });
 

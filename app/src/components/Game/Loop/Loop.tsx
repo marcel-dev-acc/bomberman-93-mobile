@@ -48,7 +48,7 @@ function Loop({
 
   const updateHandler = (args: GameLoopUpdateEventOptionType) => {
     // Disable updateHandler loop if debugger is enabled
-    if (debuggerEnabled) return;
+    if (DEBUG && debuggerEnabled) return;
     // Disable if the game is no longer running
     if (!gameRunning) return;
     // Emit the tick event

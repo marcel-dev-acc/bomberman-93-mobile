@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Icon, Icons, SplashImage } from '../../components/General';
+import { BackButton, Icon, Icons, SplashImage } from '../../components/General';
 import { Session, changeSessionName, changeSecret } from '../../state/session/reducer';
 import colors from '../../constants/colors';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
@@ -97,25 +97,14 @@ function CreateSessionScreen({
       }}
     >
       <SplashImage />
-      <TouchableHighlight
+      <BackButton
         onPress={(pressEvent) => {
           if (pressEvent.nativeEvent.target === undefined) return;
           dispatch(changeScreen({
             screen: ScreenType.welcome,
           }));
         }}
-        underlayColor='rgba(255,255,255,0.25)'
-        style={styles.createSessionBackIcon}
-      >
-        <Image
-            source={imageNames.arrowLeftText}
-            resizeMode='contain'
-            style={{
-              width: 40,
-              height: 40,
-            }}
-          />
-      </TouchableHighlight>
+      />
       <View style={styles.createSessionTextContainer}>
         <Image
           source={imageNames.enterText}
@@ -196,14 +185,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  createSessionBackIcon: {
-    position: 'absolute',
-    top: 5,
-    left: 5,
-    width: 45,
-    borderRadius: 200,
-    padding: 2.5,
   },
   createSessionTextContainer: {
     justifyContent: 'center',

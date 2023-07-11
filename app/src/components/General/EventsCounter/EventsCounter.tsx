@@ -7,20 +7,22 @@ import {
 import {useSelector} from 'react-redux';
 
 import colors from '../../../constants/colors';
-import { Gamepad } from '../../../state/gamepad/reducer';
 
 
 
 function EventsCounter(): JSX.Element {
-  const gamepad: Gamepad = useSelector((state: any) => state.gamepad);
 
-  return gamepad.deviceId !== undefined ? (
-    <View style={styles.eventsCounterContainer}>
-      <Text style={styles.eventsCounterText}>
-        {gamepad.events.length >= 0 && gamepad.events.length < 100 ? gamepad.events.length : '99+'}
-      </Text>
-    </View>
-  ) : <View></View>;
+  // return gamepad.deviceId !== undefined ? (
+  //   <View style={styles.eventsCounterContainer}>
+  //     <Text style={styles.eventsCounterText}>
+  //       {gamepad.events.length >= 0 && gamepad.events.length < 100 ? gamepad.events.length : '99+'}
+  //     </Text>
+  //   </View>
+  // ) : <View></View>;
+
+  return (
+    <View></View>
+  );
 }
 
 const styles = StyleSheet.create({

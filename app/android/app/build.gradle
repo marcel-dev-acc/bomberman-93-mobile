@@ -119,9 +119,9 @@ android {
         }
         release {
             storeFile file('bomb_with_me.keystore')
-            storePassword '<CHANGEME>'
+            storePassword 'blackbird99'
             keyAlias 'bomb_with_me_alias'
-            keyPassword '<CHANGEME>'
+            keyPassword 'blackbird99'
         }
     }
     buildTypes {

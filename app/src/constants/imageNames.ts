@@ -38,6 +38,16 @@ const imageNames = {
   profilesText: require('../assets/images/profiles-text.png'),
   playAgainText: require('../assets/images/play-again-text.png'),
   theWinnerIsText: require('../assets/images/the-winner-is-text.png'),
+  forEducationalPurposesOnlyText: require('../assets/images/for-educational-purposes-only-text.png'),
+  registerText: require('../assets/images/register-text.png'),
+  registerPart1Text: require('../assets/images/registration-part-1-text.png'),
+  registerPart2Text: require('../assets/images/registration-part-2-text.png'),
+  registerPart3Text: require('../assets/images/registration-part-3-text.png'),
+  enterEmailText: require('../assets/images/enter-email-text.png'),
+  submitText: require('../assets/images/submit-text.png'),
+  codeText: require('../assets/images/code-text.png'),
+  deregisterText: require('../assets/images/deregister-text.png'),
+  settingsText: require('../assets/images/settings-text.png'),
 
   zeroText: require('../assets/images/0-text.png'),
   oneText: require('../assets/images/1-text.png'),
@@ -114,6 +124,5 @@ const imageNames = {
   splashHorizontal: require('../assets/images/splash-horizontal.png'),
   splashVerticalWithouthHeader: require('../assets/images/splash-vertical-without-header.png'),
   splashVertical: require('../assets/images/splash-vertical.png'),
-  splash: require('../assets/images/splash.png'),
 };
 export default imageNames;

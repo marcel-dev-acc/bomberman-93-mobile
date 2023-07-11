@@ -8,7 +8,7 @@ export default configureStore({
   reducer: {
     screens: screenReducer,
     session: sessionReducer,
-    gamepad: gamepadReducer,
+    // gamepad: gamepadReducer,
     errors: errorsReducer,
   }
 });

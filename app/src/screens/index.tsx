@@ -6,3 +6,5 @@ export {default as RotateScreen} from './Rotate/Rotate';
 export {default as GameScreen} from './Game/Game';
 export {default as WinnerScreen} from './Winner/Winner';
 export {default as RemoteControlsScreen} from './RemoteControls/RemoteControls';
+export {default as RegisterScreen} from './Register/Register';
+export {default as SettingsScreen} from './Settings/Settings';

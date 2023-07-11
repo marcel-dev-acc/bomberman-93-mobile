@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export enum ScreenType {
   welcome = 'welcome',
+  register = 'register',
   rules = 'rules',
   createSession = 'create-session',
   waitingRoom = 'waiting-room',
@@ -10,6 +11,7 @@ export enum ScreenType {
   game = 'game',
   winner = 'winner',
   remoteControls = 'remote-controls',
+  settings = 'settings',
 };
 
 type Screens = {

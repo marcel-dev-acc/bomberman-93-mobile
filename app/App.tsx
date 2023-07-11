@@ -13,6 +13,7 @@ import {
   EventsCounter,
   MusicToggle,
 } from './src/components/General';
+import { DEBUG } from './src/constants/app';
 
 
 
@@ -27,7 +28,7 @@ function App(): JSX.Element {
         <Navigation />
         <ErrorsContainer />
         <EventsCounter />
-        <MusicToggle />
+        {!DEBUG && <MusicToggle />}
       </SafeAreaView>
     </ReduxProvider>
   );
