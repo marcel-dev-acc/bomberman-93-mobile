@@ -108,9 +108,6 @@ const styles = StyleSheet.create({
     height: 40,
     zIndex: 20,
   },
-  eventsCounterText: {
-    color: colors.WHITE,
-  },
 });
 
 export default MusicToggle;

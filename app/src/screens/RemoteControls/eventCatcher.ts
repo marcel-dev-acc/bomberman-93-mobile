@@ -13,7 +13,6 @@ const eventCatcher = (
   socket: Socket,
   activeGamepadProfile: AndroidGamepadProfile,
 ) => {
-  console.log('session secret', session.secret, !session.secret);
   // Check if the session is populated
   if (!session.secret) return;
   // Check if the event is a bomb key press

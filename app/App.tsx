@@ -10,7 +10,6 @@ import colors from './src/constants/colors';
 import Navigation from './Navigation';
 import {
   ErrorsContainer,
-  EventsCounter,
   MusicToggle,
 } from './src/components/General';
 import { DEBUG } from './src/constants/app';
@@ -27,7 +26,6 @@ function App(): JSX.Element {
       }}>
         <Navigation />
         <ErrorsContainer />
-        <EventsCounter />
         {/* {!DEBUG && <MusicToggle />} */}
       </SafeAreaView>
     </ReduxProvider>

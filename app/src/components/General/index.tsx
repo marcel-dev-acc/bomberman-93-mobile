@@ -4,7 +4,6 @@ export {default as BackButton} from './BackButton/BackButton';
 export {default as AnimatedBackground} from './AnimatedBackground/AnimatedBackground';
 export {default as Icon} from './Icon/Icon';
 export { Icons as Icons } from './Icon/iconMap';
-export {default as EventsCounter} from './EventsCounter/EventsCounter';
 export {default as ErrorsContainer} from './ErrorsContainer/ErrorsContainer';
 export {default as MusicToggle} from './MusicToggle/MusicToggle';
 export {default as SplashImage} from './SplashImage/SplashImage';
