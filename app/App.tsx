@@ -4,7 +4,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import store from './src/state/store';
-import {Provider as ReduxProvider, useSelector} from 'react-redux';
+import {Provider as ReduxProvider} from 'react-redux';
 
 import colors from './src/constants/colors';
 import Navigation from './Navigation';
@@ -26,7 +26,7 @@ function App(): JSX.Element {
       }}>
         <Navigation />
         <ErrorsContainer />
-        {/* {!DEBUG && <MusicToggle />} */}
+        {!DEBUG && <MusicToggle />}
       </SafeAreaView>
     </ReduxProvider>
   );
