@@ -38,7 +38,7 @@ function WelcomeScreen({
           'flex-end' : 'center',
       }}
     >
-      {!DEBUG && showIntro && <IntroImage />}
+      {/* {!DEBUG && showIntro && <IntroImage />} */}
       <SplashImage includeHeader />
       <View style={styles.forEducationalPurposesOnlyContainer}>
         <Image

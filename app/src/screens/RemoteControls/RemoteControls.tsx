@@ -20,12 +20,12 @@ import {
   isGamepadModuleAvailableOnAndroid,
   AndroidGamepadEvent,
 } from '../../native/interface';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
 import imageNames from '../../constants/imageNames';
 import { StorageKeys, fetchData, storeData } from '../../utils/localStorage';
 import { Socket } from 'socket.io-client';
-import { Session } from '../../state/session/reducer';
+import type { Session } from '../../types/session';
 import { AndroidGamepadProfile } from './types';
 import eventCatcher from './eventCatcher';
 import ScrollViewProfiles from './components/ScrollViewProfiles';
@@ -40,16 +40,17 @@ import { getIsVertical } from '../../constants/screen';
 
 type RemoteControlsScreenProps = {
   socket: Socket;
+  sessionRef: React.MutableRefObject<Session>;
 };
 
 function RemoteControlsScreen({
   socket,
+  sessionRef,
 }: RemoteControlsScreenProps): JSX.Element {
 
   const { height, width } = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
-  const session: Session = useSelector((state: any) => state.session);
   const dispatch = useDispatch();
 
   const handleIsGamepadModuleAvailable = async () => {
@@ -115,7 +116,6 @@ function RemoteControlsScreen({
     setActiveTab(Tabs.profiles);
   };
 
-  const [activeGamepadProfile, setActiveGamepadProfile] = useState(undefined as AndroidGamepadProfile | undefined);
   const [showDeviceToProfileModal, setShowDeviceToProfileModal] = useState(false);
   const [showKeyToProfileModal, setShowKeyToProfileModal] = useState(false);
   const [gamepadModuleIsAvailable, setGamepadModuleIsAvailable] = useState(false);
@@ -127,7 +127,34 @@ function RemoteControlsScreen({
   const [displayedEvents, setDisplayedEvents] = useState([] as AndroidGamepadEvent[]);
   const [displayDeviceIds, setDisplayDevicesIds] = useState([] as number[]);
 
+  const activeGamepadProfileRef = useRef(undefined as AndroidGamepadProfile | undefined);
   const displayEventsRef = useRef(displayedEvents);
+
+  const buttonReleased = useRef(false);
+  const buttonLooper = (
+    event: AndroidGamepadEvent,
+    session: Session,
+    socket: Socket,
+    activeGamepadProfile: AndroidGamepadProfile,
+  ) => {
+    setTimeout(() => {
+      eventCatcher(
+        event,
+        session,
+        socket,
+        activeGamepadProfile,
+      );
+      // Check if loop needs to re-initialised
+      if (!buttonReleased) {
+        buttonLooper(
+          event,
+          session,
+          socket,
+          activeGamepadProfile,
+        );
+      }
+    }, 500);
+  };
 
   useEffect(() => {
     if (displayProfiles.length === 0) handleFetchProfiles();
@@ -142,19 +169,22 @@ function RemoteControlsScreen({
             const currentDisplayEvents = [...displayEventsRef.current, event];
             displayEventsRef.current = currentDisplayEvents;
             setDisplayedEvents(currentDisplayEvents);
-
+            
             // Define a unique list of device id's to show
             if (
               !(displayDeviceIds.some(id => id === event.deviceId))
-            ) setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
-
+              ) setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
+            
             // Emit the event to the game server
-            if (event.deviceId === activeGamepadProfile?.deviceId) eventCatcher(
-              event,
-              session,
-              socket,
-              activeGamepadProfile,
-            );
+            if (event.deviceId === activeGamepadProfileRef.current?.deviceId) {
+              buttonReleased.current = event.action === 1;
+              buttonLooper(
+                event,
+                sessionRef.current,
+                socket,
+                activeGamepadProfileRef.current,
+              );
+            }
           } catch (err: any) {}
         });
       }
@@ -234,14 +264,15 @@ function RemoteControlsScreen({
       <TabNavigation
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        setDisplayDevicesIds={setDisplayDevicesIds}
+        setDisplayedEvents={setDisplayedEvents}
       />
       {activeTab === Tabs.profiles && (
         <ScrollViewProfiles
           displayedEvents={displayedEvents}
           displayProfiles={displayProfiles}
           setDisplayProfiles={setDisplayProfiles}
-          activeGamepadProfile={activeGamepadProfile}
-          setActiveGamepadProfile={setActiveGamepadProfile}
+          activeGamepadProfileRef={activeGamepadProfileRef}
         />
       )}
       {Platform.OS === 'android' && activeTab === Tabs.devices && (

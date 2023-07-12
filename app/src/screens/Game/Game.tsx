@@ -12,8 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Icon, Icons } from '../../components/General';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
 import colors from '../../constants/colors';
-import type { Session } from '../../state/session/reducer';
-import { changeWinner } from '../../state/session/reducer';
+import type { Session } from '../../types/session';
 import {
   BombsCount,
   Controls,
@@ -34,22 +33,27 @@ import SocketTypes from '../../types/socketTypes';
 const countDownTime: number = 3 * 60;
 
 type GameScreenProps = {
-  socket: Socket
+  socket: Socket;
+  sessionRef: React.MutableRefObject<Session>;
 };
 
 function GameScreen({
   socket,
+  sessionRef,
 }: GameScreenProps): JSX.Element {
   
   const { height, width } = useWindowDimensions();
-  const session: Session = useSelector((state: any) => state.session);
+  // const session: Session = useSelector((state: any) => state.session);
   const debuggerEnabled: boolean = useSelector((state: any) => state.screens.debuggerEnabled);
 
   const dispatch = useDispatch();
 
   const handleEvent = (e: GameEventProps) => {
     if (e.type === 'winner' && e.winner) {
-      dispatch(changeWinner(session.players[e.winner - 1]));
+      sessionRef.current = {
+        ...sessionRef.current,
+        winner: sessionRef.current.players[e.winner - 1],
+      } as Session;
       // Set entities to an empty object
       setEntities({});
       setGameRunning(false);
@@ -79,9 +83,9 @@ function GameScreen({
     };
     dispatcher(event);
     if (debuggerEnabled) socket.emit(SocketTypes.tick, {
-      sessionName: session.name,
-      playerNumber: session.playerNumber,
-      secret: session.secret,
+      sessionName: sessionRef.current.name,
+      playerNumber: sessionRef.current.playerNumber,
+      secret: sessionRef.current.secret,
       tick: gameTickRef.current,
     });
     if (isMoving) {
@@ -112,9 +116,9 @@ function GameScreen({
   const dispatcher = (event: GameEventProps) => {
     // Emit an event to the socket
     socket.emit(SocketTypes.event, {
-      sessionName: session.name,
-      playerNumber: session.playerNumber,
-      secret: session.secret,
+      sessionName: sessionRef.current.name,
+      playerNumber: sessionRef.current.playerNumber,
+      secret: sessionRef.current.secret,
       event: event,
     });
     handleEvent(event);
@@ -159,7 +163,7 @@ function GameScreen({
     // Calculate how many bombs player has
     const filteredEntity = Object.keys(state?.entities).filter(entityKey =>
       state?.entities[entityKey].name === 'bomber' &&
-      state?.entities[entityKey].number === session.playerNumber
+      state?.entities[entityKey].number === sessionRef.current.playerNumber
     );
     if (filteredEntity.length) {
       setBombsCount(state?.entities[filteredEntity[0]].bombs);
@@ -222,6 +226,7 @@ function GameScreen({
       )}
       <Loop
         socket={socket}
+        sessionRef={sessionRef}
         entities={entities}
         gameRunning={gameRunning}
         gameTickRef={gameTickRef}

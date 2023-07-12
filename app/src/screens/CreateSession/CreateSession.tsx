@@ -8,10 +8,10 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { BackButton, Icon, Icons, SplashImage } from '../../components/General';
-import { Session, changeSessionName, changeSecret } from '../../state/session/reducer';
+import { Session } from '../../types/session';
 import colors from '../../constants/colors';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
 import type { Socket } from 'socket.io-client';
@@ -21,11 +21,13 @@ import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
 
 type CreateSessionScreenProps = {
-  socket: Socket
+  socket: Socket;
+  sessionRef: React.MutableRefObject<Session>;
 };
 
 function CreateSessionScreen({
   socket,
+  sessionRef,
 }: CreateSessionScreenProps): JSX.Element {
 
   const { height, width } = useWindowDimensions();
@@ -69,8 +71,11 @@ function CreateSessionScreen({
 
   socket.on(SocketTypes.joinSessionPositiveResponse, (secret) => {
     hasJoinSessionRef.current = true;
-    dispatch(changeSessionName(sessionNameRef.current));
-    dispatch(changeSecret(secret));
+    sessionRef.current = {
+      ...sessionRef.current,
+      name: sessionNameRef.current,
+      secret: secret,
+    } as Session;
     dispatch(changeScreen({ screen: ScreenType.waitingRoom }));
     // Reset the internal state values (delay so we don't generate server errors)
     setTimeout(() => {

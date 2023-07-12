@@ -25,6 +25,7 @@ import SocketTypes from './src/types/socketTypes';
 import { addError } from './src/state/errors/reducer';
 import { ServerConnectionStatus, ServerStatus } from './src/components/General';
 import { StorageKeys, fetchData } from './src/utils/localStorage';
+import InitSessionState from './src/state/session/init';
 
 function Navigation(): JSX.Element {
   const screen: string = useSelector((state: any) => state.screens.screen);
@@ -65,6 +66,7 @@ function Navigation(): JSX.Element {
   const [serverStatus, setServerStatus] = useState(ServerStatus.unregistered);
   
   const socket = useRef(undefined as Socket | undefined);
+  const sessionRef = useRef(InitSessionState);
 
   useEffect(() => {
     if (showIntro) handleShowIntro();
@@ -90,19 +92,43 @@ function Navigation(): JSX.Element {
   return (
     <View style={styles.coreContainer}>
       <ServerConnectionStatus status={serverStatus} />
-      {screen === ScreenType.welcome && <WelcomeScreen showIntro={showIntro} serverStatus={serverStatus} />}
-      {screen === ScreenType.register && <RegisterScreen setServerStatus={setServerStatus} />}
+      {screen === ScreenType.welcome && (
+        <WelcomeScreen
+          showIntro={showIntro}
+          serverStatus={serverStatus}
+        />
+      )}
+      {screen === ScreenType.register && (
+        <RegisterScreen
+          setServerStatus={setServerStatus}
+        />
+      )}
       {screen === ScreenType.rules && <RulesScreen />}
-      {socket.current && screen === ScreenType.createSession && <CreateSessionScreen socket={socket.current} />}
-      {socket.current && screen === ScreenType.waitingRoom && <WaitingRoomScreen socket={socket.current} />}
+      {socket.current && screen === ScreenType.createSession && (
+        <CreateSessionScreen
+          socket={socket.current}
+          sessionRef={sessionRef}
+        />
+      )}
+      {socket.current && screen === ScreenType.waitingRoom && (
+        <WaitingRoomScreen
+          socket={socket.current}
+          sessionRef={sessionRef}
+        />
+      )}
       {screen === ScreenType.rotate && <RotateScreen />}
-      {socket.current && screen === ScreenType.game && <GameScreen socket={socket.current} />}
-      {screen === ScreenType.winner && <WinnerScreen />}
+      {socket.current && screen === ScreenType.game && (
+        <GameScreen
+          socket={socket.current}
+          sessionRef={sessionRef}
+        />
+      )}
+      {screen === ScreenType.winner && <WinnerScreen sessionRef={sessionRef} />}
       {
         socket.current &&
         screen === ScreenType.remoteControls &&
         Platform.OS === 'android' &&
-        <RemoteControlsScreen socket={socket.current} />
+        <RemoteControlsScreen socket={socket.current} sessionRef={sessionRef} />
       }
       {screen === ScreenType.settings && <SettingsScreen /> }
     </View>

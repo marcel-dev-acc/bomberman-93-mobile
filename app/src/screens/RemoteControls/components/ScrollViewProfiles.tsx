@@ -16,16 +16,14 @@ type ScrollViewProfilesProps = {
   displayedEvents: AndroidGamepadEvent[];
   displayProfiles: AndroidGamepadProfile[];
   setDisplayProfiles: (displayProfiles: AndroidGamepadProfile[]) => void;
-  activeGamepadProfile: AndroidGamepadProfile | undefined;
-  setActiveGamepadProfile: (activeGamepadProfile: AndroidGamepadProfile | undefined) => void;
+  activeGamepadProfileRef: React.MutableRefObject<AndroidGamepadProfile | undefined>;
 };
 
 function ScrollViewProfiles({
   displayedEvents,
   displayProfiles,
   setDisplayProfiles,
-  activeGamepadProfile,
-  setActiveGamepadProfile,
+  activeGamepadProfileRef,
 }: ScrollViewProfilesProps): JSX.Element {
 
   return (
@@ -44,8 +42,8 @@ function ScrollViewProfiles({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                if (profile.deviceId === activeGamepadProfile?.deviceId) {
-                  setActiveGamepadProfile(undefined);
+                if (profile.deviceId === activeGamepadProfileRef.current?.deviceId) {
+                  activeGamepadProfileRef.current = undefined;
                   const newProfiles = [
                     ...displayProfiles.filter((_profile) => profile.deviceId !== _profile.deviceId),
                     {
@@ -56,7 +54,7 @@ function ScrollViewProfiles({
                   setDisplayProfiles(newProfiles);
                   storeData(StorageKeys.profiles, JSON.stringify(newProfiles));
                 } else {
-                  setActiveGamepadProfile({
+                  activeGamepadProfileRef.current = {
                     profileName: profile.profileName,
                     selected: true,
                     deviceId: profile.deviceId,
@@ -65,7 +63,7 @@ function ScrollViewProfiles({
                     leftKey: profile.leftKey,
                     rightKey: profile.rightKey,
                     bombKey: profile.bombKey,
-                  });
+                  };
                   const newProfiles = [
                     ...displayProfiles.filter((_profile) => profile.deviceId !== _profile.deviceId),
                     {
@@ -81,11 +79,11 @@ function ScrollViewProfiles({
               style={sharedStyles.remoteControlsTabButton}
             >
               <Icon
-                name={profile.deviceId === activeGamepadProfile?.deviceId ?
+                name={profile.deviceId === activeGamepadProfileRef.current?.deviceId ?
                   Icons.play : Icons.timerSandEmpty
                 }
                 size={30}
-                color={profile.deviceId === activeGamepadProfile?.deviceId ?
+                color={profile.deviceId === activeGamepadProfileRef.current?.deviceId ?
                     colors.GREEN : colors.WHITE
                 }
               />

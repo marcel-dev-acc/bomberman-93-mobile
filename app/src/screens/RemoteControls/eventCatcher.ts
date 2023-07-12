@@ -2,7 +2,7 @@ import { Socket } from 'socket.io-client';
 import {
   AndroidGamepadEvent,
 } from '../../native/interface';
-import { Session } from '../../state/session/reducer';
+import { Session } from '../../types/session';
 import { Direction, GameEventProps } from '../../constants/types';
 import SocketTypes from '../../types/socketTypes';
 import { AndroidGamepadProfile } from './types';
@@ -13,7 +13,7 @@ const eventCatcher = (
   socket: Socket,
   activeGamepadProfile: AndroidGamepadProfile,
 ) => {
-  console.log('Emit event for ', event.deviceId);
+  console.log('session secret', session.secret, !session.secret);
   // Check if the session is populated
   if (!session.secret) return;
   // Check if the event is a bomb key press

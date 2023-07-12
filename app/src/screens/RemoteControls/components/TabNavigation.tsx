@@ -7,6 +7,7 @@ import {
 import sharedStyles from "../SharedStyles";
 import imageNames from "../../../constants/imageNames";
 import colors from "../../../constants/colors";
+import { AndroidGamepadEvent } from "../../../native/interface";
 
 export enum Tabs {
   profiles = 'profiles',
@@ -17,11 +18,15 @@ export enum Tabs {
 type TabNavigationProps = {
   activeTab: Tabs;
   setActiveTab: (activeTab: Tabs) => void;
+  setDisplayDevicesIds: (setDisplayDevicesIds: number[]) => void;
+  setDisplayedEvents: (displayedEvents: AndroidGamepadEvent[]) => void;
 };
 
 function TabNavigation({
   activeTab,
   setActiveTab,
+  setDisplayDevicesIds,
+  setDisplayedEvents,
 }: TabNavigationProps): JSX.Element {
 
   return (
@@ -56,6 +61,8 @@ function TabNavigation({
         <TouchableHighlight
           onPress={(pressEvent) => {
             if (pressEvent.nativeEvent.target === undefined) return;
+            setDisplayDevicesIds([]);
+            setDisplayedEvents([]);
             setActiveTab(Tabs.devices);
           }}
           underlayColor='rgba(255,255,255,0.25)'
@@ -82,6 +89,8 @@ function TabNavigation({
         <TouchableHighlight
           onPress={(pressEvent) => {
             if (pressEvent.nativeEvent.target === undefined) return;
+            setDisplayDevicesIds([]);
+            setDisplayedEvents([]);
             setActiveTab(Tabs.keys);
           }}
           underlayColor='rgba(255,255,255,0.25)'

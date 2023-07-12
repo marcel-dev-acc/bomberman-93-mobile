@@ -9,11 +9,10 @@ import {
   useWindowDimensions,
   Image,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { Button, GameText, Icon, Icons, SplashImage } from '../../components/General';
-import type { Session, Player } from '../../state/session/reducer';
-import { changePlayersDetails } from '../../state/session/reducer';
+import { GameText, Icon, Icons, SplashImage } from '../../components/General';
+import type { Session, Player } from '../../types/session';
 import colors from '../../constants/colors';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
 import { Socket } from 'socket.io-client';
@@ -22,25 +21,31 @@ import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
 
 type PlayerCardProps = {
+  sessionRef: React.MutableRefObject<Session>;
   playerNumber: number;
   player: Player;
 };
 
-function PlayerCard({ playerNumber, player }: PlayerCardProps): JSX.Element {
-  const { playerNumber: storedPlayerNumber, players }: Session = useSelector((state: any) => state.session);
+function PlayerCard({
+  sessionRef,
+  playerNumber,
+  player,
+}: PlayerCardProps): JSX.Element {
   const { width } = useWindowDimensions();
 
   const handlePlayerNameChange = (name: string) => {
-    dispatch(changePlayersDetails({
+    sessionRef.current = {
+      ...sessionRef.current,
       playerNumber: playerNumber,
-      player: {
-        ...players[playerNumber - 1],
-        name: name,
-      },
-    }));
+      players: [
+        ...sessionRef.current.players.filter((player, idx) => idx !== playerNumber - 1),
+        {
+          ...sessionRef.current.players[playerNumber - 1],
+          name: name,
+        },
+      ],
+    };
   };
-
-  const dispatch = useDispatch();
 
   const [textInputColor, setTextInputColor] = useState(colors.WHITE);
 
@@ -68,7 +73,7 @@ function PlayerCard({ playerNumber, player }: PlayerCardProps): JSX.Element {
       </View>
       <View style={playerStyles.playerCardNameContaner}>
         {/* Player name */}
-        {playerNumber === storedPlayerNumber && (
+        {playerNumber === sessionRef.current.playerNumber && (
           <TextInput
             onChangeText={handlePlayerNameChange}
             value={player.name}
@@ -80,7 +85,7 @@ function PlayerCard({ playerNumber, player }: PlayerCardProps): JSX.Element {
             onEndEditing={() => setTextInputColor(colors.WHITE)}
           />
         )}
-        {playerNumber !== storedPlayerNumber && (
+        {playerNumber !== sessionRef.current.playerNumber && (
           <Text style={playerStyles.playerCardText}>
             {player.name}
           </Text>
@@ -94,21 +99,29 @@ function PlayerCard({ playerNumber, player }: PlayerCardProps): JSX.Element {
           onPress={(pressEvent) => {
             if (pressEvent.nativeEvent.target === undefined) return;
             if (player.isActive && !player.isReal) {
-              dispatch(changePlayersDetails({
+              sessionRef.current = {
+                ...sessionRef.current,
                 playerNumber: playerNumber,
-                player: {
-                  ...players[playerNumber - 1],
-                  isActive: false,
-                },
-              }));
+                players: [
+                  ...sessionRef.current.players.filter((player, idx) => idx !== playerNumber - 1),
+                  {
+                    ...sessionRef.current.players[playerNumber - 1],
+                    isActive: false,
+                  },
+                ],
+              } as Session;
             } else if (!player.isActive && !player.isReal) {
-              dispatch(changePlayersDetails({
+              sessionRef.current = {
+                ...sessionRef.current,
                 playerNumber: playerNumber,
-                player: {
-                  ...players[playerNumber - 1],
-                  isActive: true,
-                },
-              }));
+                players: [
+                  ...sessionRef.current.players.filter((player, idx) => idx !== playerNumber - 1),
+                  {
+                    ...sessionRef.current.players[playerNumber - 1],
+                    isActive: true,
+                  },
+                ],
+              } as Session;
             }
           }}
         >
@@ -194,14 +207,15 @@ const playerStyles = StyleSheet.create({
 const countDownTime: number = 120;
 
 type WaitingRoomScreenProps = {
-  socket: Socket
+  socket: Socket;
+  sessionRef: React.MutableRefObject<Session>;
 };
 
 function WaitingRoomScreen({
   socket,
+  sessionRef,
 }: WaitingRoomScreenProps): JSX.Element {
-  const { name, playerNumber, players, secret }: Session = useSelector((state: any) => state.session);
-  const sessionName = name; 
+
   const { height, width } = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
@@ -219,9 +233,9 @@ function WaitingRoomScreen({
     } else {
       // Emit event to socket to start the game
       socket.emit(SocketTypes.event, {
-        sessionName: sessionName,
-        playerNumber: playerNumber,
-        secret: secret,
+        sessionName: sessionRef.current.name,
+        playerNumber: sessionRef.current.playerNumber,
+        secret: sessionRef.current.secret,
         event: { type: 'started' },
       });
       // Play game
@@ -255,8 +269,8 @@ function WaitingRoomScreen({
         <View style={styles.waitingRoomHeadingContainer}>
           <GameText
             text={
-              sessionName?
-                sessionName.length <  20 ? sessionName : `${sessionName.substring(0, 20)}...` :
+              sessionRef.current.name ?
+              sessionRef.current.name.length <  20 ? sessionRef.current.name : `${sessionRef.current.name.substring(0, 20)}...` :
                 'Random session name'
             }
             charSize={25}
@@ -277,7 +291,7 @@ function WaitingRoomScreen({
           charSize={30}
         />
         <View style={styles.waitingRoomTextContainer}>
-          {playerNumber === 1 && (
+          {sessionRef.current.playerNumber === 1 && (
             <Image
               source={imageNames.youArePlayer1Text}
               resizeMode='contain'
@@ -287,7 +301,7 @@ function WaitingRoomScreen({
               }}
             />
           )}
-          {playerNumber === 2 && (
+          {sessionRef.current.playerNumber === 2 && (
             <Image
               source={imageNames.youArePlayer2Text}
               resizeMode='contain'
@@ -297,7 +311,7 @@ function WaitingRoomScreen({
               }}
             />
           )}
-          {playerNumber === 3 && (
+          {sessionRef.current.playerNumber === 3 && (
             <Image
               source={imageNames.youArePlayer3Text}
               resizeMode='contain'
@@ -307,7 +321,7 @@ function WaitingRoomScreen({
               }}
             />
           )}
-          {playerNumber === 4 && (
+          {sessionRef.current.playerNumber === 4 && (
             <Image
               source={imageNames.youArePlayer4Text}
               resizeMode='contain'
@@ -317,7 +331,7 @@ function WaitingRoomScreen({
               }}
             />
           )}
-          {playerNumber === 5 && (
+          {sessionRef.current.playerNumber === 5 && (
             <Image
               source={imageNames.youArePlayer5Text}
               resizeMode='contain'
@@ -338,24 +352,25 @@ function WaitingRoomScreen({
             }}
           />
         </View>
-        {players && players.map((player, idx) => {
+        {sessionRef.current.players && sessionRef.current.players.map((player, idx) => {
           return (
             <PlayerCard
               key={idx}
+              sessionRef={sessionRef}
               playerNumber={idx + 1}
               player={player}
             />
           );
         })}
-        {playerNumber === 1 && (
+        {sessionRef.current.playerNumber === 1 && (
           <View style={styles.waitingRoomButtonContainer}>
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 socket.emit(SocketTypes.event, {
-                  sessionName: sessionName,
-                  playerNumber: playerNumber,
-                  secret: secret,
+                  sessionName: sessionRef.current.name,
+                  playerNumber: sessionRef.current.playerNumber,
+                  secret: sessionRef.current.secret,
                   event: { type: 'started' },
                 });
                 dispatch(changeScreen({ screen: ScreenType.game }));

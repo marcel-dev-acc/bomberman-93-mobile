@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -9,7 +10,7 @@ import {
 } from "react-native";
 
 import sharedStyles from "../SharedStyles";
-import { Button, Icon, Icons } from "../../../components/General";
+import { Button, GameText, Icon, Icons } from "../../../components/General";
 import { AndroidGamepadEvent } from "../../../native/interface";
 import colors from "../../../constants/colors";
 import { AndroidGamepadProfile } from "../types";
@@ -68,9 +69,10 @@ function DeviceToProfileModal({
           />
         </TouchableHighlight>
         <View style={sharedStyles.remoteControlsTextContainer}>
-          <Text style={sharedStyles.remoteControlsHeaderText}>
-            Add device to profile
-          </Text>
+          <GameText
+            text='Add device to profile'
+            charSize={25}
+          />
         </View>
         <View
           style={{
@@ -78,9 +80,10 @@ function DeviceToProfileModal({
             marginTop: 10,
           }}
         >
-          <Text style={sharedStyles.remoteControlsText}>
-            {`Device ID ${activeEvent.deviceId}`}
-          </Text>
+          <GameText
+            text={`Device ID ${activeEvent.deviceId}`}
+            charSize={15}
+          />
         </View>
         <View
           style={{
@@ -137,6 +140,41 @@ function DeviceToProfileModal({
               setShowDeviceToProfileModal(false);
             }}
           />
+        </View>
+        <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center', width: width * 0.875 }}>
+          <GameText
+            text='OR'
+            charSize={20}
+          />
+          <ScrollView>
+            {displayProfiles.length > 0 && displayProfiles.map((profile, idx) => {
+              return <Button
+                key={idx}
+                text={profile.profileName}
+                onPress={(pressEvent) => {
+                  if (pressEvent.nativeEvent.target === undefined) return;
+                  const newProfiles = [
+                    ...displayProfiles.filter((profile) => profile.profileName !== activeProfileName),
+                    {
+                      profileName: profile.profileName,
+                      deviceId: activeEvent.deviceId,
+                      selected: false,
+                      upKey: profile.upKey,
+                      downKey: profile.downKey,
+                      leftKey: profile.leftKey,
+                      rightKey: profile.rightKey,
+                      bombKey: profile.bombKey,
+                    },
+                  ];
+                  setDisplayProfiles(newProfiles);
+                  storeData(StorageKeys.profiles, JSON.stringify(newProfiles));
+                  setActiveProfileName('');
+                  setActiveEvent(undefined);
+                  setShowDeviceToProfileModal(false);
+                }}
+              />
+            })}
+          </ScrollView>
         </View>
       </View>
     </View>

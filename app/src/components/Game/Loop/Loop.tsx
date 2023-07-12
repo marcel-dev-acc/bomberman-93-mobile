@@ -22,11 +22,12 @@ import { dimensions } from '../../../constants/screen';
 import { DEBUG } from '../../../constants/app';
 import { Socket } from 'socket.io-client';
 import SocketTypes from '../../../types/socketTypes';
-import { Session } from '../../../state/session/reducer';
+import type { Session } from '../../../types/session';
 
 
 type LoopProps = {
   socket: Socket;
+  sessionRef: React.MutableRefObject<Session>;
   entities: any;
   gameRunning: boolean;
   gameTickRef: React.MutableRefObject<number>;
@@ -36,6 +37,7 @@ type LoopProps = {
 
 function Loop({
   socket,
+  sessionRef,
   entities,
   gameRunning,
   gameTickRef,
@@ -43,7 +45,6 @@ function Loop({
   dispatcher,
 }: LoopProps): JSX.Element {
 
-  const session: Session = useSelector((state: any) => state.session);
   const debuggerEnabled: boolean = useSelector((state: any) => state.screens.debuggerEnabled);
 
   const updateHandler = (args: GameLoopUpdateEventOptionType) => {
@@ -53,9 +54,9 @@ function Loop({
     if (!gameRunning) return;
     // Emit the tick event
     socket.emit(SocketTypes.tick, {
-      sessionName: session.name,
-      playerNumber: session.playerNumber,
-      secret: session.secret,
+      sessionName: sessionRef.current.name,
+      playerNumber: sessionRef.current.playerNumber,
+      secret: sessionRef.current.secret,
       tick: gameTickRef.current,
     });
   };

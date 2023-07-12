@@ -2,7 +2,6 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   GestureResponderEvent,
   useWindowDimensions,
   TouchableHighlight,
@@ -10,17 +9,20 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, GameText, SplashImage } from '../../components/General';
-import { Session, changeWinner } from '../../state/session/reducer';
+import { GameText, SplashImage } from '../../components/General';
+import type { Session } from '../../types/session';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import colors from '../../constants/colors';
 import imageNames from '../../constants/imageNames';
 import { getIsVertical } from '../../constants/screen';
 
 
+type WinnerScreenProps = {
+  sessionRef: React.MutableRefObject<Session>;
+};
 
-
-function WinnerScreen(): JSX.Element {
+function WinnerScreen({
+  sessionRef,
+}: WinnerScreenProps): JSX.Element {
   const { winner }: Session = useSelector((state: any) => state.session);
   const { height, width } = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
@@ -29,7 +31,10 @@ function WinnerScreen(): JSX.Element {
 
   const handleGameReset = (pressEvent: GestureResponderEvent) => {
     if (pressEvent.nativeEvent.target === undefined) return;
-    dispatch(changeWinner(undefined));
+    sessionRef.current = {
+      ...sessionRef.current,
+      winner: undefined,
+    } as Session;
     dispatch(changeScreen({ screen: ScreenType.welcome }));
   };
 
