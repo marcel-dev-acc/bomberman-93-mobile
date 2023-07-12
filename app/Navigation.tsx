@@ -56,7 +56,7 @@ function Navigation(): JSX.Element {
       } else {
         dispatch(addError({
           title: `[${SocketTypes.connectionError}] Server connection error`,
-          value: 'Failed to connect to the server',
+          value: 'Failed to connect to the server (check keys)',
         }));
       }
     }, 1000);

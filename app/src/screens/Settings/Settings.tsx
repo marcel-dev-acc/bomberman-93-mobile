@@ -1,21 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Dimensions,
   TouchableHighlight,
   useWindowDimensions,
   Image,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import colors from '../../constants/colors';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import { BackButton, Icon, Icons, SplashImage } from '../../components/General';
+import { BackButton, GameText, SplashImage } from '../../components/General';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
-import { StorageKeys, removeData } from '../../utils/localStorage';
+import { StorageKeys, fetchData, removeData } from '../../utils/localStorage';
 
 
 
@@ -26,6 +23,17 @@ function SettingsScreen(): JSX.Element {
   const isVertical = getIsVertical(width, height);
 
   const dispatch = useDispatch();
+
+  const handleFetchToken = async () => {
+    const _token = await fetchData(StorageKeys.token);
+    if (_token) setToken(_token);
+  };
+
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    if (!token) handleFetchToken();
+  }, []);
 
   return (
     <View
@@ -94,6 +102,12 @@ function SettingsScreen(): JSX.Element {
           </TouchableHighlight>
         </View>
       </View>
+      <View style={styles.settingsTokenContainer}>
+        <GameText
+          text={token}
+          charSize={15}
+        />
+      </View>
     </View>
   );
 }
@@ -111,6 +125,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  settingsTokenContainer: {
+    position: 'absolute',
+    bottom: 0,
   },
 });
 

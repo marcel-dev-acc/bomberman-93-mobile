@@ -9,6 +9,7 @@ import { GameText, Icon, Icons } from '../../General';
 import colors from '../../../constants/colors';
 import { useSelector } from 'react-redux';
 import { GameEventProps } from '../../../constants/types';
+import { DEBUG } from '../../../constants/app';
 
 type TimerProps = {
   baseTimer: number;
@@ -26,7 +27,7 @@ function Timer({
   const timer = useRef(baseTimer);
 
   useEffect(() => {
-    if (!debuggerEnabled) {
+    if (DEBUG && !debuggerEnabled) {
       setTimeout(() => {
         if (timer.current > -1) {
           setTimerInner(timerInner - 1);

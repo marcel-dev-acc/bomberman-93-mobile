@@ -180,8 +180,7 @@ function GameScreen({
       ...styles.gameContainer,
       width: width,
       height: height,
-    }}>
-      
+    }}>      
       <Timer
         baseTimer={timer}
         dispatcher={dispatcher}

@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { GameText, SplashImage } from '../../components/General';
 import type { Session } from '../../types/session';
@@ -23,7 +23,6 @@ type WinnerScreenProps = {
 function WinnerScreen({
   sessionRef,
 }: WinnerScreenProps): JSX.Element {
-  const { winner }: Session = useSelector((state: any) => state.session);
   const { height, width } = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
@@ -47,7 +46,7 @@ function WinnerScreen({
     >
       {isVertical && <SplashImage includeHeader />}
       {!isVertical && <SplashImage />}
-      {winner && (
+      {sessionRef.current.winner && (
         <View style={styles.winnerTextContainer}>
           <Image
             source={imageNames.theWinnerIsText}
@@ -58,7 +57,7 @@ function WinnerScreen({
             }}
           />
           <GameText
-            text={winner.name}
+            text={sessionRef.current.winner.name}
             charSize={50}
           />
         </View>
