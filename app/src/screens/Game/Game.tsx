@@ -28,6 +28,7 @@ import { Direction, GameEventProps, SessionDetails } from '../../constants/types
 import { DEBUG } from '../../constants/app';
 import { Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
+import { EventGameServerResponse, NegativeResponse } from '../../types/serverTypes';
 
 
 const countDownTime: number = 3 * 60;
@@ -82,7 +83,7 @@ function GameScreen({
       movement: direction,
     };
     dispatcher(event);
-    if (debuggerEnabled) socket.emit(SocketTypes.tick, {
+    if (debuggerEnabled) socket.emit(SocketTypes.tickRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -115,7 +116,7 @@ function GameScreen({
 
   const dispatcher = (event: GameEventProps) => {
     // Emit an event to the socket
-    socket.emit(SocketTypes.event, {
+    socket.emit(SocketTypes.eventRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -151,11 +152,14 @@ function GameScreen({
     if (!gameStartedRef.current) dispatcher({ type: 'started' });
   }, [gameStartedRef.current]);
 
-  socket.on(SocketTypes.eventPositiveResponse, (state: SessionDetails) => {
+  socket.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
+    // Check if incoming response is for the player
+    if (response.data.secret !== sessionRef.current.secret) return;
     // Check if objects has keys
-    if (Object.keys(state).length === 0) return;
+    if (Object.keys(response.state).length === 0) return;
+    const state = response.state as SessionDetails;
     // This is specifically for the game start scenario
-    if (!gameStartedRef.current && state && state.entities) {
+    if (!gameStartedRef.current && state && state?.entities) {
       setEntities(state.entities);
       gameStartedRef.current = true;
     }
@@ -171,8 +175,10 @@ function GameScreen({
     }
   });
 
-  socket.on(SocketTypes.eventNegativeResponse, (error: string) => {
-    console.log('[EVENT ERROR]', error);
+  socket.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
+    // Check if incoming response is for the player
+    if (response.data?.secret !== sessionRef.current.secret) return;
+    console.warn('[EVENT ERROR]', response.error);
   });
 
   return (

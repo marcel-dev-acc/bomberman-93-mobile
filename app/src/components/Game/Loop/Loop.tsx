@@ -23,6 +23,7 @@ import { DEBUG } from '../../../constants/app';
 import { Socket } from 'socket.io-client';
 import SocketTypes from '../../../types/socketTypes';
 import type { Session } from '../../../types/session';
+import { NegativeResponse, TickGameServerResponse } from '../../../types/serverTypes';
 
 
 type LoopProps = {
@@ -53,7 +54,7 @@ function Loop({
     // Disable if the game is no longer running
     if (!gameRunning) return;
     // Emit the tick event
-    socket.emit(SocketTypes.tick, {
+    socket.emit(SocketTypes.tickRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -70,9 +71,12 @@ function Loop({
     if (Object.keys(entities).length > 0) setVolatileEntities(entities);
   }, [entities]);
 
-  socket.on(SocketTypes.tickPositiveResponse, (state: SessionDetails) => {
+  socket.on(SocketTypes.tickRelayPositiveResponse, (response: TickGameServerResponse) => {
+    // Check if incoming response is for the player
+    if (response.data?.secret !== sessionRef.current.secret) return;
     // Check if objects has keys
-    if (Object.keys(state).length === 0) return;
+    if (Object.keys(response.state).length === 0) return;
+    const state = response.state as SessionDetails
     // Validate that the tick has been kept correctly
     if (state && state.tick === gameTickRef.current + 1) {
       gameTickRef.current = state.tick;
@@ -90,8 +94,10 @@ function Loop({
     }
   });
 
-  socket.on(SocketTypes.tickNegativeResponse, (error: string) => {
-    console.log('[TICK ERROR]', error);
+  socket.on(SocketTypes.tickRelayNegativeResponse, (response: NegativeResponse) => {
+    // Check if incoming response is for the player
+    if (response.data?.secret !== sessionRef.current.secret) return;
+    console.warn('[TICK ERROR]', response.error);
   });
 
   return (

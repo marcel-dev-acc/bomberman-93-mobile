@@ -27,7 +27,7 @@ function Timer({
   const timer = useRef(baseTimer);
 
   useEffect(() => {
-    if (DEBUG && !debuggerEnabled) {
+    if (!DEBUG && !debuggerEnabled) {
       setTimeout(() => {
         if (timer.current > -1) {
           setTimerInner(timerInner - 1);

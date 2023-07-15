@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Image,
   StyleSheet,
@@ -38,7 +38,7 @@ function WelcomeScreen({
           'flex-end' : 'center',
       }}
     >
-      {!DEBUG && showIntro && <IntroImage />}
+      {/* {!DEBUG && showIntro && <IntroImage />} */}
       <SplashImage includeHeader />
       <View style={styles.forEducationalPurposesOnlyContainer}>
         <Image

@@ -78,7 +78,7 @@ function Navigation(): JSX.Element {
 
   // Register a connection error handler
   if (socket.current) {
-    socket.current.on(SocketTypes.connectionError, (err) => {
+    socket.current.on(SocketTypes.connectionErrorRelay, (err) => {
       if (!(['timeout', 'xhr poll error'].includes(err.message))) {
         setServerStatus(ServerStatus.disconnected);
         dispatch(addError({

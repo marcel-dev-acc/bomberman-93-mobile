@@ -20,7 +20,7 @@ const eventCatcher = (
     const socketEvent: GameEventProps = {
       type: 'bomb',
     };
-    socket.emit(SocketTypes.event, {
+    socket.emit(SocketTypes.eventRelay, {
       sessionName: session.name,
       playerNumber: session.playerNumber,
       secret: session.secret,
@@ -49,7 +49,7 @@ const eventCatcher = (
     type: 'movement',
     movement: direction,
   };
-  socket.emit(SocketTypes.event, {
+  socket.emit(SocketTypes.eventRelay, {
     sessionName: session.name,
     playerNumber: session.playerNumber,
     secret: session.secret,

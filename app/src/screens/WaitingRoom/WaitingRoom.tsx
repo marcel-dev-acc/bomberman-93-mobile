@@ -232,7 +232,7 @@ function WaitingRoomScreen({
       }, 1000);
     } else {
       // Emit event to socket to start the game
-      socket.emit(SocketTypes.event, {
+      socket.emit(SocketTypes.eventRelay, {
         sessionName: sessionRef.current.name,
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
@@ -367,7 +367,7 @@ function WaitingRoomScreen({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                socket.emit(SocketTypes.event, {
+                socket.emit(SocketTypes.eventRelay, {
                   sessionName: sessionRef.current.name,
                   playerNumber: sessionRef.current.playerNumber,
                   secret: sessionRef.current.secret,

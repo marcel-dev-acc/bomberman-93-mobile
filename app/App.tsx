@@ -26,7 +26,7 @@ function App(): JSX.Element {
       }}>
         <Navigation />
         <ErrorsContainer />
-        {!DEBUG && <MusicToggle />}
+        {/* {!DEBUG && <MusicToggle />} */}
       </SafeAreaView>
     </ReduxProvider>
   );

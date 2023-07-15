@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { DEBUG } from '../../constants/app';
 
 export enum ScreenType {
   welcome = 'welcome',
@@ -26,7 +27,7 @@ const initialState: Screens = {
   screen: ScreenType.welcome,
   previousScreen: ScreenType.welcome,
   graphicsEnabled: true,
-  debuggerEnabled: true,
+  debuggerEnabled: DEBUG,
   musicEnabled: true,
 };
 

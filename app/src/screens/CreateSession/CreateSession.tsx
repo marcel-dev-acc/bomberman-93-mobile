@@ -19,6 +19,7 @@ import SocketTypes from '../../types/socketTypes';
 import { addError } from '../../state/errors/reducer';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
+import { HandleCreateSessionData, JoinSessionGameServerResponse, NegativeResponse } from '../../types/serverTypes';
 
 type CreateSessionScreenProps = {
   socket: Socket;
@@ -53,28 +54,36 @@ function CreateSessionScreen({
     }
   }, [width, height]);
 
-  socket.on(SocketTypes.createSessionPositiveResponse, () => {
+  socket.on(SocketTypes.createSessionRelayPositiveResponse, (data: HandleCreateSessionData) => {
+    // Check if incoming response is for player
+    if (data.sessionName !== sessionNameRef.current) return;
+    // Trigger join session which has been created
     if (!hasJoinSessionRef.current && sessionNameRef.current) {
-      socket.emit(SocketTypes.joinSession, {
+      socket.emit(SocketTypes.joinSessionRelay, {
         sessionName: sessionNameRef.current,
         playerNumber: 1,
       });
     }
   });
 
-  socket.on(SocketTypes.createSessionNegativeResponse, (error: string) => {
+  socket.on(SocketTypes.createSessionRelayNegativeResponse, (response: NegativeResponse) => {
+    // Check if incoming response is for player
+    if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1) return;
     dispatch(addError({
-      title: `[${SocketTypes.createSessionNegativeResponse}] Server error response`,
-      value: error,
+      title: `[${SocketTypes.createSessionRelayNegativeResponse}] Server error response`,
+      value: response.error,
     }));
   });
 
-  socket.on(SocketTypes.joinSessionPositiveResponse, (secret) => {
+  socket.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
+    // Check if incoming response is for player
+    if (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== 1) return;
+    // Mark that player has joined a session
     hasJoinSessionRef.current = true;
     sessionRef.current = {
       ...sessionRef.current,
       name: sessionNameRef.current,
-      secret: secret,
+      secret: response.secret,
     } as Session;
     dispatch(changeScreen({ screen: ScreenType.waitingRoom }));
     // Reset the internal state values (delay so we don't generate server errors)
@@ -85,11 +94,13 @@ function CreateSessionScreen({
     }, 5000);
   });
 
-  socket.on(SocketTypes.joinSessionNegativeResponse, (error) => {
+  socket.on(SocketTypes.joinSessionRelayNegativeResponse, (response: NegativeResponse) => {
+    // Check if incoming response is for player
+    if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1) return;
     if (!hasJoinSessionRef.current) {
       dispatch(addError({
-        title: `[${SocketTypes.joinSessionNegativeResponse}] Server error response`,
-        value: error,
+        title: `[${SocketTypes.joinSessionRelayNegativeResponse}] Server error response`,
+        value: response.error,
       }));
     }
   });
@@ -160,7 +171,7 @@ function CreateSessionScreen({
                 value: 'Failed to connect to the server',
               }));
             } else {
-              socket.emit(SocketTypes.createSession, {
+              socket.emit(SocketTypes.createSessionRelay, {
                 sessionName: sessionNameRef.current,
               });
             }
