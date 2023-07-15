@@ -45,13 +45,13 @@ function Navigation(): JSX.Element {
       return;
     }
     setServerStatus(ServerStatus.localToken);
-    if (socket.current?.connected) {
+    if (socketRef.current?.connected) {
       setServerStatus(ServerStatus.connected);
       return;
     }
-    socket.current = io(webSocketServer, { auth: { token } });
+    socketRef.current = io(webSocketServer, { auth: { token } });
     setTimeout(() => {
-      if (socket.current?.connected) {
+      if (socketRef.current?.connected) {
         setServerStatus(ServerStatus.connected);
       } else {
         dispatch(addError({
@@ -65,7 +65,7 @@ function Navigation(): JSX.Element {
   const [showIntro, setShowIntro] = useState(true);
   const [serverStatus, setServerStatus] = useState(ServerStatus.unregistered);
   
-  const socket = useRef(undefined as Socket | undefined);
+  const socketRef = useRef(undefined as Socket | undefined);
   const sessionRef = useRef(InitSessionState);
 
   useEffect(() => {
@@ -77,8 +77,8 @@ function Navigation(): JSX.Element {
   }, [screen]);
 
   // Register a connection error handler
-  if (socket.current) {
-    socket.current.on(SocketTypes.connectionErrorRelay, (err) => {
+  if (socketRef.current) {
+    socketRef.current.on(SocketTypes.connectionErrorRelay, (err) => {
       if (!(['timeout', 'xhr poll error'].includes(err.message))) {
         setServerStatus(ServerStatus.disconnected);
         dispatch(addError({
@@ -104,31 +104,34 @@ function Navigation(): JSX.Element {
         />
       )}
       {screen === ScreenType.rules && <RulesScreen />}
-      {socket.current && screen === ScreenType.createSession && (
+      {socketRef.current && screen === ScreenType.createSession && (
         <CreateSessionScreen
-          socket={socket.current}
+          socketRef={socketRef as React.MutableRefObject<Socket>}
           sessionRef={sessionRef}
         />
       )}
-      {socket.current && screen === ScreenType.waitingRoom && (
+      {socketRef.current && screen === ScreenType.waitingRoom && (
         <WaitingRoomScreen
-          socket={socket.current}
+          socketRef={socketRef as React.MutableRefObject<Socket>}
           sessionRef={sessionRef}
         />
       )}
       {screen === ScreenType.rotate && <RotateScreen />}
-      {socket.current && screen === ScreenType.game && (
+      {socketRef.current && screen === ScreenType.game && (
         <GameScreen
-          socket={socket.current}
+          socketRef={socketRef as React.MutableRefObject<Socket>}
           sessionRef={sessionRef}
         />
       )}
       {screen === ScreenType.winner && <WinnerScreen sessionRef={sessionRef} />}
       {
-        socket.current &&
+        socketRef.current &&
         screen === ScreenType.remoteControls &&
         Platform.OS === 'android' &&
-        <RemoteControlsScreen socket={socket.current} sessionRef={sessionRef} />
+        <RemoteControlsScreen
+          socketRef={socketRef as React.MutableRefObject<Socket>}
+          sessionRef={sessionRef}
+        />
       }
       {screen === ScreenType.settings && <SettingsScreen /> }
     </View>

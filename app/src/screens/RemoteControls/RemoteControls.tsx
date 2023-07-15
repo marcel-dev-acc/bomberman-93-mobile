@@ -39,12 +39,12 @@ import { addError } from '../../state/errors/reducer';
 import { getIsVertical } from '../../constants/screen';
 
 type RemoteControlsScreenProps = {
-  socket: Socket;
+  socketRef: React.MutableRefObject<Socket>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
 function RemoteControlsScreen({
-  socket,
+  socketRef,
   sessionRef,
 }: RemoteControlsScreenProps): JSX.Element {
 
@@ -134,14 +134,14 @@ function RemoteControlsScreen({
   const buttonLooper = (
     event: AndroidGamepadEvent,
     session: Session,
-    socket: Socket,
+    socketRef: React.MutableRefObject<Socket>,
     activeGamepadProfile: AndroidGamepadProfile,
   ) => {
     setTimeout(() => {
       eventCatcher(
         event,
         session,
-        socket,
+        socketRef,
         activeGamepadProfile,
       );
       // Check if loop needs to re-initialised
@@ -149,7 +149,7 @@ function RemoteControlsScreen({
         buttonLooper(
           event,
           session,
-          socket,
+          socketRef,
           activeGamepadProfile,
         );
       }
@@ -181,7 +181,7 @@ function RemoteControlsScreen({
               buttonLooper(
                 event,
                 sessionRef.current,
-                socket,
+                socketRef,
                 activeGamepadProfileRef.current,
               );
             }

@@ -14,20 +14,23 @@ import { BackButton, Icon, Icons, SplashImage } from '../../components/General';
 import { Session } from '../../types/session';
 import colors from '../../constants/colors';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import type { Socket } from 'socket.io-client';
+import { io, type Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
 import { addError } from '../../state/errors/reducer';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
 import { HandleCreateSessionData, JoinSessionGameServerResponse, NegativeResponse } from '../../types/serverTypes';
+import { StorageKeys, fetchData } from '../../utils/localStorage';
+import { webSocketServer } from '../../constants/server';
+import { sleep } from '../../utils/helpers';
 
 type CreateSessionScreenProps = {
-  socket: Socket;
+  socketRef: React.MutableRefObject<Socket>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
 function CreateSessionScreen({
-  socket,
+  socketRef,
   sessionRef,
 }: CreateSessionScreenProps): JSX.Element {
 
@@ -54,28 +57,28 @@ function CreateSessionScreen({
     }
   }, [width, height]);
 
-  socket.on(SocketTypes.createSessionRelayPositiveResponse, (data: HandleCreateSessionData) => {
+  socketRef.current.on(SocketTypes.createSessionRelayPositiveResponse, (data: HandleCreateSessionData) => {
     // Check if incoming response is for player
     if (data.sessionName !== sessionNameRef.current) return;
     // Trigger join session which has been created
     if (!hasJoinSessionRef.current && sessionNameRef.current) {
-      socket.emit(SocketTypes.joinSessionRelay, {
+      socketRef.current.emit(SocketTypes.joinSessionRelay, {
         sessionName: sessionNameRef.current,
         playerNumber: 1,
       });
     }
   });
 
-  socket.on(SocketTypes.createSessionRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current.on(SocketTypes.createSessionRelayNegativeResponse, (response: NegativeResponse) => {
     // Check if incoming response is for player
-    if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1) return;
+    if (response.data?.sessionName !== sessionNameRef.current) return;
     dispatch(addError({
       title: `[${SocketTypes.createSessionRelayNegativeResponse}] Server error response`,
       value: response.error,
     }));
   });
 
-  socket.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
+  socketRef.current.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
     // Check if incoming response is for player
     if (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== 1) return;
     // Mark that player has joined a session
@@ -94,7 +97,7 @@ function CreateSessionScreen({
     }, 5000);
   });
 
-  socket.on(SocketTypes.joinSessionRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current.on(SocketTypes.joinSessionRelayNegativeResponse, (response: NegativeResponse) => {
     // Check if incoming response is for player
     if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1) return;
     if (!hasJoinSessionRef.current) {
@@ -152,7 +155,7 @@ function CreateSessionScreen({
       />
       <View style={styles.createSessionButtonContainer}>
         <TouchableHighlight
-          onPress={(pressEvent) => {
+          onPress={async (pressEvent) => {
             if (pressEvent.nativeEvent.target === undefined) return;
             // Validate if the sessionNameRef current value is blank
             if (!sessionNameRef.current) {
@@ -164,17 +167,23 @@ function CreateSessionScreen({
               }));
               return;
             }
-            socket.on('connect', () => console.log('Socket connected') );
-            if (!socket.connected) {
+            const token = await fetchData(StorageKeys.token);
+            socketRef.current = io(webSocketServer, { auth: { token } });
+            let count = 0;
+            while (!socketRef.current?.connected && count < 10) {
+              await sleep(500);
+              count++;
+            }
+            if (count >= 10) {
               dispatch(addError({
                 title: `[Server Connection] Server error response`,
                 value: 'Failed to connect to the server',
               }));
-            } else {
-              socket.emit(SocketTypes.createSessionRelay, {
-                sessionName: sessionNameRef.current,
-              });
+              return;
             }
+            socketRef.current.emit(SocketTypes.createSessionRelay, {
+              sessionName: sessionNameRef.current,
+            });
           }}
           style={{
             ...styles.createSessionButton,

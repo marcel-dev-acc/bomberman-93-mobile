@@ -207,12 +207,12 @@ const playerStyles = StyleSheet.create({
 const countDownTime: number = 120;
 
 type WaitingRoomScreenProps = {
-  socket: Socket;
+  socketRef: React.MutableRefObject<Socket>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
 function WaitingRoomScreen({
-  socket,
+  socketRef,
   sessionRef,
 }: WaitingRoomScreenProps): JSX.Element {
 
@@ -232,7 +232,7 @@ function WaitingRoomScreen({
       }, 1000);
     } else {
       // Emit event to socket to start the game
-      socket.emit(SocketTypes.eventRelay, {
+      socketRef.current.emit(SocketTypes.eventRelay, {
         sessionName: sessionRef.current.name,
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
@@ -367,7 +367,7 @@ function WaitingRoomScreen({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                socket.emit(SocketTypes.eventRelay, {
+                socketRef.current.emit(SocketTypes.eventRelay, {
                   sessionName: sessionRef.current.name,
                   playerNumber: sessionRef.current.playerNumber,
                   secret: sessionRef.current.secret,

@@ -10,7 +10,7 @@ import { AndroidGamepadProfile } from './types';
 const eventCatcher = (
   event: AndroidGamepadEvent,
   session: Session,
-  socket: Socket,
+  socketRef: React.MutableRefObject<Socket>,
   activeGamepadProfile: AndroidGamepadProfile,
 ) => {
   // Check if the session is populated
@@ -20,7 +20,7 @@ const eventCatcher = (
     const socketEvent: GameEventProps = {
       type: 'bomb',
     };
-    socket.emit(SocketTypes.eventRelay, {
+    socketRef.current.emit(SocketTypes.eventRelay, {
       sessionName: session.name,
       playerNumber: session.playerNumber,
       secret: session.secret,
@@ -49,7 +49,7 @@ const eventCatcher = (
     type: 'movement',
     movement: direction,
   };
-  socket.emit(SocketTypes.eventRelay, {
+  socketRef.current.emit(SocketTypes.eventRelay, {
     sessionName: session.name,
     playerNumber: session.playerNumber,
     secret: session.secret,

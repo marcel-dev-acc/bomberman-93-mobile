@@ -34,12 +34,12 @@ import { EventGameServerResponse, NegativeResponse } from '../../types/serverTyp
 const countDownTime: number = 3 * 60;
 
 type GameScreenProps = {
-  socket: Socket;
+  socketRef: React.MutableRefObject<Socket>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
 function GameScreen({
-  socket,
+  socketRef,
   sessionRef,
 }: GameScreenProps): JSX.Element {
   
@@ -83,7 +83,7 @@ function GameScreen({
       movement: direction,
     };
     dispatcher(event);
-    if (debuggerEnabled) socket.emit(SocketTypes.tickRelay, {
+    if (debuggerEnabled) socketRef.current.emit(SocketTypes.tickRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -116,7 +116,7 @@ function GameScreen({
 
   const dispatcher = (event: GameEventProps) => {
     // Emit an event to the socket
-    socket.emit(SocketTypes.eventRelay, {
+    socketRef.current.emit(SocketTypes.eventRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -152,7 +152,7 @@ function GameScreen({
     if (!gameStartedRef.current) dispatcher({ type: 'started' });
   }, [gameStartedRef.current]);
 
-  socket.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
+  socketRef.current.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
     // Check if incoming response is for the player
     if (response.data.secret !== sessionRef.current.secret) return;
     // Check if objects has keys
@@ -175,7 +175,7 @@ function GameScreen({
     }
   });
 
-  socket.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
     // Check if incoming response is for the player
     if (response.data?.secret !== sessionRef.current.secret) return;
     console.warn('[EVENT ERROR]', response.error);
@@ -230,7 +230,7 @@ function GameScreen({
         <DebuggerToggle />
       )}
       <Loop
-        socket={socket}
+        socketRef={socketRef}
         sessionRef={sessionRef}
         entities={entities}
         gameRunning={gameRunning}
