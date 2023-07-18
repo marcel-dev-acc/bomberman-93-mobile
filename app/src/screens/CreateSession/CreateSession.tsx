@@ -26,7 +26,7 @@ import { sleep } from '../../utils/helpers';
 import { DEBUG } from '../../constants/app';
 
 type CreateSessionScreenProps = {
-  socketRef: React.MutableRefObject<Socket>;
+  socketRef: React.MutableRefObject<Socket | undefined>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
@@ -58,7 +58,7 @@ function CreateSessionScreen({
     }
   }, [width, height]);
 
-  socketRef.current.on(SocketTypes.createSessionRelayPositiveResponse, (data: HandleCreateSessionData) => {
+  socketRef.current?.on(SocketTypes.createSessionRelayPositiveResponse, (data: HandleCreateSessionData) => {
     if (
       DEBUG &&
       data.sessionName !== sessionNameRef.current
@@ -67,14 +67,14 @@ function CreateSessionScreen({
     if (data.sessionName !== sessionNameRef.current) return;
     // Trigger join session which has been created
     if (!hasJoinSessionRef.current && sessionNameRef.current) {
-      socketRef.current.emit(SocketTypes.joinSessionRelay, {
+      socketRef.current?.emit(SocketTypes.joinSessionRelay, {
         sessionName: sessionNameRef.current,
         playerNumber: 1,
       });
     }
   });
 
-  socketRef.current.on(SocketTypes.createSessionRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current?.on(SocketTypes.createSessionRelayNegativeResponse, (response: NegativeResponse) => {
     if (
       DEBUG &&
       response.data?.secret !== sessionRef.current.secret
@@ -87,7 +87,7 @@ function CreateSessionScreen({
     }));
   });
 
-  socketRef.current.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
+  socketRef.current?.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
     if (
       DEBUG &&
       (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== 1)
@@ -110,7 +110,7 @@ function CreateSessionScreen({
     }, 5000);
   });
 
-  socketRef.current.on(SocketTypes.joinSessionRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current?.on(SocketTypes.joinSessionRelayNegativeResponse, (response: NegativeResponse) => {
     if (
       DEBUG &&
       (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1)

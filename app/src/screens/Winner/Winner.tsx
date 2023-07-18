@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { Socket } from 'socket.io-client';
 
 import { GameText, SplashImage } from '../../components/General';
 import type { Session } from '../../types/session';
@@ -17,10 +18,12 @@ import { getIsVertical } from '../../constants/screen';
 
 
 type WinnerScreenProps = {
+  socketRef: React.MutableRefObject<Socket | undefined>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
 function WinnerScreen({
+  socketRef,
   sessionRef,
 }: WinnerScreenProps): JSX.Element {
   const { height, width } = useWindowDimensions();
@@ -36,6 +39,10 @@ function WinnerScreen({
     } as Session;
     dispatch(changeScreen({ screen: ScreenType.welcome }));
   };
+
+  useEffect(() => {
+    socketRef.current = undefined;
+  }, []);
 
   return (
     <View

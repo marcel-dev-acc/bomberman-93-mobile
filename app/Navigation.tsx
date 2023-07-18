@@ -121,30 +121,35 @@ function Navigation(): JSX.Element {
       {screen === ScreenType.rules && <RulesScreen />}
       {socketRef.current && screen === ScreenType.createSession && (
         <CreateSessionScreen
-          socketRef={socketRef as React.MutableRefObject<Socket>}
+          socketRef={socketRef}
           sessionRef={sessionRef}
         />
       )}
       {socketRef.current && screen === ScreenType.waitingRoom && (
         <WaitingRoomScreen
-          socketRef={socketRef as React.MutableRefObject<Socket>}
+          socketRef={socketRef}
           sessionRef={sessionRef}
         />
       )}
       {socketRef.current && screen === ScreenType.joinSession && (
         <JoinSessionScreen
-          socketRef={socketRef as React.MutableRefObject<Socket>}
+          socketRef={socketRef}
           sessionRef={sessionRef}
         />
       )}
       {screen === ScreenType.rotate && <RotateScreen />}
       {socketRef.current && screen === ScreenType.game && (
         <GameScreen
-          socketRef={socketRef as React.MutableRefObject<Socket>}
+          socketRef={socketRef}
           sessionRef={sessionRef}
         />
       )}
-      {screen === ScreenType.winner && <WinnerScreen sessionRef={sessionRef} />}
+      {screen === ScreenType.winner && (
+        <WinnerScreen
+          socketRef={socketRef}
+          sessionRef={sessionRef}
+        />
+      )}
       {
         socketRef.current &&
         screen === ScreenType.remoteControls &&

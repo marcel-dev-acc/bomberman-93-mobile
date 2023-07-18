@@ -27,7 +27,7 @@ import { NegativeResponse, TickGameServerResponse } from '../../../types/serverT
 
 
 type LoopProps = {
-  socketRef: React.MutableRefObject<Socket>;
+  socketRef: React.MutableRefObject<Socket | undefined>;
   sessionRef: React.MutableRefObject<Session>;
   entities: any;
   gameRunning: boolean;
@@ -54,7 +54,7 @@ function Loop({
     // Disable if the game is no longer running
     if (!gameRunning) return;
     // Emit the tick event
-    socketRef.current.emit(SocketTypes.tickRelay, {
+    socketRef.current?.emit(SocketTypes.tickRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -71,7 +71,7 @@ function Loop({
     if (Object.keys(entities).length > 0) setVolatileEntities(entities);
   }, [entities]);
 
-  socketRef.current.on(SocketTypes.tickRelayPositiveResponse, (response: TickGameServerResponse) => {
+  socketRef.current?.on(SocketTypes.tickRelayPositiveResponse, (response: TickGameServerResponse) => {
     if (
       DEBUG &&
       response.data?.secret !== sessionRef.current.secret
@@ -98,7 +98,7 @@ function Loop({
     }
   });
 
-  socketRef.current.on(SocketTypes.tickRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current?.on(SocketTypes.tickRelayNegativeResponse, (response: NegativeResponse) => {
     if (
       DEBUG &&
       response.data?.secret !== sessionRef.current.secret

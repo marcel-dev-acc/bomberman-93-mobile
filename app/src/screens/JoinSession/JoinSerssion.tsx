@@ -22,7 +22,7 @@ import { addError } from '../../state/errors/reducer';
 
 
 type JoinSessionScreenProps = {
-  socketRef: React.MutableRefObject<Socket>;
+  socketRef: React.MutableRefObject<Socket | undefined>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
@@ -40,11 +40,11 @@ function JoinSessionScreen({
   const sessionNameRef = useRef(undefined as string | undefined);
   const sessionPlayerNumberRef = useRef(2);
 
-  socketRef.current.on(SocketTypes.joinableSessionsRelayPositiveResponse, (sessionNames: SessionNames) => {
+  socketRef.current?.on(SocketTypes.joinableSessionsRelayPositiveResponse, (sessionNames: SessionNames) => {
     setDisplaySessionNames(sessionNames);
   });
 
-  socketRef.current.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
+  socketRef.current?.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
     // Check if incoming response is for player
     if (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== sessionPlayerNumberRef.current) return;
     // Set the session details
@@ -60,7 +60,7 @@ function JoinSessionScreen({
     }));
   });
 
-  socketRef.current.on(SocketTypes.joinSessionRelayNegativeResponse, (response) => {
+  socketRef.current?.on(SocketTypes.joinSessionRelayNegativeResponse, (response) => {
     // Check if incoming response is for player
     if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== sessionPlayerNumberRef.current) return;
     dispatch(addError({
@@ -71,7 +71,7 @@ function JoinSessionScreen({
 
   // Fetch a list of sessions to join
   useEffect(() => {
-    socketRef.current.emit(SocketTypes.joinableSessionsRelay);
+    socketRef.current?.emit(SocketTypes.joinableSessionsRelay);
   }, []);
 
   return (
@@ -118,7 +118,7 @@ function JoinSessionScreen({
                           if (pressEvent.nativeEvent.target === undefined) return;
                           sessionNameRef.current = sessionName;
                           sessionPlayerNumberRef.current = playerNumber;
-                          socketRef.current.emit(SocketTypes.joinSessionRelay, {
+                          socketRef.current?.emit(SocketTypes.joinSessionRelay, {
                             sessionName: sessionName,
                             playerNumber: playerNumber,
                           });

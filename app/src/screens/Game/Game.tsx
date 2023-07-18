@@ -34,7 +34,7 @@ import { EventGameServerResponse, NegativeResponse } from '../../types/serverTyp
 const countDownTime: number = 3 * 60;
 
 type GameScreenProps = {
-  socketRef: React.MutableRefObject<Socket>;
+  socketRef: React.MutableRefObject<Socket | undefined>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
@@ -83,7 +83,7 @@ function GameScreen({
       movement: direction,
     };
     dispatcher(event);
-    if (debuggerEnabled) socketRef.current.emit(SocketTypes.tickRelay, {
+    if (debuggerEnabled) socketRef.current?.emit(SocketTypes.tickRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -116,7 +116,7 @@ function GameScreen({
 
   const dispatcher = (event: GameEventProps) => {
     // Emit an event to the socket
-    socketRef.current.emit(SocketTypes.eventRelay, {
+    socketRef.current?.emit(SocketTypes.eventRelay, {
       sessionName: sessionRef.current.name,
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
@@ -152,7 +152,7 @@ function GameScreen({
     if (!gameStartedRef.current) dispatcher({ type: 'started' });
   }, [gameStartedRef.current]);
 
-  socketRef.current.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
+  socketRef.current?.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
     if (
       DEBUG &&
       response.data.secret !== sessionRef.current.secret
@@ -179,7 +179,7 @@ function GameScreen({
     }
   });
 
-  socketRef.current.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
+  socketRef.current?.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
     if (
       DEBUG &&
       response.data?.secret !== sessionRef.current.secret
