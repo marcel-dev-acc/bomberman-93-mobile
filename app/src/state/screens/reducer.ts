@@ -8,6 +8,7 @@ export enum ScreenType {
   rules = 'rules',
   createSession = 'create-session',
   waitingRoom = 'waiting-room',
+  joinSession = 'joinSession',
   rotate = 'rotate',
   game = 'game',
   winner = 'winner',

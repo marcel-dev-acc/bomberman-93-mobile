@@ -111,7 +111,9 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                console.warn('[NOT IMPLEMENTED] Show join session');
+                dispatch(changeScreen({
+                  screen: ScreenType.joinSession,
+                }));
               }}
               style={{
                 ...styles.welcomeButton,
