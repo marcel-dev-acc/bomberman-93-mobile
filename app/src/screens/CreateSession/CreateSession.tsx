@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { BackButton, Icon, Icons, SplashImage } from '../../components/General';
+import { BackButton, SplashImage } from '../../components/General';
 import { Session } from '../../types/session';
 import colors from '../../constants/colors';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
@@ -23,6 +23,7 @@ import { HandleCreateSessionData, JoinSessionGameServerResponse, NegativeRespons
 import { StorageKeys, fetchData } from '../../utils/localStorage';
 import { webSocketServer } from '../../constants/server';
 import { sleep } from '../../utils/helpers';
+import { DEBUG } from '../../constants/app';
 
 type CreateSessionScreenProps = {
   socketRef: React.MutableRefObject<Socket>;
@@ -58,6 +59,10 @@ function CreateSessionScreen({
   }, [width, height]);
 
   socketRef.current.on(SocketTypes.createSessionRelayPositiveResponse, (data: HandleCreateSessionData) => {
+    if (
+      DEBUG &&
+      data.sessionName !== sessionNameRef.current
+    ) console.warn(`[${SocketTypes.createSessionRelayPositiveResponse}]`, JSON.stringify(data));
     // Check if incoming response is for player
     if (data.sessionName !== sessionNameRef.current) return;
     // Trigger join session which has been created
@@ -70,6 +75,10 @@ function CreateSessionScreen({
   });
 
   socketRef.current.on(SocketTypes.createSessionRelayNegativeResponse, (response: NegativeResponse) => {
+    if (
+      DEBUG &&
+      response.data?.secret !== sessionRef.current.secret
+    ) console.warn(`[${SocketTypes.createSessionRelayNegativeResponse}]`, response.error);
     // Check if incoming response is for player
     if (response.data?.sessionName !== sessionNameRef.current) return;
     dispatch(addError({
@@ -79,6 +88,10 @@ function CreateSessionScreen({
   });
 
   socketRef.current.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
+    if (
+      DEBUG &&
+      (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== 1)
+    ) console.warn(`[${SocketTypes.joinSessionRelayPositiveResponse}]`, JSON.stringify(response.data), response.secret);
     // Check if incoming response is for player
     if (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== 1) return;
     // Mark that player has joined a session
@@ -98,6 +111,10 @@ function CreateSessionScreen({
   });
 
   socketRef.current.on(SocketTypes.joinSessionRelayNegativeResponse, (response: NegativeResponse) => {
+    if (
+      DEBUG &&
+      (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1)
+    ) console.warn(`[${SocketTypes.joinSessionRelayNegativeResponse}]`, response.error);
     // Check if incoming response is for player
     if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== 1) return;
     if (!hasJoinSessionRef.current) {
@@ -168,7 +185,15 @@ function CreateSessionScreen({
               return;
             }
             const token = await fetchData(StorageKeys.token);
-            socketRef.current = io(webSocketServer, { auth: { token } });
+            const webSocketUrl = await webSocketServer();
+            if (!webSocketUrl) {
+              dispatch(addError({
+                title: `Socket Url Error`,
+                value: 'Socket url is undefined',
+              }));
+              return;
+            }
+            socketRef.current = io(webSocketUrl, { auth: { token } });
             let count = 0;
             while (!socketRef.current?.connected && count < 10) {
               await sleep(500);

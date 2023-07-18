@@ -153,6 +153,10 @@ function GameScreen({
   }, [gameStartedRef.current]);
 
   socketRef.current.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
+    if (
+      DEBUG &&
+      response.data.secret !== sessionRef.current.secret
+    ) console.warn(`[${SocketTypes.eventRelayPositiveResponse}]`, JSON.stringify(response.data));
     // Check if incoming response is for the player
     if (response.data.secret !== sessionRef.current.secret) return;
     // Check if objects has keys
@@ -176,6 +180,10 @@ function GameScreen({
   });
 
   socketRef.current.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
+    if (
+      DEBUG &&
+      response.data?.secret !== sessionRef.current.secret
+    ) console.warn(`[${SocketTypes.joinSessionRelayNegativeResponse}]`, response.error);
     // Check if incoming response is for the player
     if (response.data?.secret !== sessionRef.current.secret) return;
     console.warn('[EVENT ERROR]', response.error);

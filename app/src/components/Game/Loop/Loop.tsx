@@ -72,6 +72,10 @@ function Loop({
   }, [entities]);
 
   socketRef.current.on(SocketTypes.tickRelayPositiveResponse, (response: TickGameServerResponse) => {
+    if (
+      DEBUG &&
+      response.data?.secret !== sessionRef.current.secret
+    ) console.warn(`[${SocketTypes.tickRelayPositiveResponse}]`, JSON.stringify(response.data));
     // Check if incoming response is for the player
     if (response.data?.secret !== sessionRef.current.secret) return;
     // Check if objects has keys
@@ -95,6 +99,10 @@ function Loop({
   });
 
   socketRef.current.on(SocketTypes.tickRelayNegativeResponse, (response: NegativeResponse) => {
+    if (
+      DEBUG &&
+      response.data?.secret !== sessionRef.current.secret
+    ) console.warn(`[${SocketTypes.tickRelayNegativeResponse}]`, response.error);
     // Check if incoming response is for the player
     if (response.data?.secret !== sessionRef.current.secret) return;
     console.warn('[TICK ERROR]', response.error);

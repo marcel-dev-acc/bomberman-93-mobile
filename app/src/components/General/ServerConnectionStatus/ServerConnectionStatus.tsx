@@ -42,8 +42,18 @@ function ServerConnectionStatus({
       textColor = colors.WHITE;
       break;
   }
+
+  const [display, setDisplay] = useState(true);
+
+  useEffect(() => {
+    if (status === ServerStatus.connected) {
+      setTimeout(() => {
+        setDisplay(false);
+      }, 10000);
+    }
+  });
   
-  return (
+  return display ? (
     <View
       style={styles.serverConnectionStatusContainer}
     >
@@ -63,7 +73,7 @@ function ServerConnectionStatus({
         </Text>
       </View>
     </View>
-  );
+  ) : <View></View>;
 }
 
 const bannerWidth = 100;

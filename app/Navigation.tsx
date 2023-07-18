@@ -18,6 +18,7 @@ import {
   RemoteControlsScreen,
   RegisterScreen,
   SettingsScreen,
+  JoinSessionScreen,
 } from './src/screens';
 import { ScreenType } from './src/state/screens/reducer';
 import { webSocketServer } from './src/constants/server';
@@ -26,6 +27,8 @@ import { addError } from './src/state/errors/reducer';
 import { ServerConnectionStatus, ServerStatus } from './src/components/General';
 import { StorageKeys, fetchData } from './src/utils/localStorage';
 import InitSessionState from './src/state/session/init';
+import { sleep } from './src/utils/helpers';
+import { DEBUG } from './src/constants/app';
 
 function Navigation(): JSX.Element {
   const screen: string = useSelector((state: any) => state.screens.screen);
@@ -49,17 +52,28 @@ function Navigation(): JSX.Element {
       setServerStatus(ServerStatus.connected);
       return;
     }
-    socketRef.current = io(webSocketServer, { auth: { token } });
-    setTimeout(() => {
-      if (socketRef.current?.connected) {
-        setServerStatus(ServerStatus.connected);
-      } else {
-        dispatch(addError({
-          title: `[${SocketTypes.connectionError}] Server connection error`,
-          value: 'Failed to connect to the server (check keys)',
-        }));
-      }
-    }, 1000);
+    const webSocketUrl = await webSocketServer();
+    if (!webSocketUrl) {
+      dispatch(addError({
+        title: `Socket Url Error`,
+        value: 'Socket url is undefined',
+      }));
+      return;
+    }
+    socketRef.current = io(webSocketUrl, { auth: { token } });
+    let count = 0;
+    while (!socketRef.current?.connected && count < 10) {
+      await sleep(500);
+      count++;
+    }
+    if (count >= 10) {
+      dispatch(addError({
+        title: `[${SocketTypes.connectionError}] Server connection error`,
+        value: 'Failed to connect to the server (check keys)',
+      }));
+      return;
+    }
+    setServerStatus(ServerStatus.connected);
   };
   
   const [showIntro, setShowIntro] = useState(true);
@@ -79,6 +93,7 @@ function Navigation(): JSX.Element {
   // Register a connection error handler
   if (socketRef.current) {
     socketRef.current.on(SocketTypes.connectionErrorRelay, (err) => {
+      if (DEBUG) console.warn(`[${SocketTypes.connectionErrorRelay}]`, err.message);
       if (!(['timeout', 'xhr poll error'].includes(err.message))) {
         setServerStatus(ServerStatus.disconnected);
         dispatch(addError({
@@ -112,6 +127,12 @@ function Navigation(): JSX.Element {
       )}
       {socketRef.current && screen === ScreenType.waitingRoom && (
         <WaitingRoomScreen
+          socketRef={socketRef as React.MutableRefObject<Socket>}
+          sessionRef={sessionRef}
+        />
+      )}
+      {socketRef.current && screen === ScreenType.joinSession && (
+        <JoinSessionScreen
           socketRef={socketRef as React.MutableRefObject<Socket>}
           sessionRef={sessionRef}
         />
