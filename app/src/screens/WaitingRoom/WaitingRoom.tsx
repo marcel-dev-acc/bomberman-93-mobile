@@ -102,7 +102,9 @@ function PlayerCard({
           }}
           underlayColor="rgba(255,255,255,0.25)"
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             if (player.isActive && !player.isReal) {
               sessionRef.current = {
                 ...sessionRef.current,
@@ -222,15 +224,22 @@ function WaitingRoomScreen({
   socketRef.current?.on(
     SocketTypes.setTimeRelayPositiveResponse,
     (response: SetTimeGameServerResponse) => {
-      if (DEBUG && response.data.sessionName !== sessionRef.current.name)
+      if (DEBUG && response.data.sessionName !== sessionRef.current.name) {
         console.warn(
           `[${SocketTypes.setTimeRelayPositiveResponse}]`,
           JSON.stringify(response),
         );
+      }
       // Check if incoming response is for player
-      if (response.data.sessionName !== sessionRef.current.name) return;
-      if (sessionRef.current.playerNumber === 1) return;
-      if (!response.time) return;
+      if (response.data.sessionName !== sessionRef.current.name) {
+        return;
+      }
+      if (sessionRef.current.playerNumber === 1) {
+        return;
+      }
+      if (!response.time) {
+        return;
+      }
       // Set the time
       setTimerInner(response.time);
       timer.current = response.time;
@@ -245,13 +254,16 @@ function WaitingRoomScreen({
   socketRef.current?.on(
     SocketTypes.eventRelayPositiveResponse,
     (response: EventGameServerResponse) => {
-      if (DEBUG && response.data.sessionName !== sessionRef.current.name)
+      if (DEBUG && response.data.sessionName !== sessionRef.current.name) {
         console.warn(
           `[${SocketTypes.eventRelayPositiveResponse}]`,
           JSON.stringify(response.data),
         );
+      }
       // Check if objects has keys
-      if (Object.keys(response.state).length === 0) return;
+      if (Object.keys(response.state).length === 0) {
+        return;
+      }
       // const state = response.state as SessionDetails;
       // Trigger game start
       if (response.data.event.type === 'started') {
@@ -404,7 +416,9 @@ function WaitingRoomScreen({
           <View style={styles.waitingRoomButtonContainer}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 socketRef.current?.emit(SocketTypes.eventRelay, {
                   sessionName: sessionRef.current.name,
                   playerNumber: sessionRef.current.playerNumber,

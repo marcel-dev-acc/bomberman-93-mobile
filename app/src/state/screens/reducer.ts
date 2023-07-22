@@ -42,10 +42,10 @@ export const screenSlice = createSlice({
       state.previousScreen = state.screen;
       state.screen = action.payload;
     },
-    toggleGraphics: (state, action: PayloadAction) => {
+    toggleGraphics: state => {
       state.graphicsEnabled = !state.graphicsEnabled;
     },
-    toggleDebugger: (state, action: PayloadAction) => {
+    toggleDebugger: state => {
       state.debuggerEnabled = !state.debuggerEnabled;
     },
     toggleMusic: (state, action: PayloadAction<boolean>) => {

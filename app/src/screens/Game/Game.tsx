@@ -84,33 +84,48 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
       movement: direction,
     };
     dispatcher(event);
-    if (debuggerEnabled)
+    if (debuggerEnabled) {
       socketRef.current?.emit(SocketTypes.tickRelay, {
         sessionName: sessionRef.current.name,
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
         tick: gameTickRef.current,
       });
+    }
     if (isMoving) {
-      if (direction === Direction.up) isMovingUp.current = true;
-      if (direction === Direction.down) isMovingDown.current = true;
-      if (direction === Direction.left) isMovingLeft.current = true;
-      if (direction === Direction.right) isMovingRight.current = true;
+      if (direction === Direction.up) {
+        isMovingUp.current = true;
+      }
+      if (direction === Direction.down) {
+        isMovingDown.current = true;
+      }
+      if (direction === Direction.left) {
+        isMovingLeft.current = true;
+      }
+      if (direction === Direction.right) {
+        isMovingRight.current = true;
+      }
     }
     setTimeout(() => {
-      if (direction === Direction.up && isMovingUp.current)
+      if (direction === Direction.up && isMovingUp.current) {
         handleMovePress(direction, isMovingUp.current);
-      if (direction === Direction.down && isMovingDown.current)
+      }
+      if (direction === Direction.down && isMovingDown.current) {
         handleMovePress(direction, isMovingDown.current);
-      if (direction === Direction.left && isMovingLeft.current)
+      }
+      if (direction === Direction.left && isMovingLeft.current) {
         handleMovePress(direction, isMovingLeft.current);
-      if (direction === Direction.right && isMovingRight.current)
+      }
+      if (direction === Direction.right && isMovingRight.current) {
         handleMovePress(direction, isMovingRight.current);
+      }
     }, 100);
   };
 
   const handleBombPress = (pressEvent: GestureResponderEvent) => {
-    if (pressEvent.nativeEvent.target === undefined) return;
+    if (pressEvent.nativeEvent.target === undefined) {
+      return;
+    }
     dispatcher({type: 'bomb'});
   };
 
@@ -153,21 +168,28 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
 
   // Get the initial game state
   useEffect(() => {
-    if (!gameStartedRef.current) dispatcher({type: 'started'});
+    if (!gameStartedRef.current) {
+      dispatcher({type: 'started'});
+    }
   }, [gameStartedRef.current]);
 
   socketRef.current?.on(
     SocketTypes.eventRelayPositiveResponse,
     (response: EventGameServerResponse) => {
-      if (DEBUG && response.data.secret !== sessionRef.current.secret)
+      if (DEBUG && response.data.secret !== sessionRef.current.secret) {
         console.warn(
           `[${SocketTypes.eventRelayPositiveResponse}]`,
           JSON.stringify(response.data),
         );
+      }
       // Check if incoming response is for the player
-      if (response.data.secret !== sessionRef.current.secret) return;
+      if (response.data.secret !== sessionRef.current.secret) {
+        return;
+      }
       // Check if objects has keys
-      if (Object.keys(response.state).length === 0) return;
+      if (Object.keys(response.state).length === 0) {
+        return;
+      }
       const state = response.state as SessionDetails;
       // This is specifically for the game start scenario
       if (!gameStartedRef.current && state && state?.entities) {
@@ -191,13 +213,16 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
   socketRef.current?.on(
     SocketTypes.eventRelayNegativeResponse,
     (response: NegativeResponse) => {
-      if (DEBUG && response.data?.secret !== sessionRef.current.secret)
+      if (DEBUG && response.data?.secret !== sessionRef.current.secret) {
         console.warn(
           `[${SocketTypes.joinSessionRelayNegativeResponse}]`,
           response.error,
         );
+      }
       // Check if incoming response is for the player
-      if (response.data?.secret !== sessionRef.current.secret) return;
+      if (response.data?.secret !== sessionRef.current.secret) {
+        return;
+      }
       console.warn('[EVENT ERROR]', response.error);
     },
   );
@@ -213,7 +238,9 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
       <View style={styles.optionsContainer}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             dispatcher({type: gameRunning ? 'paused' : 'unpaused'});
             setGameRunning(!gameRunning);
           }}

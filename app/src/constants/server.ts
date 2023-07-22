@@ -20,7 +20,9 @@ const getServerUrl = async (): Promise<string | undefined> => {
 };
 
 export const webSocketServer = async (): Promise<string | undefined> => {
-  if (DEBUG) return 'http://10.0.2.2:3000';
+  if (DEBUG) {
+    return 'http://10.0.2.2:3000';
+  }
 
   return await getServerUrl();
 };

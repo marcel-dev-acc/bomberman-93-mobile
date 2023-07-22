@@ -16,7 +16,8 @@ function Wall(props: WallProps): JSX.Element {
         ...styles.wallContainer,
         left: props.left,
         top: props.top,
-      }}></View>
+      }}
+    />
   );
 }
 

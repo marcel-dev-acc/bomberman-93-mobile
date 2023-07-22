@@ -57,18 +57,20 @@ function JoinSessionScreen({
         DEBUG &&
         (response.data.sessionName !== sessionNameRef.current ||
           response.data.playerNumber !== sessionPlayerNumberRef.current)
-      )
+      ) {
         console.warn(
           `[${SocketTypes.joinSessionRelayPositiveResponse}]`,
           JSON.stringify(response.data),
           response.secret,
         );
+      }
       // Check if incoming response is for player
       if (
         response.data.sessionName !== sessionNameRef.current ||
         response.data.playerNumber !== sessionPlayerNumberRef.current
-      )
+      ) {
         return;
+      }
       // Set the session details
       sessionRef.current = {
         ...sessionRef.current,
@@ -88,17 +90,19 @@ function JoinSessionScreen({
         DEBUG &&
         (response.data?.sessionName !== sessionNameRef.current ||
           response.data?.playerNumber !== sessionPlayerNumberRef.current)
-      )
+      ) {
         console.warn(
           `[${SocketTypes.joinSessionRelayNegativeResponse}]`,
           JSON.stringify(response.data),
         );
+      }
       // Check if incoming response is for player
       if (
         response.data?.sessionName !== sessionNameRef.current ||
         response.data?.playerNumber !== sessionPlayerNumberRef.current
-      )
+      ) {
         return;
+      }
       dispatch(
         addError({
           title: `[${SocketTypes.joinSessionRelayNegativeResponse}] Server error response`,
@@ -122,7 +126,9 @@ function JoinSessionScreen({
       <SplashImage />
       <BackButton
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           dispatch(changeScreen(ScreenType.welcome));
         }}
       />
@@ -145,14 +151,16 @@ function JoinSessionScreen({
                     const _playerNumber = playerNumber as 1 | 2 | 3 | 4 | 5;
                     if (
                       displaySessionNames[sessionName][_playerNumber].hasJoined
-                    )
-                      return <View key={idx}></View>;
+                    ) {
+                      return <View key={idx} />;
+                    }
                     return (
                       <View key={idx} style={{marginTop: 10}}>
                         <TouchableHighlight
                           onPress={pressEvent => {
-                            if (pressEvent.nativeEvent.target === undefined)
+                            if (pressEvent.nativeEvent.target === undefined) {
                               return;
+                            }
                             sessionNameRef.current = sessionName;
                             sessionPlayerNumberRef.current = playerNumber;
                             socketRef.current?.emit(

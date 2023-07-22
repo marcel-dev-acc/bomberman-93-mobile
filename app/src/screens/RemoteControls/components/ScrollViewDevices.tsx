@@ -53,7 +53,9 @@ function ScrollViewDevices({
                 <Button
                   text="Add to a profile"
                   onPress={pressEvent => {
-                    if (pressEvent.nativeEvent.target === undefined) return;
+                    if (pressEvent.nativeEvent.target === undefined) {
+                      return;
+                    }
                     setActiveEvent(event);
                     setShowDeviceToProfileModal(true);
                   }}

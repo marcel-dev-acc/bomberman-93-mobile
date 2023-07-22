@@ -52,9 +52,13 @@ function Loop({
 
   const updateHandler = (args: GameLoopUpdateEventOptionType) => {
     // Disable updateHandler loop if debugger is enabled
-    if (DEBUG && debuggerEnabled) return;
+    if (DEBUG && debuggerEnabled) {
+      return;
+    }
     // Disable if the game is no longer running
-    if (!gameRunning) return;
+    if (!gameRunning) {
+      return;
+    }
     // Emit the tick event
     socketRef.current?.emit(SocketTypes.tickRelay, {
       sessionName: sessionRef.current.name,
@@ -70,22 +74,29 @@ function Loop({
   const [volatileEntities, setVolatileEntities] = useState(entities);
 
   useEffect(() => {
-    if (Object.keys(entities).length > 0) setVolatileEntities(entities);
+    if (Object.keys(entities).length > 0) {
+      setVolatileEntities(entities);
+    }
   }, [entities]);
 
   socketRef.current?.on(
     SocketTypes.tickRelayPositiveResponse,
     (response: TickGameServerResponse) => {
-      if (DEBUG && response.data.sessionName !== sessionRef.current.name)
+      if (DEBUG && response.data.sessionName !== sessionRef.current.name) {
         console.warn(
           `[${SocketTypes.tickRelayPositiveResponse}]`,
           JSON.stringify(response.data),
           JSON.stringify(sessionRef.current),
         );
+      }
       // Check if incoming response is for the player
-      if (response.data.sessionName !== sessionRef.current.name) return;
+      if (response.data.sessionName !== sessionRef.current.name) {
+        return;
+      }
       // Check if objects has keys
-      if (Object.keys(response.state).length === 0) return;
+      if (Object.keys(response.state).length === 0) {
+        return;
+      }
       const state = response.state as SessionDetails;
       // Validate that the tick has been kept correctly
       if (state && state.tick === gameTickRef.current + 1) {
@@ -108,13 +119,16 @@ function Loop({
   socketRef.current?.on(
     SocketTypes.tickRelayNegativeResponse,
     (response: NegativeResponse) => {
-      if (DEBUG && response.data?.secret !== sessionRef.current.secret)
+      if (DEBUG && response.data?.secret !== sessionRef.current.secret) {
         console.warn(
           `[${SocketTypes.tickRelayNegativeResponse}]`,
           response.error,
         );
+      }
       // Check if incoming response is for the player
-      if (response.data?.secret !== sessionRef.current.secret) return;
+      if (response.data?.secret !== sessionRef.current.secret) {
+        return;
+      }
       console.warn('[TICK ERROR]', response.error);
     },
   );
@@ -185,7 +199,9 @@ function Loop({
       {DEBUG && (
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             handleReset();
           }}
           style={styles.loopReset}

@@ -53,7 +53,9 @@ function DeviceToProfileModal({
         }}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             setShowDeviceToProfileModal(false);
           }}
           underlayColor="rgba(255,255,255,0.25)"
@@ -95,7 +97,9 @@ function DeviceToProfileModal({
           <Button
             text="Create"
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               const newProfiles = displayProfiles.some(
                 profile => profile.profileName === activeProfileName,
               )
@@ -156,7 +160,9 @@ function DeviceToProfileModal({
                     key={idx}
                     text={profile.profileName}
                     onPress={pressEvent => {
-                      if (pressEvent.nativeEvent.target === undefined) return;
+                      if (pressEvent.nativeEvent.target === undefined) {
+                        return;
+                      }
                       const newProfiles = [
                         ...displayProfiles.filter(
                           profile => profile.profileName !== activeProfileName,

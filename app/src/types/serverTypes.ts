@@ -1,5 +1,3 @@
-import {Dayjs} from 'dayjs';
-
 /* Session types */
 export interface HandleCreateSessionData {
   sessionName: string;

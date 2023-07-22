@@ -28,7 +28,9 @@ function TabNavigation({
       <View style={styles.remoteControlsTabNavigationItem}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             setActiveTab(Tabs.profiles);
           }}
           underlayColor="rgba(255,255,255,0.25)"
@@ -52,7 +54,9 @@ function TabNavigation({
       <View style={styles.remoteControlsTabNavigationItem}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             setDisplayDevicesIds([]);
             setDisplayedEvents([]);
             setActiveTab(Tabs.devices);
@@ -78,7 +82,9 @@ function TabNavigation({
       <View style={styles.remoteControlsTabNavigationItem}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             setDisplayDevicesIds([]);
             setDisplayedEvents([]);
             setActiveTab(Tabs.keys);

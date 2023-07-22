@@ -28,7 +28,9 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
   const dispatch = useDispatch();
 
   const handleGameReset = (pressEvent: GestureResponderEvent) => {
-    if (pressEvent.nativeEvent.target === undefined) return;
+    if (pressEvent.nativeEvent.target === undefined) {
+      return;
+    }
     sessionRef.current = {
       ...sessionRef.current,
       winner: undefined,

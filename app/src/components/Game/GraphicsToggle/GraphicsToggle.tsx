@@ -19,7 +19,9 @@ function GraphicsToggle(): JSX.Element {
   const dispatch = useDispatch();
 
   const handleOnChange = (event: GestureResponderEvent) => {
-    if (event.nativeEvent.target === undefined) return;
+    if (event.nativeEvent.target === undefined) {
+      return;
+    }
     dispatch(toggleGraphics());
   };
 

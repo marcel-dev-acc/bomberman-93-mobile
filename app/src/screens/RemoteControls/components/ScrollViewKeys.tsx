@@ -32,7 +32,9 @@ function ScrollViewKeys({
           <Button
             text={`Log KeyCode ${event.keyCode}`}
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               setActiveEvent(event);
               setShowKeyToProfileModal(true);
             }}

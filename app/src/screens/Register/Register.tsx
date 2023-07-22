@@ -49,7 +49,9 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
       {!isVertical && <SplashImage />}
       <TouchableHighlight
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           setShowEmailForm(true);
           setShowEmailForm(false);
           setShowCodeForm(false);
@@ -95,7 +97,9 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
           />
           <TouchableHighlight
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               setShowExplanation(false);
               setShowEmailForm(true);
             }}
@@ -138,7 +142,9 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
           />
           <TouchableHighlight
             onPress={async pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               dispatch(toggleIsLoading(true));
               const res = await requestToken(email);
               if (res.ok) {
@@ -147,7 +153,7 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
               } else {
                 dispatch(
                   addError({
-                    title: `[Server Response] Server error response`,
+                    title: '[Server Response] Server error response',
                     value: res.message,
                   }),
                 );
@@ -193,7 +199,9 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
           />
           <TouchableHighlight
             onPress={async pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               // Store the code locally
               await storeData(StorageKeys.token, code);
               setServerStatus(ServerStatus.localToken);

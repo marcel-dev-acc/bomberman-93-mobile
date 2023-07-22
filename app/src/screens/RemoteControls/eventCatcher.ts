@@ -12,7 +12,9 @@ const eventCatcher = (
   activeGamepadProfile: AndroidGamepadProfile,
 ) => {
   // Check if the session is populated
-  if (!session.secret) return;
+  if (!session.secret) {
+    return;
+  }
   // Check if the event is a bomb key press
   if (event.keyCode === activeGamepadProfile.bombKey) {
     const socketEvent: GameEventProps = {
@@ -27,7 +29,7 @@ const eventCatcher = (
     return;
   }
   // Define the direction of the event keyCode
-  let direction: Direction | undefined = undefined;
+  let direction: Direction | undefined;
   switch (event.keyCode) {
     case activeGamepadProfile.upKey:
       direction = Direction.up;
@@ -42,7 +44,9 @@ const eventCatcher = (
       direction = Direction.right;
       break;
   }
-  if (!direction) return;
+  if (!direction) {
+    return;
+  }
   const socketEvent: GameEventProps = {
     type: 'movement',
     movement: direction,

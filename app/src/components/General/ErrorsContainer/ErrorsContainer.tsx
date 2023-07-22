@@ -48,7 +48,9 @@ function ErrorsContainer(): JSX.Element {
                 }}>
                 <TouchableHighlight
                   onPress={pressEvent => {
-                    if (pressEvent.nativeEvent.target === undefined) return;
+                    if (pressEvent.nativeEvent.target === undefined) {
+                      return;
+                    }
                     dispatch(removeError(idx));
                   }}
                   underlayColor="rgba(0,0,0,0.1)"

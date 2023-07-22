@@ -45,7 +45,9 @@ function KeyToProfileModal({
         }}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             setShowKeyToProfileModal(false);
           }}
           underlayColor="rgba(255,255,255,0.25)"
@@ -102,7 +104,9 @@ function KeyToProfileModal({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 handleKeySettingForProfile(Direction.up);
               }}
               underlayColor="rgba(255,255,255,0.25)"
@@ -125,7 +129,9 @@ function KeyToProfileModal({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 handleKeySettingForProfile(Direction.down);
               }}
               underlayColor="rgba(255,255,255,0.25)"
@@ -148,7 +154,9 @@ function KeyToProfileModal({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 handleKeySettingForProfile(Direction.left);
               }}
               underlayColor="rgba(255,255,255,0.25)"
@@ -171,7 +179,9 @@ function KeyToProfileModal({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 handleKeySettingForProfile(Direction.right);
               }}
               underlayColor="rgba(255,255,255,0.25)"
@@ -194,7 +204,9 @@ function KeyToProfileModal({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 handleKeySettingForProfile('bomb');
               }}
               underlayColor="rgba(255,255,255,0.25)"

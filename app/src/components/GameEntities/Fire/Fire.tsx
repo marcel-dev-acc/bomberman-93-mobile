@@ -60,7 +60,8 @@ function Fire(props: FireProps): JSX.Element {
         ...withoutGraphicsContainerStyle,
         left: props.left,
         top: props.top,
-      }}></View>
+      }}
+    />
   );
 }
 

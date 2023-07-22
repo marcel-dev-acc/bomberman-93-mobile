@@ -22,13 +22,17 @@ function SettingsScreen(): JSX.Element {
 
   const handleFetchToken = async () => {
     const _token = await fetchData(StorageKeys.token);
-    if (_token) setToken(_token);
+    if (_token) {
+      setToken(_token);
+    }
   };
 
   const [token, setToken] = useState('');
 
   useEffect(() => {
-    if (!token) handleFetchToken();
+    if (!token) {
+      handleFetchToken();
+    }
   }, []);
 
   return (
@@ -40,7 +44,9 @@ function SettingsScreen(): JSX.Element {
       <SplashImage />
       <BackButton
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           dispatch(changeScreen(ScreenType.welcome));
         }}
       />
@@ -48,7 +54,9 @@ function SettingsScreen(): JSX.Element {
         <View style={styles.settingsButtonContainer}>
           <TouchableHighlight
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               dispatch(changeScreen(ScreenType.remoteControls));
             }}
             style={{
@@ -69,7 +77,9 @@ function SettingsScreen(): JSX.Element {
         <View style={styles.settingsButtonContainer}>
           <TouchableHighlight
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               removeData(StorageKeys.token);
               dispatch(changeScreen(ScreenType.welcome));
             }}

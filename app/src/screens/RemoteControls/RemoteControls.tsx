@@ -59,7 +59,9 @@ function RemoteControlsScreen({
 
   const handleFetchProfiles = async () => {
     const profiles = await fetchData(StorageKeys.profiles);
-    if (profiles) setDisplayProfiles(JSON.parse(profiles));
+    if (profiles) {
+      setDisplayProfiles(JSON.parse(profiles));
+    }
   };
 
   const handleKeySettingForProfile = (directionOrBomb: Direction | 'bomb') => {
@@ -165,9 +167,13 @@ function RemoteControlsScreen({
   };
 
   useEffect(() => {
-    if (displayProfiles.length === 0) handleFetchProfiles();
+    if (displayProfiles.length === 0) {
+      handleFetchProfiles();
+    }
     // Check if the gamepad module is available
-    if (!gamepadModuleIsAvailable) handleIsGamepadModuleAvailable();
+    if (!gamepadModuleIsAvailable) {
+      handleIsGamepadModuleAvailable();
+    }
     // Add listener for events
     if (gamepadIsEnabled && gamepadModuleIsAvailable) {
       if (Platform.OS === 'android') {
@@ -181,8 +187,9 @@ function RemoteControlsScreen({
               setDisplayedEvents(currentDisplayEvents);
 
               // Define a unique list of device id's to show
-              if (!displayDeviceIds.some(id => id === event.deviceId))
+              if (!displayDeviceIds.some(id => id === event.deviceId)) {
                 setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
+              }
 
               // Emit the event to the game server
               if (
@@ -212,7 +219,9 @@ function RemoteControlsScreen({
       <SplashImage />
       <BackButton
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           dispatch(changeScreen(ScreenType.settings));
         }}
       />

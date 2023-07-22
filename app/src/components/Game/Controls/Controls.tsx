@@ -3,7 +3,7 @@ import {StyleSheet, View, TouchableHighlight} from 'react-native';
 import {Icon, Icons} from '../../General';
 
 import colors from '../../../constants/colors';
-import {Direction} from '../../../constants/types';
+import {Direction} from '../../../types/serverTypes';
 
 type ControlsProps = {
   handleMovePress: (direction: Direction, isMoving: boolean) => void;
@@ -25,11 +25,15 @@ function Controls({
       <View style={styles.movementCenter}>
         <TouchableHighlight
           onPressIn={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             handleMovePress(Direction.up, true);
           }}
           onPressOut={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             isMovingUp.current = false;
           }}
           style={{borderRadius: 5}}
@@ -41,11 +45,15 @@ function Controls({
         <View>
           <TouchableHighlight
             onPressIn={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               handleMovePress(Direction.left, true);
             }}
             onPressOut={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               isMovingLeft.current = false;
             }}
             style={{borderRadius: 5}}
@@ -56,11 +64,15 @@ function Controls({
         <View>
           <TouchableHighlight
             onPressIn={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               handleMovePress(Direction.right, true);
             }}
             onPressOut={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               isMovingRight.current = false;
             }}
             style={{borderRadius: 5}}
@@ -72,11 +84,15 @@ function Controls({
       <View style={styles.movementCenter}>
         <TouchableHighlight
           onPressIn={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             handleMovePress(Direction.down, true);
           }}
           onPressOut={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             isMovingDown.current = false;
           }}
           style={{borderRadius: 5}}

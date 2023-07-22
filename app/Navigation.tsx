@@ -56,7 +56,7 @@ function Navigation(): JSX.Element {
     if (!webSocketUrl) {
       dispatch(
         addError({
-          title: `Socket Url Error`,
+          title: 'Socket Url Error',
           value: 'Socket url is undefined',
         }),
       );
@@ -87,7 +87,9 @@ function Navigation(): JSX.Element {
   const sessionRef = useRef(InitSessionState);
 
   useEffect(() => {
-    if (showIntro) handleShowIntro();
+    if (showIntro) {
+      handleShowIntro();
+    }
   }, [showIntro]);
 
   useEffect(() => {
@@ -97,8 +99,9 @@ function Navigation(): JSX.Element {
   // Register a connection error handler
   if (socketRef.current) {
     socketRef.current.on(SocketTypes.connectionErrorRelay, err => {
-      if (DEBUG)
+      if (DEBUG) {
         console.warn(`[${SocketTypes.connectionErrorRelay}]`, err.message);
+      }
       if (!['timeout', 'xhr poll error'].includes(err.message)) {
         setServerStatus(ServerStatus.disconnected);
         dispatch(

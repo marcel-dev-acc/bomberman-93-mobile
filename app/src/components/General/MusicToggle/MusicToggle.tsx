@@ -65,7 +65,9 @@ function MusicToggle(): JSX.Element {
 
     // Apply an app state listener to detect once the app goes into background
     AppState.addEventListener('change', (appState: AppStateStatus) => {
-      if (appState !== 'active') handleStopMusic();
+      if (appState !== 'active') {
+        handleStopMusic();
+      }
     });
   }, [trackIsPlaying.current]);
 
@@ -73,15 +75,18 @@ function MusicToggle(): JSX.Element {
   if (
     [ScreenType.game, ScreenType.remoteControls].includes(screen) ||
     !musicPlayerIsAvailable
-  )
+  ) {
     return <></>;
+  }
 
   // Default is to show
   return (
     <View style={styles.musicToggleContainer}>
       <TouchableHighlight
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           handleMusicToggle();
         }}
         underlayColor="rgba(0,0,0,0.1)"

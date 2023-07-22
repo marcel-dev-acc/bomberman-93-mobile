@@ -58,7 +58,9 @@ function WelcomeScreen({
           }}>
           <TouchableHighlight
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               dispatch(changeScreen(ScreenType.register));
             }}
             style={{
@@ -82,7 +84,9 @@ function WelcomeScreen({
           <View style={styles.welcomeButtonContainer}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 dispatch(changeScreen(ScreenType.createSession));
               }}
               style={{
@@ -103,7 +107,9 @@ function WelcomeScreen({
           <View style={styles.welcomeButtonContainer}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 dispatch(changeScreen(ScreenType.joinSession));
               }}
               style={{
@@ -133,7 +139,9 @@ function WelcomeScreen({
           <View style={styles.welcomeButtonContainer}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 dispatch(changeScreen(ScreenType.settings));
               }}
               style={{

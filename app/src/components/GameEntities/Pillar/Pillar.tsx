@@ -16,7 +16,8 @@ function Pillar(props: any): JSX.Element {
         ...styles.wallContainer,
         left: props.left,
         top: props.top,
-      }}></View>
+      }}
+    />
   );
 }
 

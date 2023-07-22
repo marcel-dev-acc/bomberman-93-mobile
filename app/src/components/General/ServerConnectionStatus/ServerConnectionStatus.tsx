@@ -64,7 +64,7 @@ function ServerConnectionStatus({
       </View>
     </View>
   ) : (
-    <View></View>
+    <></>
   );
 }
 

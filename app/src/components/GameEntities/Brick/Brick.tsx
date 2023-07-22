@@ -40,7 +40,8 @@ function Brick(props: BrickProps): JSX.Element {
         ...withoutGraphicsContainerStyle,
         top: props.top,
         left: props.left,
-      }}></View>
+      }}
+    />
   );
 }
 

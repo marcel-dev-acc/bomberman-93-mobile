@@ -20,7 +20,9 @@ function RulesScreen(): JSX.Element {
       <View style={styles.rulesBackButtonContainer}>
         <TouchableHighlight
           onPress={pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             dispatch(changeScreen(ScreenType.welcome));
           }}
           style={{borderRadius: 200}}

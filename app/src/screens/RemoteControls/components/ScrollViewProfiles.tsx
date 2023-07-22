@@ -36,7 +36,9 @@ function ScrollViewProfiles({
           <View style={sharedStyles.remoteControlsEnableControls}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 if (
                   profile.deviceId === activeGamepadProfileRef.current?.deviceId
                 ) {
@@ -169,7 +171,9 @@ function ScrollViewProfiles({
           </View>
           <TouchableHighlight
             onPress={pressEvent => {
-              if (pressEvent.nativeEvent.target === undefined) return;
+              if (pressEvent.nativeEvent.target === undefined) {
+                return;
+              }
               setDisplayProfiles([
                 ...displayProfiles.filter(
                   _profile => _profile.deviceId !== profile.deviceId,

@@ -30,10 +30,11 @@ export const requestToken = async (
   email: string,
 ): Promise<RequestTokenResponse> => {
   const res = await post(ENV.registrationUrl, {email}, {});
-  if (!res)
+  if (!res) {
     return {
       ok: false,
       message: 'Failed to register',
     };
+  }
   return JSON.parse(await res.text());
 };

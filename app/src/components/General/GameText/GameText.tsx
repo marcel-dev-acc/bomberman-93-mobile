@@ -26,7 +26,7 @@ function GameText({text, charSize}: GameTextProps): JSX.Element {
               }}
             />
           ) : (
-            <View key={idx} style={{width: 20}}></View>
+            <View key={idx} style={{width: 20}} />
           ),
         )}
     </View>

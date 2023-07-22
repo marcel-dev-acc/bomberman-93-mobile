@@ -86,7 +86,8 @@ function Bomber(props: BomberProps): JSX.Element {
         left: props.left,
         backgroundColor: props.color,
       }}
-      testID={`bomber${props.number}`}></View>
+      testID={`bomber${props.number}`}
+    />
   ) : (
     <View
       style={{

@@ -68,13 +68,16 @@ function CreateSessionScreen({
   socketRef.current?.on(
     SocketTypes.createSessionRelayPositiveResponse,
     (data: HandleCreateSessionData) => {
-      if (DEBUG && data.sessionName !== sessionNameRef.current)
+      if (DEBUG && data.sessionName !== sessionNameRef.current) {
         console.warn(
           `[${SocketTypes.createSessionRelayPositiveResponse}]`,
           JSON.stringify(data),
         );
+      }
       // Check if incoming response is for player
-      if (data.sessionName !== sessionNameRef.current) return;
+      if (data.sessionName !== sessionNameRef.current) {
+        return;
+      }
       // Trigger join session which has been created
       if (!hasJoinSessionRef.current && sessionNameRef.current) {
         socketRef.current?.emit(SocketTypes.joinSessionRelay, {
@@ -88,13 +91,16 @@ function CreateSessionScreen({
   socketRef.current?.on(
     SocketTypes.createSessionRelayNegativeResponse,
     (response: NegativeResponse) => {
-      if (DEBUG && response.data?.secret !== sessionRef.current.secret)
+      if (DEBUG && response.data?.secret !== sessionRef.current.secret) {
         console.warn(
           `[${SocketTypes.createSessionRelayNegativeResponse}]`,
           response.error,
         );
+      }
       // Check if incoming response is for player
-      if (response.data?.sessionName !== sessionNameRef.current) return;
+      if (response.data?.sessionName !== sessionNameRef.current) {
+        return;
+      }
       dispatch(
         addError({
           title: `[${SocketTypes.createSessionRelayNegativeResponse}] Server error response`,
@@ -112,18 +118,20 @@ function CreateSessionScreen({
         DEBUG &&
         (response.data.sessionName !== sessionNameRef.current ||
           response.data.playerNumber !== 1)
-      )
+      ) {
         console.warn(
           `[${SocketTypes.joinSessionRelayPositiveResponse}]`,
           JSON.stringify(response.data),
           response.secret,
         );
+      }
       // Check if incoming response is for player
       if (
         response.data.sessionName !== sessionNameRef.current ||
         response.data.playerNumber !== 1
-      )
+      ) {
         return;
+      }
       // Mark that player has joined a session
       hasJoinSessionRef.current = true;
       sessionRef.current = {
@@ -149,17 +157,19 @@ function CreateSessionScreen({
         DEBUG &&
         (response.data?.sessionName !== sessionNameRef.current ||
           response.data?.playerNumber !== 1)
-      )
+      ) {
         console.warn(
           `[${SocketTypes.joinSessionRelayNegativeResponse}]`,
           response.error,
         );
+      }
       // Check if incoming response is for player
       if (
         response.data?.sessionName !== sessionNameRef.current ||
         response.data?.playerNumber !== 1
-      )
+      ) {
         return;
+      }
       if (!hasJoinSessionRef.current) {
         dispatch(
           addError({
@@ -181,7 +191,9 @@ function CreateSessionScreen({
       <SplashImage />
       <BackButton
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           dispatch(changeScreen(ScreenType.welcome));
         }}
       />
@@ -217,7 +229,9 @@ function CreateSessionScreen({
       <View style={styles.createSessionButtonContainer}>
         <TouchableHighlight
           onPress={async pressEvent => {
-            if (pressEvent.nativeEvent.target === undefined) return;
+            if (pressEvent.nativeEvent.target === undefined) {
+              return;
+            }
             // Set loader
             dispatch(toggleIsLoading(true));
             // Validate if the sessionNameRef current value is blank
@@ -226,7 +240,7 @@ function CreateSessionScreen({
               setSessionName('');
               dispatch(
                 addError({
-                  title: `[Create Session] Game Error`,
+                  title: '[Create Session] Game Error',
                   value: 'Session name was empty',
                 }),
               );
@@ -238,7 +252,7 @@ function CreateSessionScreen({
             if (!webSocketUrl) {
               dispatch(
                 addError({
-                  title: `Socket Url Error`,
+                  title: 'Socket Url Error',
                   value: 'Socket url is undefined',
                 }),
               );
@@ -254,7 +268,7 @@ function CreateSessionScreen({
             if (count >= 10) {
               dispatch(
                 addError({
-                  title: `[Server Connection] Server error response`,
+                  title: '[Server Connection] Server error response',
                   value: 'Failed to connect to the server',
                 }),
               );

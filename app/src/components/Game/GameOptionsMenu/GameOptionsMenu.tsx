@@ -25,7 +25,9 @@ function GameOptionsMenu({
     <View style={styles.gameOptionsMenuContainer}>
       <TouchableHighlight
         onPress={pressEvent => {
-          if (pressEvent.nativeEvent.target === undefined) return;
+          if (pressEvent.nativeEvent.target === undefined) {
+            return;
+          }
           setGameRunning(false);
           setShowModal(true);
         }}
@@ -41,7 +43,9 @@ function GameOptionsMenu({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 setShowModal(false);
               }}
               underlayColor="rgba(0,0,0,0.1)">
@@ -55,7 +59,9 @@ function GameOptionsMenu({
             }}>
             <TouchableHighlight
               onPress={pressEvent => {
-                if (pressEvent.nativeEvent.target === undefined) return;
+                if (pressEvent.nativeEvent.target === undefined) {
+                  return;
+                }
                 setShowModal(false);
                 handleReset();
                 setGameRunning(false);
