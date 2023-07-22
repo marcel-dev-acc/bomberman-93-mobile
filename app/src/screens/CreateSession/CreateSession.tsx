@@ -54,7 +54,7 @@ function CreateSessionScreen({
   useEffect(() => {
     if (width < height) {
       // In portrait mode
-      dispatch(changeScreen({ screen: ScreenType.rotate }));
+      dispatch(changeScreen(ScreenType.rotate));
     }
   }, [width, height]);
 
@@ -101,7 +101,7 @@ function CreateSessionScreen({
       name: sessionNameRef.current,
       secret: response.secret,
     } as Session;
-    dispatch(changeScreen({ screen: ScreenType.waitingRoom }));
+    dispatch(changeScreen(ScreenType.waitingRoom));
     // Reset the internal state values (delay so we don't generate server errors)
     setTimeout(() => {
       setSessionName('');
@@ -136,9 +136,7 @@ function CreateSessionScreen({
       <BackButton
         onPress={(pressEvent) => {
           if (pressEvent.nativeEvent.target === undefined) return;
-          dispatch(changeScreen({
-            screen: ScreenType.welcome,
-          }));
+          dispatch(changeScreen(ScreenType.welcome));
         }}
       />
       <View style={styles.createSessionTextContainer}>

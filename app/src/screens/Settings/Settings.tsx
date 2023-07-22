@@ -46,9 +46,7 @@ function SettingsScreen(): JSX.Element {
       <BackButton
         onPress={(pressEvent) => {
           if (pressEvent.nativeEvent.target === undefined) return;
-          dispatch(changeScreen({
-            screen: ScreenType.welcome,
-          }));
+          dispatch(changeScreen(ScreenType.welcome));
         }}
       />
       <View>
@@ -56,9 +54,7 @@ function SettingsScreen(): JSX.Element {
           <TouchableHighlight
             onPress={(pressEvent) => {
               if (pressEvent.nativeEvent.target === undefined) return;
-              dispatch(changeScreen({
-                screen: ScreenType.remoteControls,
-              }));
+              dispatch(changeScreen(ScreenType.remoteControls));
             }}
             style={{
               ...styles.settingsButton,
@@ -81,9 +77,7 @@ function SettingsScreen(): JSX.Element {
             onPress={(pressEvent) => {
               if (pressEvent.nativeEvent.target === undefined) return;
               removeData(StorageKeys.token);
-              dispatch(changeScreen({
-                screen: ScreenType.welcome,
-              }));
+              dispatch(changeScreen(ScreenType.welcome));
             }}
             style={{
               ...styles.settingsButton,
@@ -105,7 +99,7 @@ function SettingsScreen(): JSX.Element {
       <View style={styles.settingsTokenContainer}>
         <GameText
           text={token}
-          charSize={15}
+          charSize={isVertical ? 10 : 15}
         />
       </View>
     </View>

@@ -53,9 +53,7 @@ function RegisterScreen({
           setShowEmailForm(true);
           setShowEmailForm(false);
           setShowCodeForm(false);
-          dispatch(changeScreen({
-            screen: ScreenType.welcome,
-          }));
+          dispatch(changeScreen(ScreenType.welcome));
         }}
         underlayColor='rgba(255,255,255,0.25)'
         style={styles.registerBackIcon}
@@ -199,9 +197,7 @@ function RegisterScreen({
               await storeData(StorageKeys.token, code);
               setServerStatus(ServerStatus.localToken);
               // Go back to welcome screen
-              dispatch(changeScreen({
-                screen: ScreenType.welcome,
-              }));
+              dispatch(changeScreen(ScreenType.welcome));
             }}
             style={{
               ...styles.registerButton,

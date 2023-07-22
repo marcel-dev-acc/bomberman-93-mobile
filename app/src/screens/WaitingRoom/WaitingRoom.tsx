@@ -19,6 +19,9 @@ import { Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
+import dayjs from 'dayjs';
+import { SetTimeGameServerResponse } from '../../types/serverTypes';
+import { DEBUG } from '../../constants/app';
 
 type PlayerCardProps = {
   sessionRef: React.MutableRefObject<Session>;
@@ -224,33 +227,58 @@ function WaitingRoomScreen({
   const [timerInner, setTimerInner] = useState(countDownTime);
   const timer = useRef(countDownTime);
 
+  socketRef.current?.on(SocketTypes.setTimeRelayPositiveResponse, (response: SetTimeGameServerResponse) => {
+    console.log('time', response);
+    if (
+      DEBUG &&
+      response.data.secret !== sessionRef.current.secret
+    ) console.warn(`[${SocketTypes.setTimeRelayPositiveResponse}]`, JSON.stringify(response));
+    // Check if incoming response is for player
+    if (response.data.secret !== sessionRef.current.secret) return;
+    if (sessionRef.current.playerNumber !== 1 && response.time) {
+      setTimerInner(response.time);
+      timer.current = response.time;
+      // Change screens when time runs out
+      console.log('timer', timer.current);
+      if (timer.current) {
+        dispatch(changeScreen(ScreenType.game));
+      }
+    }
+  });
+
   useEffect(() => {
-    if (timerInner > 0) {
-      setTimeout(() => {
-        setTimerInner(timerInner - 1);
-        timer.current = timerInner - 1;
-      }, 1000);
-    } else {
-      // Emit event to socket to start the game
-      socketRef.current?.emit(SocketTypes.eventRelay, {
+    if (sessionRef.current.playerNumber === 1) {
+      if (timer.current > 0) {
+        setTimeout(() => {
+          setTimerInner(timerInner - 1);
+          timer.current = timerInner - 1;
+        }, 1000);
+      } else {
+        // Emit event to socket to start the game, if player 1
+        if (sessionRef.current.playerNumber === 1) {
+          socketRef.current?.emit(SocketTypes.eventRelay, {
+            sessionName: sessionRef.current.name,
+            playerNumber: sessionRef.current.playerNumber,
+            secret: sessionRef.current.secret,
+            event: { type: 'started' },
+          });
+        }
+        // Play game
+        dispatch(changeScreen(ScreenType.game));
+      }
+      socketRef.current?.emit(SocketTypes.setTimeRelay, {
         sessionName: sessionRef.current.name,
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
-        event: { type: 'started' },
+        time: timer.current,
       });
-      // Play game
-      dispatch(changeScreen({
-        screen: ScreenType.game,
-      }));
     }
   }, [timerInner]);
 
   useEffect(() => {
     if (width < height) {
       // In portrait mode
-      dispatch(changeScreen({
-        screen: ScreenType.rotate,
-      }));
+      dispatch(changeScreen(ScreenType.rotate));
     }
   }, [width, height]);
 
@@ -373,7 +401,7 @@ function WaitingRoomScreen({
                   secret: sessionRef.current.secret,
                   event: { type: 'started' },
                 });
-                dispatch(changeScreen({ screen: ScreenType.game }));
+                dispatch(changeScreen(ScreenType.game));
               }}
               style={{
                 ...styles.waitingRoomButton,

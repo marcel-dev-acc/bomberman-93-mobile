@@ -59,9 +59,7 @@ function GameScreen({
       setEntities({});
       setGameRunning(false);
       // Navigate to outcome screen
-      dispatch(changeScreen({
-        screen: ScreenType.winner,
-      }));
+      dispatch(changeScreen(ScreenType.winner));
     }
     if (e.type === 'stopped') {
     }
@@ -141,9 +139,7 @@ function GameScreen({
   useEffect(() => {
     if (width < height) {
       // In portrait mode
-      dispatch(changeScreen({
-        screen: ScreenType.rotate,
-      }));
+      dispatch(changeScreen(ScreenType.rotate));
     }
   }, [width, height]);
 

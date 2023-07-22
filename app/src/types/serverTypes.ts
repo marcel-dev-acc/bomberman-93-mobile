@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 
 /* Session types */
 export interface HandleCreateSessionData {
@@ -6,6 +7,11 @@ export interface HandleCreateSessionData {
 
 export interface HandleJoinSessionData extends HandleCreateSessionData {
   playerNumber: 1 | 2 | 3 | 4 | 5;
+};
+
+export interface HandleSetTimeData extends HandleJoinSessionData {
+  secret: string;
+  time: number;
 };
 
 export interface HandleDisconnectSessionData extends HandleJoinSessionData {
@@ -27,6 +33,11 @@ export interface HandleEventsData extends HandleJoinSessionData {
 export interface JoinSessionGameServerResponse {
   data: HandleJoinSessionData;
   secret: string;
+}
+
+export interface SetTimeGameServerResponse {
+  data: HandleSetTimeData;
+  time?: number;
 }
 
 export interface EventGameServerResponse {
@@ -121,6 +132,7 @@ export type SessionDetails = {
   5: PlayerDetails;
   boardType: 'green';
   isRunning: boolean;
+  waitingRoomTimer?: number;
   winner: undefined | 0 | 1 | 2 | 3 | 4 | 5; // 0 == draw
   tick: number;
   events: ServerGameEventProps[];
@@ -171,6 +183,16 @@ export const isHandleJoinSessionData = (data: HandleJoinSessionData | unknown): 
     (data as HandleJoinSessionData).sessionName !== undefined &&
     (data as HandleJoinSessionData).playerNumber !== undefined &&
     [1, 2, 3, 4, 5].includes((data as HandleJoinSessionData).playerNumber)
+  );
+};
+
+export const isHandleSetTime = (data: HandleSetTimeData | unknown): data is HandleSetTimeData => {
+  return (
+    (data as HandleSetTimeData).sessionName !== undefined &&
+    (data as HandleSetTimeData).playerNumber !== undefined &&
+    [1, 2, 3, 4, 5].includes((data as HandleSetTimeData).playerNumber) &&
+    (data as HandleSetTimeData).secret !== undefined &&
+    (data as HandleSetTimeData).time !== undefined
   );
 };
 

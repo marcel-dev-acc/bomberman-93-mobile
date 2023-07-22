@@ -22,6 +22,7 @@ type Screens = {
   graphicsEnabled?: boolean;
   debuggerEnabled?: boolean;
   musicEnabled?: boolean;
+  isLoading: boolean;
 };
 
 const initialState: Screens = {
@@ -30,15 +31,16 @@ const initialState: Screens = {
   graphicsEnabled: true,
   debuggerEnabled: DEBUG,
   musicEnabled: true,
+  isLoading: false,
 };
 
 export const screenSlice = createSlice({
   name: 'screens',
   initialState: initialState,
   reducers: {
-    changeScreen: (state, action: PayloadAction<Screens>) => {
+    changeScreen: (state, action: PayloadAction<ScreenType>) => {
       state.previousScreen = state.screen;
-      state.screen = action.payload.screen;
+      state.screen = action.payload;
     },
     toggleGraphics: (state, action: PayloadAction) => {
       state.graphicsEnabled = !state.graphicsEnabled;
@@ -49,10 +51,19 @@ export const screenSlice = createSlice({
     toggleMusic: (state, action: PayloadAction<boolean>) => {
       state.musicEnabled = action.payload;
     },
+    toggleIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { changeScreen, toggleGraphics, toggleDebugger, toggleMusic } = screenSlice.actions
+export const {
+  changeScreen,
+  toggleGraphics,
+  toggleDebugger,
+  toggleMusic,
+  toggleIsLoading,
+} = screenSlice.actions
 
 export default screenSlice.reducer

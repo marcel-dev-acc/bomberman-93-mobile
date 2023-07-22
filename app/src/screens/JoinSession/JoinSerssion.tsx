@@ -2,10 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
-  GestureResponderEvent,
   useWindowDimensions,
   TouchableHighlight,
-  Image,
   ScrollView,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -13,12 +11,13 @@ import { useDispatch } from 'react-redux';
 import { BackButton, GameText, SplashImage } from '../../components/General';
 import type { Session } from '../../types/session';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import imageNames from '../../constants/imageNames';
 import { getIsVertical } from '../../constants/screen';
 import { Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
 import { JoinSessionGameServerResponse, SessionNames } from '../../types/serverTypes';
 import { addError } from '../../state/errors/reducer';
+import colors from '../../constants/colors';
+import { DEBUG } from '../../constants/app';
 
 
 type JoinSessionScreenProps = {
@@ -45,22 +44,28 @@ function JoinSessionScreen({
   });
 
   socketRef.current?.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
+    if (
+      DEBUG &&
+      (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== sessionPlayerNumberRef.current)
+    ) console.warn(`[${SocketTypes.joinSessionRelayPositiveResponse}]`, JSON.stringify(response.data), response.secret);
     // Check if incoming response is for player
     if (response.data.sessionName !== sessionNameRef.current || response.data.playerNumber !== sessionPlayerNumberRef.current) return;
     // Set the session details
     sessionRef.current = {
       ...sessionRef.current,
-      playerNumber: sessionPlayerNumberRef.current,
       name: sessionNameRef.current,
       secret: response.secret,
+      playerNumber: sessionPlayerNumberRef.current,
     } as Session;
     // Change the screen to the waiing room
-    dispatch(changeScreen({
-      screen: ScreenType.waitingRoom,
-    }));
+    dispatch(changeScreen(ScreenType.waitingRoom));
   });
 
   socketRef.current?.on(SocketTypes.joinSessionRelayNegativeResponse, (response) => {
+    if (
+      DEBUG &&
+      (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== sessionPlayerNumberRef.current)
+    ) console.warn(`[${SocketTypes.joinSessionRelayNegativeResponse}]`, JSON.stringify(response.data));
     // Check if incoming response is for player
     if (response.data?.sessionName !== sessionNameRef.current || response.data?.playerNumber !== sessionPlayerNumberRef.current) return;
     dispatch(addError({
@@ -85,9 +90,7 @@ function JoinSessionScreen({
       <BackButton
         onPress={(pressEvent) => {
           if (pressEvent.nativeEvent.target === undefined) return;
-          dispatch(changeScreen({
-            screen: ScreenType.welcome,
-          }));
+          dispatch(changeScreen(ScreenType.welcome));
         }}
       />
       <View style={{ marginTop: 15, width: width, alignItems: 'center' }}>
@@ -98,16 +101,17 @@ function JoinSessionScreen({
           />
         </View>
         <ScrollView
-          style={{ borderWidth: 1, borderColor: 'red', width: width }}
           contentContainerStyle={{ alignItems: 'center' }}
         >
           {displaySessionNames && Object.keys(displaySessionNames).map((sessionName, idx) => {
             return (
               <View
                 key={idx}
+                style={{ marginHorizontal: 5, borderBottomColor: colors.WHITE, borderBottomWidth: 1, }}
               >
                 {[1, 2, 3, 4, 5].map((playerNumber, idx) => {
-                  if (displaySessionNames[sessionName][1].hasJoined) return <View key={idx}></View>;
+                  const _playerNumber = playerNumber as 1 | 2 | 3 | 4 | 5;
+                  if (displaySessionNames[sessionName][_playerNumber].hasJoined) return <View key={idx}></View>;
                   return (
                     <View
                       key={idx}
@@ -127,7 +131,7 @@ function JoinSessionScreen({
                       >
                         <GameText
                           text={`${sessionName} as player ${playerNumber}`}
-                          charSize={30}
+                          charSize={isVertical ? 15 : 30}
                         />
                       </TouchableHighlight>
                     </View>

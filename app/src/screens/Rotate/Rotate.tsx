@@ -23,9 +23,7 @@ function RotateScreen(): JSX.Element {
   useEffect(() => {
     if (width > height) {
       // In landscape mode
-      dispatch(changeScreen({
-        screen: previousScreen,
-      }));
+      dispatch(changeScreen(previousScreen));
     }
   }, [width, height]);
 

@@ -60,9 +60,7 @@ function WelcomeScreen({
           <TouchableHighlight
             onPress={(pressEvent) => {
               if (pressEvent.nativeEvent.target === undefined) return;
-              dispatch(changeScreen({
-                screen: ScreenType.register,
-              }));
+              dispatch(changeScreen(ScreenType.register));
             }}
             style={{
               ...styles.welcomeButton,
@@ -87,9 +85,7 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                dispatch(changeScreen({
-                  screen: ScreenType.createSession,
-                }));
+                dispatch(changeScreen(ScreenType.createSession));
               }}
               style={{
                 ...styles.welcomeButton,
@@ -111,9 +107,7 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                dispatch(changeScreen({
-                  screen: ScreenType.joinSession,
-                }));
+                dispatch(changeScreen(ScreenType.joinSession));
               }}
               style={{
                 ...styles.welcomeButton,
@@ -135,9 +129,7 @@ function WelcomeScreen({
             <Button
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                dispatch(changeScreen({
-                  screen: ScreenType.rules,
-                }));
+                dispatch(changeScreen(ScreenType.rules));
               }}
               text='Rules'
             />
@@ -146,9 +138,7 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={(pressEvent) => {
                 if (pressEvent.nativeEvent.target === undefined) return;
-                dispatch(changeScreen({
-                  screen: ScreenType.settings,
-                }));
+                dispatch(changeScreen(ScreenType.settings));
               }}
               style={{
                 ...styles.welcomeButton,

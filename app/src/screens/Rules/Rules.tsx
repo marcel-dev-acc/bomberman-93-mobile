@@ -25,9 +25,7 @@ function RulesScreen(): JSX.Element {
         <TouchableHighlight
           onPress={(pressEvent) => {
             if (pressEvent.nativeEvent.target === undefined) return;
-            dispatch(changeScreen({
-              screen: ScreenType.welcome,
-            }));
+            dispatch(changeScreen(ScreenType.welcome));
           }}
           style={{ borderRadius: 200 }}
           underlayColor='rgba(255,255,255,0.25)'

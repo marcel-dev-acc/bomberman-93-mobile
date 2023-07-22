@@ -37,7 +37,7 @@ function WinnerScreen({
       ...sessionRef.current,
       winner: undefined,
     } as Session;
-    dispatch(changeScreen({ screen: ScreenType.welcome }));
+    dispatch(changeScreen(ScreenType.welcome));
   };
 
   useEffect(() => {

@@ -37,6 +37,7 @@ function BackButton({
 const styles = StyleSheet.create({
   backButtonIcon: {
     position: 'absolute',
+    zIndex: 1,
     top: 5,
     left: 5,
     width: 45,

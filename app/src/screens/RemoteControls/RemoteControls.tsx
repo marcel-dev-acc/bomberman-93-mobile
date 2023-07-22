@@ -202,9 +202,7 @@ function RemoteControlsScreen({
       <BackButton
         onPress={(pressEvent) => {
           if (pressEvent.nativeEvent.target === undefined) return;
-          dispatch(changeScreen({
-            screen: ScreenType.settings,
-          }));
+          dispatch(changeScreen(ScreenType.settings));
         }}
       />
       <View

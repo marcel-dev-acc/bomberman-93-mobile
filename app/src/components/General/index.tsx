@@ -11,3 +11,4 @@ export {default as GameText} from './GameText/GameText';
 export {default as IntroImage} from './IntroImage/IntroImage';
 export {default as ServerConnectionStatus} from './ServerConnectionStatus/ServerConnectionStatus';
 export { ServerStatus as ServerStatus } from './ServerConnectionStatus/ServerConnectionStatus';
+export {default as Loader} from './Loader/Loader';

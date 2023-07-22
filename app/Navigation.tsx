@@ -24,14 +24,14 @@ import { ScreenType } from './src/state/screens/reducer';
 import { webSocketServer } from './src/constants/server';
 import SocketTypes from './src/types/socketTypes';
 import { addError } from './src/state/errors/reducer';
-import { ServerConnectionStatus, ServerStatus } from './src/components/General';
+import { Loader, ServerConnectionStatus, ServerStatus } from './src/components/General';
 import { StorageKeys, fetchData } from './src/utils/localStorage';
 import InitSessionState from './src/state/session/init';
 import { sleep } from './src/utils/helpers';
 import { DEBUG } from './src/constants/app';
 
 function Navigation(): JSX.Element {
-  const screen: string = useSelector((state: any) => state.screens.screen);
+  const { screen, isLoading } = useSelector((state: any) => state.screens);
 
   const dispatch = useDispatch();
 
@@ -106,6 +106,7 @@ function Navigation(): JSX.Element {
 
   return (
     <View style={styles.coreContainer}>
+      {isLoading && <Loader />}
       <ServerConnectionStatus status={serverStatus} />
       {screen === ScreenType.welcome && (
         <WelcomeScreen

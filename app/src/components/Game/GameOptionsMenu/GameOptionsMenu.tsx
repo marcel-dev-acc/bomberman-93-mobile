@@ -75,9 +75,7 @@ function GameOptionsMenu({
                 setShowModal(false);
                 handleReset();
                 setGameRunning(false);
-                dispatch(changeScreen({
-                  screen: ScreenType.welcome,
-                }));
+                dispatch(changeScreen(ScreenType.welcome));
               }}
               underlayColor='rgba(0,0,0,0.1)'
             >
