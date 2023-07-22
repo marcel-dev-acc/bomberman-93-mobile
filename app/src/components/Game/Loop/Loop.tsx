@@ -17,7 +17,7 @@ import {
 } from '../../GameEntities';
 import colors from '../../../constants/colors';
 import { ComponentType } from '../../../constants/types';
-import { GameEventProps, SessionDetails } from '../../../constants/types';
+import { GameEventProps, SessionDetails } from '../../../types/serverTypes';
 import { dimensions } from '../../../constants/screen';
 import { DEBUG } from '../../../constants/app';
 import { Socket } from 'socket.io-client';
@@ -74,15 +74,18 @@ function Loop({
   socketRef.current?.on(SocketTypes.tickRelayPositiveResponse, (response: TickGameServerResponse) => {
     if (
       DEBUG &&
-      response.data?.secret !== sessionRef.current.secret
-    ) console.warn(`[${SocketTypes.tickRelayPositiveResponse}]`, JSON.stringify(response.data));
+      response.data.sessionName !== sessionRef.current.name
+    ) console.warn(`[${SocketTypes.tickRelayPositiveResponse}]`, JSON.stringify(response.data), JSON.stringify(sessionRef.current));
     // Check if incoming response is for the player
-    if (response.data?.secret !== sessionRef.current.secret) return;
+    if (response.data.sessionName !== sessionRef.current.name) return;
     // Check if objects has keys
     if (Object.keys(response.state).length === 0) return;
     const state = response.state as SessionDetails
     // Validate that the tick has been kept correctly
-    if (state && state.tick === gameTickRef.current + 1) {
+    if (
+      state &&
+      state.tick === gameTickRef.current + 1
+    ) {
       gameTickRef.current = state.tick;
       setVolatileEntities(state.entities);
     }

@@ -7,7 +7,7 @@ import {
 import colors from '../../../constants/colors';
 import { entitySizes } from '../../../constants/entitySizes';
 import { Icon, Icons } from '../../General';
-import { PerkType } from '../../../constants/types';
+import { PerkType } from '../../../types/serverTypes';
 import { useSelector } from 'react-redux';
 
 type PerkProps = {

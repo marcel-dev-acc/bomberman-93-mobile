@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-
 import { Icon, Icons } from '../../components/General';
 import { ScreenType, changeScreen } from '../../state/screens/reducer';
 import colors from '../../constants/colors';
@@ -24,7 +23,7 @@ import {
   GameOptionsMenu,
   Timer,
 } from '../../components/Game';
-import { Direction, GameEventProps, SessionDetails } from '../../constants/types';
+import { Direction, GameEventProps, SessionDetails } from '../../types/serverTypes';
 import { DEBUG } from '../../constants/app';
 import { Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';

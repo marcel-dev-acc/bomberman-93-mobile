@@ -19,8 +19,7 @@ import { Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
-import dayjs from 'dayjs';
-import { SetTimeGameServerResponse } from '../../types/serverTypes';
+import { EventGameServerResponse, SessionDetails, SetTimeGameServerResponse } from '../../types/serverTypes';
 import { DEBUG } from '../../constants/app';
 
 type PlayerCardProps = {
@@ -230,18 +229,35 @@ function WaitingRoomScreen({
   socketRef.current?.on(SocketTypes.setTimeRelayPositiveResponse, (response: SetTimeGameServerResponse) => {
     if (
       DEBUG &&
-      response.data.secret !== sessionRef.current.secret
+      response.data.sessionName !== sessionRef.current.name
     ) console.warn(`[${SocketTypes.setTimeRelayPositiveResponse}]`, JSON.stringify(response));
     // Check if incoming response is for player
-    if (response.data.secret !== sessionRef.current.secret) return;
-    if (sessionRef.current.playerNumber !== 1 && response.time) {
-      setTimerInner(response.time);
-      timer.current = response.time;
-      // Change screens when time runs out
-      console.log('timer', timer.current);
-      if (timer.current) {
-        dispatch(changeScreen(ScreenType.game));
-      }
+    if (response.data.sessionName !== sessionRef.current.name) return;
+    if (sessionRef.current.playerNumber === 1) return;
+    if (!response.time) return;
+    // Set the time
+    setTimerInner(response.time);
+    timer.current = response.time;
+    // Change screens when time runs out
+    console.log('timer', timer.current);
+    if (timer.current === 1) {
+      dispatch(changeScreen(ScreenType.game));
+    }
+  });
+
+  socketRef.current?.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
+    if (
+      DEBUG &&
+      response.data.sessionName !== sessionRef.current.name
+    ) console.warn(`[${SocketTypes.eventRelayPositiveResponse}]`, JSON.stringify(response.data));
+    // Check if objects has keys
+    if (Object.keys(response.state).length === 0) return;
+    // const state = response.state as SessionDetails;
+    // Trigger game start
+    if (
+      response.data.event.type === 'started'
+    ) {
+      dispatch(changeScreen(ScreenType.game));
     }
   });
 
@@ -262,8 +278,6 @@ function WaitingRoomScreen({
             event: { type: 'started' },
           });
         }
-        // Play game
-        dispatch(changeScreen(ScreenType.game));
       }
       socketRef.current?.emit(SocketTypes.setTimeRelay, {
         sessionName: sessionRef.current.name,
@@ -400,7 +414,6 @@ function WaitingRoomScreen({
                   secret: sessionRef.current.secret,
                   event: { type: 'started' },
                 });
-                dispatch(changeScreen(ScreenType.game));
               }}
               style={{
                 ...styles.waitingRoomButton,

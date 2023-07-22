@@ -1,4 +1,4 @@
-import { FireType } from "../../../constants/types";
+import { FireType } from "../../../types/serverTypes";
 
 export const getSpriteCoordinates = (fireType: FireType) => {
   switch (fireType) {

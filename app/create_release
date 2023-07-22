@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Replace fire line in app.ts to turn DEBUG off
+ROOT=$(pwd)
+REPLACE_STRING="export const DEBUG: boolean = false;"
+echo "$(sed "1s/.*/$REPLACE_STRING/" $ROOT/src/constants/app.ts)" > $ROOT/src/constants/app.ts
+echo "New app.ts file contents:"
+cat $ROOT/src/constants/app.ts
+echo
+echo
+
+# TODO -> If stored password is empty, ask user to input it
+
 # Create android index file
 npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
 echo
@@ -15,6 +26,7 @@ done
 echo "Finished removing output mdpi files..."
 echo
 
+# Create relase APK file in
 cd ./android
 ./gradlew assembleRelease
 cd ..

@@ -1,4 +1,4 @@
-import { Direction } from "../../../constants/types";
+import { Direction } from "../../../types/serverTypes";
 import { Animations, BomberSpriteCoordinate } from "./types";
 
 type Postion = {
