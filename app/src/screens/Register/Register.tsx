@@ -10,7 +10,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { ServerStatus, SplashImage } from '../../components/General';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
+import { ScreenType, changeScreen, toggleIsLoading } from '../../state/screens/reducer';
 import { getIsVertical } from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
 import colors from '../../constants/colors';
@@ -141,6 +141,7 @@ function RegisterScreen({
           <TouchableHighlight
             onPress={async (pressEvent) => {
               if (pressEvent.nativeEvent.target === undefined) return;
+              dispatch(toggleIsLoading(true));
               const res = await requestToken(email);
               if (res.ok) {
                 setShowEmailForm(false);
@@ -151,6 +152,7 @@ function RegisterScreen({
                   value: res.message,
                 }));
               }
+              dispatch(toggleIsLoading(false));
             }}
             style={{
               ...styles.registerButton,
