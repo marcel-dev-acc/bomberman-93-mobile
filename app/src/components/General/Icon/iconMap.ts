@@ -1,4 +1,3 @@
-
 const bomb = require('../../../assets/icons/bomb.png');
 const arrowUp = require('../../../assets/icons/arrow-up.png');
 const arrowDown = require('../../../assets/icons/arrow-down.png');
@@ -25,7 +24,6 @@ const timerSandEmpty = require('../../../assets/icons/timer-sand-empty.png');
 const connection = require('../../../assets/icons/connection.png');
 const music = require('../../../assets/icons/music.png');
 const musicOff = require('../../../assets/icons/music-off.png');
-
 
 export enum Icons {
   bomb = 'bomb',
@@ -54,7 +52,7 @@ export enum Icons {
   connection = 'connection',
   music = 'music',
   musicOff = 'music-off',
-};
+}
 
 export const getIconImage = (name: Icons) => {
   switch (name) {

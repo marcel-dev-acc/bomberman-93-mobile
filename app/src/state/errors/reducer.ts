@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
 
 export type UIError = {
   title: string;
@@ -22,12 +22,14 @@ export const errorsSlice = createSlice({
       state.errors = [...state.errors, action.payload];
     },
     removeError: (state, action: PayloadAction<number>) => {
-      state.errors = [...state.errors.filter((error, idx) => action.payload !== idx)];
+      state.errors = [
+        ...state.errors.filter((error, idx) => action.payload !== idx),
+      ];
     },
-  }
-})
+  },
+});
 
 // Action creators are generated for each case reducer function
-export const { addError, removeError } = errorsSlice.actions
+export const {addError, removeError} = errorsSlice.actions;
 
-export default errorsSlice.reducer
+export default errorsSlice.reducer;

@@ -6,55 +6,46 @@ import {
   Dimensions,
   TouchableHighlight,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import colors from '../../constants/colors';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import { Icon, Icons } from '../../components/General';
-
-
-
+import {ScreenType, changeScreen} from '../../state/screens/reducer';
+import {Icon, Icons} from '../../components/General';
 
 function RulesScreen(): JSX.Element {
-
   const dispatch = useDispatch();
 
   return (
     <View style={styles.rulesContainer}>
       <View style={styles.rulesBackButtonContainer}>
         <TouchableHighlight
-          onPress={(pressEvent) => {
+          onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) return;
             dispatch(changeScreen(ScreenType.welcome));
           }}
-          style={{ borderRadius: 200 }}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
+          style={{borderRadius: 200}}
+          underlayColor="rgba(255,255,255,0.25)">
           <Icon
             name={Icons.arrowLeft}
             color={colors.WHITE}
             size={30}
-            style={{ margin: 5 }}
+            style={{margin: 5}}
           />
         </TouchableHighlight>
       </View>
       <View style={styles.rulesTextContainer}>
-        <Text style={styles.rulesHeading}>
-          Game rules
+        <Text style={styles.rulesHeading}>Game rules</Text>
+        <Text style={styles.rulesText}>
+          "Bomb me" is a game where bombers go head to head in order to be the
+          last bomber standing.
         </Text>
         <Text style={styles.rulesText}>
-          "Bomb me" is a game where bombers go head to head
-          in order to be the last bomber standing.
+          You will be able walk around the map and drop bombs which will destroy
+          objects in the way that are fragile and can be destroyed.
         </Text>
         <Text style={styles.rulesText}>
-          You will be able walk around the map and drop bombs
-          which will destroy objects in the way that are fragile
-          and can be destroyed.
-        </Text>
-        <Text style={styles.rulesText}>
-          To beat other bombers you will need to drop bombs
-          and have the explotion from the bomb catch the other
-          bomber in the fire.
+          To beat other bombers you will need to drop bombs and have the
+          explotion from the bomb catch the other bomber in the fire.
         </Text>
       </View>
     </View>

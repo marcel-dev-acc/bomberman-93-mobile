@@ -1,4 +1,3 @@
-
 export enum ComponentType {
   wall = 'wall',
   brick = 'brick',
@@ -7,4 +6,4 @@ export enum ComponentType {
   bomb = 'bomb',
   fire = 'fire',
   perk = 'perk',
-};
+}

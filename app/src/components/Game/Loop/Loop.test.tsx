@@ -1,13 +1,12 @@
-import { render, renderHook, screen } from '@testing-library/react-native';
+import {render, renderHook, screen} from '@testing-library/react-native';
 import store from '../../../../src/state/store';
 import {Provider as ReduxProvider} from 'react-redux';
 import Loop from './Loop';
 // import { Map } from '../../../constants/Boards';
 // import session from '../../../constants/Boards/mocks/session';
-import { useRef } from 'react';
+import {useRef} from 'react';
 
 test('render loop component', async () => {
-
   /* THIS HAS BEEN DEPRECATED */
 
   // const dispatcher = jest.fn();
@@ -32,5 +31,4 @@ test('render loop component', async () => {
   // expect(bomber1Comp.props.style.left).toBe(30);
 
   expect(1).toBe(1);
-
 });

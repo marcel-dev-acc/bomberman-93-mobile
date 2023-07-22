@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useRef, Dispatch} from 'react';
+import React, {useState, useEffect, useRef, Dispatch} from 'react';
 import {
   StyleSheet,
   TouchableHighlight,
@@ -6,12 +6,12 @@ import {
   useWindowDimensions,
   GestureResponderEvent,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-import { Icon, Icons } from '../../components/General';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
+import {Icon, Icons} from '../../components/General';
+import {ScreenType, changeScreen} from '../../state/screens/reducer';
 import colors from '../../constants/colors';
-import type { Session } from '../../types/session';
+import type {Session} from '../../types/session';
 import {
   BombsCount,
   Controls,
@@ -23,12 +23,18 @@ import {
   GameOptionsMenu,
   Timer,
 } from '../../components/Game';
-import { Direction, GameEventProps, SessionDetails } from '../../types/serverTypes';
-import { DEBUG } from '../../constants/app';
-import { Socket } from 'socket.io-client';
+import {
+  Direction,
+  GameEventProps,
+  SessionDetails,
+} from '../../types/serverTypes';
+import {DEBUG} from '../../constants/app';
+import {Socket} from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
-import { EventGameServerResponse, NegativeResponse } from '../../types/serverTypes';
-
+import {
+  EventGameServerResponse,
+  NegativeResponse,
+} from '../../types/serverTypes';
 
 const countDownTime: number = 3 * 60;
 
@@ -37,14 +43,12 @@ type GameScreenProps = {
   sessionRef: React.MutableRefObject<Session>;
 };
 
-function GameScreen({
-  socketRef,
-  sessionRef,
-}: GameScreenProps): JSX.Element {
-  
-  const { height, width } = useWindowDimensions();
+function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
+  const {height, width} = useWindowDimensions();
   // const session: Session = useSelector((state: any) => state.session);
-  const debuggerEnabled: boolean = useSelector((state: any) => state.screens.debuggerEnabled);
+  const debuggerEnabled: boolean = useSelector(
+    (state: any) => state.screens.debuggerEnabled,
+  );
 
   const dispatch = useDispatch();
 
@@ -80,12 +84,13 @@ function GameScreen({
       movement: direction,
     };
     dispatcher(event);
-    if (debuggerEnabled) socketRef.current?.emit(SocketTypes.tickRelay, {
-      sessionName: sessionRef.current.name,
-      playerNumber: sessionRef.current.playerNumber,
-      secret: sessionRef.current.secret,
-      tick: gameTickRef.current,
-    });
+    if (debuggerEnabled)
+      socketRef.current?.emit(SocketTypes.tickRelay, {
+        sessionName: sessionRef.current.name,
+        playerNumber: sessionRef.current.playerNumber,
+        secret: sessionRef.current.secret,
+        tick: gameTickRef.current,
+      });
     if (isMoving) {
       if (direction === Direction.up) isMovingUp.current = true;
       if (direction === Direction.down) isMovingDown.current = true;
@@ -93,21 +98,25 @@ function GameScreen({
       if (direction === Direction.right) isMovingRight.current = true;
     }
     setTimeout(() => {
-      if (direction === Direction.up && isMovingUp.current) handleMovePress(direction, isMovingUp.current);
-      if (direction === Direction.down && isMovingDown.current) handleMovePress(direction, isMovingDown.current);
-      if (direction === Direction.left && isMovingLeft.current) handleMovePress(direction, isMovingLeft.current);
-      if (direction === Direction.right && isMovingRight.current) handleMovePress(direction, isMovingRight.current);
+      if (direction === Direction.up && isMovingUp.current)
+        handleMovePress(direction, isMovingUp.current);
+      if (direction === Direction.down && isMovingDown.current)
+        handleMovePress(direction, isMovingDown.current);
+      if (direction === Direction.left && isMovingLeft.current)
+        handleMovePress(direction, isMovingLeft.current);
+      if (direction === Direction.right && isMovingRight.current)
+        handleMovePress(direction, isMovingRight.current);
     }, 100);
   };
 
   const handleBombPress = (pressEvent: GestureResponderEvent) => {
     if (pressEvent.nativeEvent.target === undefined) return;
-    dispatcher({ type: 'bomb' });
+    dispatcher({type: 'bomb'});
   };
 
   const handleReset = () => {
-    dispatcher({ type: 'stopped' });
-    dispatcher({ type: 'started' });
+    dispatcher({type: 'stopped'});
+    dispatcher({type: 'started'});
     setTimer(countDownTime);
   };
 
@@ -144,79 +153,77 @@ function GameScreen({
 
   // Get the initial game state
   useEffect(() => {
-    if (!gameStartedRef.current) dispatcher({ type: 'started' });
+    if (!gameStartedRef.current) dispatcher({type: 'started'});
   }, [gameStartedRef.current]);
 
-  socketRef.current?.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
-    if (
-      DEBUG &&
-      response.data.secret !== sessionRef.current.secret
-    ) console.warn(`[${SocketTypes.eventRelayPositiveResponse}]`, JSON.stringify(response.data));
-    // Check if incoming response is for the player
-    if (response.data.secret !== sessionRef.current.secret) return;
-    // Check if objects has keys
-    if (Object.keys(response.state).length === 0) return;
-    const state = response.state as SessionDetails;
-    // This is specifically for the game start scenario
-    if (!gameStartedRef.current && state && state?.entities) {
-      setEntities(state.entities);
-      gameStartedRef.current = true;
-    }
-    /* Other events are logged here currently */
-    // Calculate how many bombs player has
-    const filteredEntity = Object.keys(state?.entities).filter(entityKey =>
-      state?.entities[entityKey].name === 'bomber' &&
-      state?.entities[entityKey].number === sessionRef.current.playerNumber
-    );
-    if (filteredEntity.length) {
-      setBombsCount(state?.entities[filteredEntity[0]].bombs);
-      setFireCount(state?.entities[filteredEntity[0]].bombDepth);
-    }
-  });
+  socketRef.current?.on(
+    SocketTypes.eventRelayPositiveResponse,
+    (response: EventGameServerResponse) => {
+      if (DEBUG && response.data.secret !== sessionRef.current.secret)
+        console.warn(
+          `[${SocketTypes.eventRelayPositiveResponse}]`,
+          JSON.stringify(response.data),
+        );
+      // Check if incoming response is for the player
+      if (response.data.secret !== sessionRef.current.secret) return;
+      // Check if objects has keys
+      if (Object.keys(response.state).length === 0) return;
+      const state = response.state as SessionDetails;
+      // This is specifically for the game start scenario
+      if (!gameStartedRef.current && state && state?.entities) {
+        setEntities(state.entities);
+        gameStartedRef.current = true;
+      }
+      /* Other events are logged here currently */
+      // Calculate how many bombs player has
+      const filteredEntity = Object.keys(state?.entities).filter(
+        entityKey =>
+          state?.entities[entityKey].name === 'bomber' &&
+          state?.entities[entityKey].number === sessionRef.current.playerNumber,
+      );
+      if (filteredEntity.length) {
+        setBombsCount(state?.entities[filteredEntity[0]].bombs);
+        setFireCount(state?.entities[filteredEntity[0]].bombDepth);
+      }
+    },
+  );
 
-  socketRef.current?.on(SocketTypes.eventRelayNegativeResponse, (response: NegativeResponse) => {
-    if (
-      DEBUG &&
-      response.data?.secret !== sessionRef.current.secret
-    ) console.warn(`[${SocketTypes.joinSessionRelayNegativeResponse}]`, response.error);
-    // Check if incoming response is for the player
-    if (response.data?.secret !== sessionRef.current.secret) return;
-    console.warn('[EVENT ERROR]', response.error);
-  });
+  socketRef.current?.on(
+    SocketTypes.eventRelayNegativeResponse,
+    (response: NegativeResponse) => {
+      if (DEBUG && response.data?.secret !== sessionRef.current.secret)
+        console.warn(
+          `[${SocketTypes.joinSessionRelayNegativeResponse}]`,
+          response.error,
+        );
+      // Check if incoming response is for the player
+      if (response.data?.secret !== sessionRef.current.secret) return;
+      console.warn('[EVENT ERROR]', response.error);
+    },
+  );
 
   return (
-    <View style={{
-      ...styles.gameContainer,
-      width: width,
-      height: height,
-    }}>      
-      <Timer
-        baseTimer={timer}
-        dispatcher={dispatcher}
-      />
+    <View
+      style={{
+        ...styles.gameContainer,
+        width: width,
+        height: height,
+      }}>
+      <Timer baseTimer={timer} dispatcher={dispatcher} />
       <View style={styles.optionsContainer}>
         <TouchableHighlight
-          onPress={(pressEvent) => {
+          onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) return;
-            dispatcher({ type: gameRunning ? 'paused' : 'unpaused' });
+            dispatcher({type: gameRunning ? 'paused' : 'unpaused'});
             setGameRunning(!gameRunning);
           }}
-          style={{ borderRadius: 5, marginRight: 20, }}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
-          {gameRunning ? 
-            <Icon
-              name={Icons.pause}
-              color={colors.WHITE}
-              size={30}
-            />
-            :
-            <Icon
-              name={Icons.play}
-              color={colors.WHITE}
-              size={30}
-            />
-          }
+          style={{borderRadius: 5, marginRight: 20}}
+          underlayColor="rgba(255,255,255,0.25)">
+          {gameRunning ? (
+            <Icon name={Icons.pause} color={colors.WHITE} size={30} />
+          ) : (
+            <Icon name={Icons.play} color={colors.WHITE} size={30} />
+          )}
         </TouchableHighlight>
       </View>
       <Controls
@@ -226,12 +233,8 @@ function GameScreen({
         isMovingLeft={isMovingLeft}
         isMovingRight={isMovingRight}
       />
-      {DEBUG && (
-        <GraphicsToggle />
-      )}
-      {DEBUG && (
-        <DebuggerToggle />
-      )}
+      {DEBUG && <GraphicsToggle />}
+      {DEBUG && <DebuggerToggle />}
       <Loop
         socketRef={socketRef}
         sessionRef={sessionRef}
@@ -241,30 +244,19 @@ function GameScreen({
         handleReset={handleReset}
         dispatcher={dispatcher}
       />
-      <StaticEntities
-        entities={entities}
-      />
+      <StaticEntities entities={entities} />
       <GameOptionsMenu
         setGameRunning={setGameRunning}
         handleReset={handleReset}
       />
-      <FireCount
-        fireCount={fireCount}
-      />
-      <BombsCount
-        bombsCount={bombsCount}
-      />
+      <FireCount fireCount={fireCount} />
+      <BombsCount bombsCount={bombsCount} />
       <View style={styles.bombButtonContainer}>
         <TouchableHighlight
           onPress={handleBombPress}
-          style={{ borderRadius: 5, }}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
-          <Icon
-            name={Icons.bomb}
-            color={colors.WHITE}
-            size={50}
-          />
+          style={{borderRadius: 5}}
+          underlayColor="rgba(255,255,255,0.25)">
+          <Icon name={Icons.bomb} color={colors.WHITE} size={50} />
         </TouchableHighlight>
       </View>
     </View>

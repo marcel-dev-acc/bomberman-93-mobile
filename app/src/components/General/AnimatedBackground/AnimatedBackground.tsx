@@ -1,5 +1,5 @@
-import React, { useEffect,useRef } from 'react';
-import { StyleSheet, Animated, Easing, ImageBackground } from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {StyleSheet, Animated, Easing, ImageBackground} from 'react-native';
 import imageNames from '../../../constants/imageNames';
 
 const INPUT_RANGE_START = 0;
@@ -38,42 +38,45 @@ const AnimatedBackground = () => {
   const AnimetedImage = Animated.createAnimatedComponent(ImageBackground);
 
   return (
-    <AnimetedImage 
-      resizeMode="repeat" 
-      style={[styles.background,{
+    <AnimetedImage
+      resizeMode="repeat"
+      style={[
+        styles.background,
+        {
           transform: [
-              {
-                translateX: translateAnimation,
-              },
-              {
-                translateY: translateAnimation,
-              },
-            ],
-      }]}
+            {
+              translateX: translateAnimation,
+            },
+            {
+              translateY: translateAnimation,
+            },
+          ],
+        },
+      ]}
       source={imageNames.animatedBackground}
     />
-  )
+  );
 };
 
-const styles = StyleSheet.create({    
+const styles = StyleSheet.create({
   background: {
-      position: 'absolute',
-      zIndex: -999,
-      width: 1300,
-      height: 1300,
-      margin: 0,
-      padding: 0,
-      top: 0,
-      opacity: 0.4,
-      transform: [
-        {
-          translateX: 0,
-        },
-        {
-          translateY: 0,
-        },
-      ],      
-    }, 
+    position: 'absolute',
+    zIndex: -999,
+    width: 1300,
+    height: 1300,
+    margin: 0,
+    padding: 0,
+    top: 0,
+    opacity: 0.4,
+    transform: [
+      {
+        translateX: 0,
+      },
+      {
+        translateY: 0,
+      },
+    ],
+  },
 });
 
 export default AnimatedBackground;

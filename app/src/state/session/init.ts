@@ -1,4 +1,4 @@
-import { Avatar, Session } from "../../types/session";
+import {Avatar, Session} from '../../types/session';
 
 const defaultAvatar: Avatar = {
   gender: 'male',

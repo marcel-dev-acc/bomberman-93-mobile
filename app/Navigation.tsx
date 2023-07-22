@@ -1,11 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import io, { Socket } from 'socket.io-client';
+import React, {useEffect, useRef, useState} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import io, {Socket} from 'socket.io-client';
 
 import {
   WelcomeScreen,
@@ -20,18 +16,22 @@ import {
   SettingsScreen,
   JoinSessionScreen,
 } from './src/screens';
-import { ScreenType } from './src/state/screens/reducer';
-import { webSocketServer } from './src/constants/server';
+import {ScreenType} from './src/state/screens/reducer';
+import {webSocketServer} from './src/constants/server';
 import SocketTypes from './src/types/socketTypes';
-import { addError } from './src/state/errors/reducer';
-import { Loader, ServerConnectionStatus, ServerStatus } from './src/components/General';
-import { StorageKeys, fetchData } from './src/utils/localStorage';
+import {addError} from './src/state/errors/reducer';
+import {
+  Loader,
+  ServerConnectionStatus,
+  ServerStatus,
+} from './src/components/General';
+import {StorageKeys, fetchData} from './src/utils/localStorage';
 import InitSessionState from './src/state/session/init';
-import { sleep } from './src/utils/helpers';
-import { DEBUG } from './src/constants/app';
+import {sleep} from './src/utils/helpers';
+import {DEBUG} from './src/constants/app';
 
 function Navigation(): JSX.Element {
-  const { screen, isLoading } = useSelector((state: any) => state.screens);
+  const {screen, isLoading} = useSelector((state: any) => state.screens);
 
   const dispatch = useDispatch();
 
@@ -39,7 +39,7 @@ function Navigation(): JSX.Element {
     await new Promise((resolve: any) => setTimeout(resolve, 9000));
     setShowIntro(false);
   };
-  
+
   const handleFetchStoredToken = async () => {
     const token = await fetchData(StorageKeys.token);
     // Check if a token exists, and mark as unregistered if it doesn't
@@ -54,31 +54,35 @@ function Navigation(): JSX.Element {
     }
     const webSocketUrl = await webSocketServer();
     if (!webSocketUrl) {
-      dispatch(addError({
-        title: `Socket Url Error`,
-        value: 'Socket url is undefined',
-      }));
+      dispatch(
+        addError({
+          title: `Socket Url Error`,
+          value: 'Socket url is undefined',
+        }),
+      );
       return;
     }
-    socketRef.current = io(webSocketUrl, { auth: { token } });
+    socketRef.current = io(webSocketUrl, {auth: {token}});
     let count = 0;
     while (!socketRef.current?.connected && count < 10) {
       await sleep(500);
       count++;
     }
     if (count >= 10) {
-      dispatch(addError({
-        title: `[${SocketTypes.connectionError}] Server connection error`,
-        value: 'Failed to connect to the server (check keys)',
-      }));
+      dispatch(
+        addError({
+          title: `[${SocketTypes.connectionError}] Server connection error`,
+          value: 'Failed to connect to the server (check keys)',
+        }),
+      );
       return;
     }
     setServerStatus(ServerStatus.connected);
   };
-  
+
   const [showIntro, setShowIntro] = useState(true);
   const [serverStatus, setServerStatus] = useState(ServerStatus.unregistered);
-  
+
   const socketRef = useRef(undefined as Socket | undefined);
   const sessionRef = useRef(InitSessionState);
 
@@ -92,14 +96,17 @@ function Navigation(): JSX.Element {
 
   // Register a connection error handler
   if (socketRef.current) {
-    socketRef.current.on(SocketTypes.connectionErrorRelay, (err) => {
-      if (DEBUG) console.warn(`[${SocketTypes.connectionErrorRelay}]`, err.message);
-      if (!(['timeout', 'xhr poll error'].includes(err.message))) {
+    socketRef.current.on(SocketTypes.connectionErrorRelay, err => {
+      if (DEBUG)
+        console.warn(`[${SocketTypes.connectionErrorRelay}]`, err.message);
+      if (!['timeout', 'xhr poll error'].includes(err.message)) {
         setServerStatus(ServerStatus.disconnected);
-        dispatch(addError({
-          title: `[${SocketTypes.connectionError}] Server connection error response`,
-          value: err.message,
-        }));
+        dispatch(
+          addError({
+            title: `[${SocketTypes.connectionError}] Server connection error response`,
+            value: err.message,
+          }),
+        );
       }
     });
   }
@@ -109,58 +116,37 @@ function Navigation(): JSX.Element {
       {isLoading && <Loader />}
       <ServerConnectionStatus status={serverStatus} />
       {screen === ScreenType.welcome && (
-        <WelcomeScreen
-          showIntro={showIntro}
-          serverStatus={serverStatus}
-        />
+        <WelcomeScreen showIntro={showIntro} serverStatus={serverStatus} />
       )}
       {screen === ScreenType.register && (
-        <RegisterScreen
-          setServerStatus={setServerStatus}
-        />
+        <RegisterScreen setServerStatus={setServerStatus} />
       )}
       {screen === ScreenType.rules && <RulesScreen />}
       {socketRef.current && screen === ScreenType.createSession && (
-        <CreateSessionScreen
-          socketRef={socketRef}
-          sessionRef={sessionRef}
-        />
+        <CreateSessionScreen socketRef={socketRef} sessionRef={sessionRef} />
       )}
       {socketRef.current && screen === ScreenType.waitingRoom && (
-        <WaitingRoomScreen
-          socketRef={socketRef}
-          sessionRef={sessionRef}
-        />
+        <WaitingRoomScreen socketRef={socketRef} sessionRef={sessionRef} />
       )}
       {socketRef.current && screen === ScreenType.joinSession && (
-        <JoinSessionScreen
-          socketRef={socketRef}
-          sessionRef={sessionRef}
-        />
+        <JoinSessionScreen socketRef={socketRef} sessionRef={sessionRef} />
       )}
       {screen === ScreenType.rotate && <RotateScreen />}
       {socketRef.current && screen === ScreenType.game && (
-        <GameScreen
-          socketRef={socketRef}
-          sessionRef={sessionRef}
-        />
+        <GameScreen socketRef={socketRef} sessionRef={sessionRef} />
       )}
       {screen === ScreenType.winner && (
-        <WinnerScreen
-          socketRef={socketRef}
-          sessionRef={sessionRef}
-        />
+        <WinnerScreen socketRef={socketRef} sessionRef={sessionRef} />
       )}
-      {
-        socketRef.current &&
+      {socketRef.current &&
         screen === ScreenType.remoteControls &&
-        Platform.OS === 'android' &&
-        <RemoteControlsScreen
-          socketRef={socketRef as React.MutableRefObject<Socket>}
-          sessionRef={sessionRef}
-        />
-      }
-      {screen === ScreenType.settings && <SettingsScreen /> }
+        Platform.OS === 'android' && (
+          <RemoteControlsScreen
+            socketRef={socketRef as React.MutableRefObject<Socket>}
+            sessionRef={sessionRef}
+          />
+        )}
+      {screen === ScreenType.settings && <SettingsScreen />}
     </View>
   );
 }

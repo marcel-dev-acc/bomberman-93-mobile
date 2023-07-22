@@ -1,5 +1,5 @@
-import { Direction } from "../../../types/serverTypes";
-import { Animations, BomberSpriteCoordinate } from "./types";
+import {Direction} from '../../../types/serverTypes';
+import {Animations, BomberSpriteCoordinate} from './types';
 
 type Postion = {
   top: number;
@@ -22,71 +22,59 @@ export const getAnimation = (
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.up &&
-    position.top === previous.top
-  ) {
+  else if (direction === Direction.up && position.top === previous.top) {
     formattedAnimation = Animations.upStationary;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.up &&
-    position.top !== previous.top
-  ) {
-    formattedAnimation = !isMovementChangeable ? Animations.upStationary : 
-      isLeft ? Animations.upWalkLeft : Animations.upWalkRight;
+  else if (direction === Direction.up && position.top !== previous.top) {
+    formattedAnimation = !isMovementChangeable
+      ? Animations.upStationary
+      : isLeft
+      ? Animations.upWalkLeft
+      : Animations.upWalkRight;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.down &&
-    position.top === previous.top
-  ) {
+  else if (direction === Direction.down && position.top === previous.top) {
     formattedAnimation = Animations.downStationary;
   }
   // Check if the animation should be in transit as a direction
   // exists and the position changed
-  else if (
-    direction === Direction.down &&
-    position.top !== previous.top
-  ) {
-    formattedAnimation = !isMovementChangeable ? Animations.downStationary : 
-      isLeft ? Animations.downWalkLeft : Animations.downWalkRight;
+  else if (direction === Direction.down && position.top !== previous.top) {
+    formattedAnimation = !isMovementChangeable
+      ? Animations.downStationary
+      : isLeft
+      ? Animations.downWalkLeft
+      : Animations.downWalkRight;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.left &&
-    position.left === previous.left
-  ) {
+  else if (direction === Direction.left && position.left === previous.left) {
     formattedAnimation = Animations.leftStationary;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.left &&
-    position.left !== previous.left
-  ) {
-    formattedAnimation = !isMovementChangeable ? Animations.leftStationary :
-      isLeft ? Animations.leftWalkLeft : Animations.leftWalkRight;
+  else if (direction === Direction.left && position.left !== previous.left) {
+    formattedAnimation = !isMovementChangeable
+      ? Animations.leftStationary
+      : isLeft
+      ? Animations.leftWalkLeft
+      : Animations.leftWalkRight;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.right &&
-    position.left === previous.left
-  ) {
+  else if (direction === Direction.right && position.left === previous.left) {
     formattedAnimation = Animations.rightStationary;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
-  else if (
-    direction === Direction.right &&
-    position.left !== previous.left
-  ) {
-    formattedAnimation = formattedAnimation = !isMovementChangeable ? Animations.rightStationary :
-      isLeft ? Animations.rightWalkLeft : Animations.rightWalkRight;
+  else if (direction === Direction.right && position.left !== previous.left) {
+    formattedAnimation = formattedAnimation = !isMovementChangeable
+      ? Animations.rightStationary
+      : isLeft
+      ? Animations.rightWalkLeft
+      : Animations.rightWalkRight;
   }
   // Check if the animation should be stationary as a direction
   // exists but the position never changed
@@ -97,9 +85,8 @@ export const getAnimation = (
   return formattedAnimation;
 };
 
-
 export const getSpriteCoordinates = (animation: Animations): Postion => {
-  switch(animation) {
+  switch (animation) {
     // up
     case Animations.upStationary:
       return {
@@ -164,7 +151,5 @@ export const getSpriteCoordinates = (animation: Animations): Postion => {
         top: BomberSpriteCoordinate.rightWalkRightPosTop as number,
         left: BomberSpriteCoordinate.rightWalkRightPosLeft as number,
       };
-
   }
-
 };

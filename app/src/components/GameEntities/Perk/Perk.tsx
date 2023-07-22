@@ -1,14 +1,11 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import colors from '../../../constants/colors';
-import { entitySizes } from '../../../constants/entitySizes';
-import { Icon, Icons } from '../../General';
-import { PerkType } from '../../../types/serverTypes';
-import { useSelector } from 'react-redux';
+import {entitySizes} from '../../../constants/entitySizes';
+import {Icon, Icons} from '../../General';
+import {PerkType} from '../../../types/serverTypes';
+import {useSelector} from 'react-redux';
 
 type PerkProps = {
   top: number;
@@ -18,16 +15,18 @@ type PerkProps = {
 };
 
 function Perk(props: PerkProps): JSX.Element {
-
-  const graphicsEnabled: boolean = useSelector((state: any) => state.screens.graphicsEnabled);
+  const graphicsEnabled: boolean = useSelector(
+    (state: any) => state.screens.graphicsEnabled,
+  );
 
   const perkType = props.type as PerkType;
-  let iconName = Icons.fire as Icons.fire |
-    Icons.bomb |
-    Icons.runFast |
-    Icons.bombOff |
-    Icons.accessPointMinus |
-    Icons.arrowULeftBottom;
+  let iconName = Icons.fire as
+    | Icons.fire
+    | Icons.bomb
+    | Icons.runFast
+    | Icons.bombOff
+    | Icons.accessPointMinus
+    | Icons.arrowULeftBottom;
   switch (perkType) {
     case PerkType.bombStrength:
       iconName = Icons.fire;
@@ -50,13 +49,16 @@ function Perk(props: PerkProps): JSX.Element {
   }
 
   return (
-    <View style={{
-      ...styles.brickContainer,
-      top: props.top,
-      left: props.left,
-      backgroundColor: graphicsEnabled && !props.isDark ? colors.WHITE : colors.BLACK,
-      borderColor: graphicsEnabled && !props.isDark ? colors.BLACK : colors.WHITE,
-    }}>
+    <View
+      style={{
+        ...styles.brickContainer,
+        top: props.top,
+        left: props.left,
+        backgroundColor:
+          graphicsEnabled && !props.isDark ? colors.WHITE : colors.BLACK,
+        borderColor:
+          graphicsEnabled && !props.isDark ? colors.BLACK : colors.WHITE,
+      }}>
       <Icon
         name={iconName}
         size={15}

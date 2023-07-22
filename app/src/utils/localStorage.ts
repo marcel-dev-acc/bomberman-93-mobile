@@ -1,9 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export enum StorageKeys {
   profiles = 'profiles',
   token = 'token',
-};
+}
 
 export const storeData = async (key: string, value: string) => {
   try {

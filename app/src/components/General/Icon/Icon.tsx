@@ -1,12 +1,8 @@
 import React from 'react';
-import {
-  Image,
-} from 'react-native';
+import {Image} from 'react-native';
 
 import colors from '../../../constants/colors';
-import { Icons, getIconImage } from './iconMap';
-
-
+import {Icons, getIconImage} from './iconMap';
 
 type IconProps = {
   name: Icons;
@@ -16,21 +12,24 @@ type IconProps = {
 };
 
 function Icon(props: IconProps): JSX.Element {
-
   let iconSrc = getIconImage(props.name);
 
   return (
     <Image
-      style={props.style ? {
-        ...props.style,
-        width: props.size,
-        height: props.size,
-        tintColor: props.color ? props.color : colors.WHITE,
-      } : {
-        width: props.size,
-        height: props.size,
-        tintColor: props.color ? props.color : colors.WHITE,
-      }}
+      style={
+        props.style
+          ? {
+              ...props.style,
+              width: props.size,
+              height: props.size,
+              tintColor: props.color ? props.color : colors.WHITE,
+            }
+          : {
+              width: props.size,
+              height: props.size,
+              tintColor: props.color ? props.color : colors.WHITE,
+            }
+      }
       source={iconSrc}
     />
   );

@@ -1,32 +1,32 @@
-import { Dayjs } from "dayjs";
+import {Dayjs} from 'dayjs';
 
 /* Session types */
 export interface HandleCreateSessionData {
   sessionName: string;
-};
+}
 
 export interface HandleJoinSessionData extends HandleCreateSessionData {
   playerNumber: 1 | 2 | 3 | 4 | 5;
-};
+}
 
 export interface HandleSetTimeData extends HandleJoinSessionData {
   secret: string;
   time: number;
-};
+}
 
 export interface HandleDisconnectSessionData extends HandleJoinSessionData {
   secret: string;
-};
+}
 
 export interface HandleTickData extends HandleJoinSessionData {
   secret: string;
   tick: number;
-};
+}
 
 export interface HandleEventsData extends HandleJoinSessionData {
   secret: string;
-  event: GameEventProps,
-};
+  event: GameEventProps;
+}
 
 /* General server types */
 
@@ -53,14 +53,14 @@ export interface TickGameServerResponse {
 export interface NegativeResponse {
   data: any;
   error: string;
-};
+}
 
 export enum Direction {
   up = 'up',
   down = 'down',
   left = 'left',
   right = 'right',
-};
+}
 
 export type PlayerDetails = {
   hasJoined: boolean;
@@ -78,14 +78,26 @@ export type TopLeftPairProps = {
 };
 
 export type GameEventProps = {
-  type: 'tick' | 'started' | 'stopped' | 'paused' | 'unpaused' | 'movement' | 'bomb' | 'add-bomb' | 'add-bomb-strength' | 'time-over' | 'winner' | 'draw';
+  type:
+    | 'tick'
+    | 'started'
+    | 'stopped'
+    | 'paused'
+    | 'unpaused'
+    | 'movement'
+    | 'bomb'
+    | 'add-bomb'
+    | 'add-bomb-strength'
+    | 'time-over'
+    | 'winner'
+    | 'draw';
   movement?: Direction;
   winner?: number;
 };
 
 export interface ServerGameEventProps extends GameEventProps {
   playerNumber: 1 | 2 | 3 | 4 | 5;
-};
+}
 
 export type ActionsProps = {
   touches: any;
@@ -103,11 +115,11 @@ export enum FireType {
   right = 'right',
   rightEnd = 'right-end',
   center = 'center',
-};
+}
 
 export interface FireTopLeftPairProps extends TopLeftPairProps {
   type: FireType;
-};
+}
 
 export const getEndPairFireTpye = (fireTpye: FireType) => {
   switch (fireTpye) {
@@ -157,7 +169,7 @@ export enum PerkType {
   chaosSmallBombs = 'chaos-small-bombs',
   bombKick = 'bomb-kick',
   bombNumber = 'bomb-number',
-};
+}
 
 // The percentages are incremented by adding the former
 // Max is 100%
@@ -169,16 +181,18 @@ export enum PerkTypePercentage {
   chaosSmallBombs = 65, // 10
   bombKick = 75, // 10
   bombNumber = 100, // 25
-};
+}
 
 // Type guards below
-export const isHandleCreateSessionData = (data: HandleCreateSessionData | unknown): data is HandleCreateSessionData => {
-  return (
-    (data as HandleJoinSessionData).sessionName !== undefined
-  );
+export const isHandleCreateSessionData = (
+  data: HandleCreateSessionData | unknown,
+): data is HandleCreateSessionData => {
+  return (data as HandleJoinSessionData).sessionName !== undefined;
 };
 
-export const isHandleJoinSessionData = (data: HandleJoinSessionData | unknown): data is HandleJoinSessionData => {
+export const isHandleJoinSessionData = (
+  data: HandleJoinSessionData | unknown,
+): data is HandleJoinSessionData => {
   return (
     (data as HandleJoinSessionData).sessionName !== undefined &&
     (data as HandleJoinSessionData).playerNumber !== undefined &&
@@ -186,7 +200,9 @@ export const isHandleJoinSessionData = (data: HandleJoinSessionData | unknown): 
   );
 };
 
-export const isHandleSetTime = (data: HandleSetTimeData | unknown): data is HandleSetTimeData => {
+export const isHandleSetTime = (
+  data: HandleSetTimeData | unknown,
+): data is HandleSetTimeData => {
   return (
     (data as HandleSetTimeData).sessionName !== undefined &&
     (data as HandleSetTimeData).playerNumber !== undefined &&
@@ -196,7 +212,9 @@ export const isHandleSetTime = (data: HandleSetTimeData | unknown): data is Hand
   );
 };
 
-export const isHandleDisconnectSessionData = (data: HandleDisconnectSessionData | unknown): data is HandleDisconnectSessionData => {
+export const isHandleDisconnectSessionData = (
+  data: HandleDisconnectSessionData | unknown,
+): data is HandleDisconnectSessionData => {
   return (
     (data as HandleDisconnectSessionData).sessionName !== undefined &&
     (data as HandleDisconnectSessionData).playerNumber !== undefined &&
@@ -205,7 +223,9 @@ export const isHandleDisconnectSessionData = (data: HandleDisconnectSessionData 
   );
 };
 
-export const isHandleEventData = (data: HandleEventsData | unknown): data is HandleEventsData => {
+export const isHandleEventData = (
+  data: HandleEventsData | unknown,
+): data is HandleEventsData => {
   return (
     (data as HandleEventsData).sessionName !== undefined &&
     (data as HandleEventsData).playerNumber !== undefined &&
@@ -228,7 +248,9 @@ export const isHandleEventData = (data: HandleEventsData | unknown): data is Han
   );
 };
 
-export const isHandleTickData = (data: HandleTickData | unknown): data is HandleTickData => {
+export const isHandleTickData = (
+  data: HandleTickData | unknown,
+): data is HandleTickData => {
   return (
     (data as HandleTickData).sessionName !== undefined &&
     (data as HandleTickData).playerNumber !== undefined &&

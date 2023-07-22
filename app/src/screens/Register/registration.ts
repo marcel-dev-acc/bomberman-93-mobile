@@ -1,6 +1,10 @@
-import ENV from "../../../env";
+import ENV from '../../../env';
 
-const post = async (url: string, payload: {}, headers?: {}): Promise<Response | undefined> => {
+const post = async (
+  url: string,
+  payload: {},
+  headers?: {},
+): Promise<Response | undefined> => {
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -9,7 +13,7 @@ const post = async (url: string, payload: {}, headers?: {}): Promise<Response | 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      redirect: 'follow'
+      redirect: 'follow',
     } as any);
     return res;
   } catch (err) {
@@ -20,13 +24,16 @@ const post = async (url: string, payload: {}, headers?: {}): Promise<Response | 
 interface RequestTokenResponse {
   ok: boolean;
   message: string;
-};
+}
 
-export const requestToken = async (email: string): Promise<RequestTokenResponse> => {
-  const res = await post(ENV.registrationUrl, { email }, {});
-  if (!res) return {
-    ok: false,
-    message: 'Failed to register',
-  };
+export const requestToken = async (
+  email: string,
+): Promise<RequestTokenResponse> => {
+  const res = await post(ENV.registrationUrl, {email}, {});
+  if (!res)
+    return {
+      ok: false,
+      message: 'Failed to register',
+    };
   return JSON.parse(await res.text());
 };

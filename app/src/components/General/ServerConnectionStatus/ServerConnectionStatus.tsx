@@ -1,10 +1,5 @@
-
 import React, {useState, useRef, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 import colors from '../../../constants/colors';
 
@@ -17,13 +12,12 @@ export enum ServerStatus {
 }
 
 type ServerConnectionStatusProps = {
-  status: ServerStatus
+  status: ServerStatus;
 };
 
 function ServerConnectionStatus({
   status,
 }: ServerConnectionStatusProps): JSX.Element {
-
   let color = colors.GREY;
   let textColor = colors.BLACK;
   switch (status) {
@@ -52,28 +46,26 @@ function ServerConnectionStatus({
       }, 10000);
     }
   });
-  
+
   return display ? (
-    <View
-      style={styles.serverConnectionStatusContainer}
-    >
+    <View style={styles.serverConnectionStatusContainer}>
       <View
         style={{
           ...styles.serverConnectionStatusTextContainer,
           backgroundColor: color,
-        }}
-      >
+        }}>
         <Text
           style={{
             ...styles.serverConnectionStatusText,
             color: textColor,
-          }} 
-        >
+          }}>
           {status}
         </Text>
       </View>
     </View>
-  ) : <View></View>;
+  ) : (
+    <View></View>
+  );
 }
 
 const bannerWidth = 100;
@@ -87,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: bannerWidth,
     zIndex: 100,
-    transform: [{ rotate: '-45deg' }],
+    transform: [{rotate: '-45deg'}],
     backgroundColor: 'rgba(0,0,0,0.25)',
     paddingVertical: 2,
   },

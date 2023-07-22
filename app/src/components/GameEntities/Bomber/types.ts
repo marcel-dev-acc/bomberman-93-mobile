@@ -1,5 +1,5 @@
-import { PerkType } from "../../../constants/Boards/general";
-import { Direction } from "../../../constants/types";
+import {PerkType} from '../../../constants/Boards/general';
+import {Direction} from '../../../constants/types';
 
 export type BomberProps = {
   top: number;
@@ -30,7 +30,7 @@ export enum Animations {
   rightStationary = 'right-stationary',
   rightWalkLeft = 'right-walk-left',
   rightWalkRight = 'right-walk-right',
-};
+}
 
 export enum BomberSpriteCoordinate {
   upStationaryPosTop = -1.5, //
@@ -74,5 +74,4 @@ export enum BomberSpriteCoordinate {
 
   rightWalkRightPosTop = -43, //
   rightWalkRightPosLeft = -207, //
-
-};
+}

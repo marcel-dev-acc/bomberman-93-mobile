@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,26 +7,22 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { Socket } from 'socket.io-client';
+import {useDispatch} from 'react-redux';
+import {Socket} from 'socket.io-client';
 
-import { GameText, SplashImage } from '../../components/General';
-import type { Session } from '../../types/session';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
+import {GameText, SplashImage} from '../../components/General';
+import type {Session} from '../../types/session';
+import {ScreenType, changeScreen} from '../../state/screens/reducer';
 import imageNames from '../../constants/imageNames';
-import { getIsVertical } from '../../constants/screen';
-
+import {getIsVertical} from '../../constants/screen';
 
 type WinnerScreenProps = {
   socketRef: React.MutableRefObject<Socket | undefined>;
   sessionRef: React.MutableRefObject<Session>;
 };
 
-function WinnerScreen({
-  socketRef,
-  sessionRef,
-}: WinnerScreenProps): JSX.Element {
-  const { height, width } = useWindowDimensions();
+function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   const dispatch = useDispatch();
@@ -49,35 +45,30 @@ function WinnerScreen({
       style={{
         ...styles.winnerContainer,
         width: width,
-      }}
-    >
+      }}>
       {isVertical && <SplashImage includeHeader />}
       {!isVertical && <SplashImage />}
       {sessionRef.current.winner && (
         <View style={styles.winnerTextContainer}>
           <Image
             source={imageNames.theWinnerIsText}
-            resizeMode='contain'
+            resizeMode="contain"
             style={{
               width: 240,
               height: 45,
             }}
           />
-          <GameText
-            text={sessionRef.current.winner.name}
-            charSize={50}
-          />
+          <GameText text={sessionRef.current.winner.name} charSize={50} />
         </View>
       )}
       <View style={styles.winnerButtonContainer}>
         <TouchableHighlight
           onPress={handleGameReset}
           style={styles.winnerButton}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
+          underlayColor="rgba(255,255,255,0.25)">
           <Image
             source={imageNames.playAgainText}
-            resizeMode='contain'
+            resizeMode="contain"
             style={{
               width: 200,
               height: 45,

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,18 +9,22 @@ import {
   useWindowDimensions,
   Image,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
-import { GameText, Icon, Icons, SplashImage } from '../../components/General';
-import type { Session, Player } from '../../types/session';
+import {GameText, Icon, Icons, SplashImage} from '../../components/General';
+import type {Session, Player} from '../../types/session';
 import colors from '../../constants/colors';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import { Socket } from 'socket.io-client';
+import {ScreenType, changeScreen} from '../../state/screens/reducer';
+import {Socket} from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
-import { getIsVertical } from '../../constants/screen';
+import {getIsVertical} from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
-import { EventGameServerResponse, SessionDetails, SetTimeGameServerResponse } from '../../types/serverTypes';
-import { DEBUG } from '../../constants/app';
+import {
+  EventGameServerResponse,
+  SessionDetails,
+  SetTimeGameServerResponse,
+} from '../../types/serverTypes';
+import {DEBUG} from '../../constants/app';
 
 type PlayerCardProps = {
   sessionRef: React.MutableRefObject<Session>;
@@ -33,14 +37,16 @@ function PlayerCard({
   playerNumber,
   player,
 }: PlayerCardProps): JSX.Element {
-  const { width } = useWindowDimensions();
+  const {width} = useWindowDimensions();
 
   const handlePlayerNameChange = (name: string) => {
     sessionRef.current = {
       ...sessionRef.current,
       playerNumber: playerNumber,
       players: [
-        ...sessionRef.current.players.filter((player, idx) => idx !== playerNumber - 1),
+        ...sessionRef.current.players.filter(
+          (player, idx) => idx !== playerNumber - 1,
+        ),
         {
           ...sessionRef.current.players[playerNumber - 1],
           name: name,
@@ -52,25 +58,18 @@ function PlayerCard({
   const [textInputColor, setTextInputColor] = useState(colors.WHITE);
 
   return (
-    <View style={{
-      ...playerStyles.playerCardContainer,
-      width: width * 0.95,
-    }}>
+    <View
+      style={{
+        ...playerStyles.playerCardContainer,
+        width: width * 0.95,
+      }}>
       <View style={playerStyles.playerCardAvatarContainer}>
         {/* Avatar */}
         {player.avatar.gender === 'male' && (
-          <Icon
-            name={Icons.faceMan}
-            color={colors.WHITE}
-            size={30}
-          />
+          <Icon name={Icons.faceMan} color={colors.WHITE} size={30} />
         )}
         {player.avatar.gender === 'female' && (
-          <Icon
-            name={Icons.faceWoman}
-            color={colors.WHITE}
-            size={10}
-          />
+          <Icon name={Icons.faceWoman} color={colors.WHITE} size={10} />
         )}
       </View>
       <View style={playerStyles.playerCardNameContaner}>
@@ -88,24 +87,30 @@ function PlayerCard({
           />
         )}
         {playerNumber !== sessionRef.current.playerNumber && (
-          <Text style={playerStyles.playerCardText}>
-            {player.name}
-          </Text>
+          <Text style={playerStyles.playerCardText}>{player.name}</Text>
         )}
       </View>
       <View style={playerStyles.playerCardToggleContainer}>
         {/* Toggle for: player, computer or inactive */}
         <TouchableHighlight
-          style={{ borderRadius: 100, width: 40, height: 40, justifyContent: 'center', alignItems: 'center', }}
-          underlayColor='rgba(255,255,255,0.25)'
-          onPress={(pressEvent) => {
+          style={{
+            borderRadius: 100,
+            width: 40,
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          underlayColor="rgba(255,255,255,0.25)"
+          onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) return;
             if (player.isActive && !player.isReal) {
               sessionRef.current = {
                 ...sessionRef.current,
                 playerNumber: playerNumber,
                 players: [
-                  ...sessionRef.current.players.filter((player, idx) => idx !== playerNumber - 1),
+                  ...sessionRef.current.players.filter(
+                    (player, idx) => idx !== playerNumber - 1,
+                  ),
                   {
                     ...sessionRef.current.players[playerNumber - 1],
                     isActive: false,
@@ -117,7 +122,9 @@ function PlayerCard({
                 ...sessionRef.current,
                 playerNumber: playerNumber,
                 players: [
-                  ...sessionRef.current.players.filter((player, idx) => idx !== playerNumber - 1),
+                  ...sessionRef.current.players.filter(
+                    (player, idx) => idx !== playerNumber - 1,
+                  ),
                   {
                     ...sessionRef.current.players[playerNumber - 1],
                     isActive: true,
@@ -125,45 +132,32 @@ function PlayerCard({
                 ],
               } as Session;
             }
-          }}
-        >
+          }}>
           <View>
-            {player.isActive && player.isReal && player.avatar.gender === 'male' && (
-              <Icon
-                name={Icons.faceMan}
-                color={colors.WHITE}
-                size={30}
-              />
-            )}
-            {player.isActive && player.isReal && player.avatar.gender === 'female' && (
-              <Icon
-                name={Icons.faceWoman}
-                color={colors.WHITE}
-                size={30}
-              />
-            )}
+            {player.isActive &&
+              player.isReal &&
+              player.avatar.gender === 'male' && (
+                <Icon name={Icons.faceMan} color={colors.WHITE} size={30} />
+              )}
+            {player.isActive &&
+              player.isReal &&
+              player.avatar.gender === 'female' && (
+                <Icon name={Icons.faceWoman} color={colors.WHITE} size={30} />
+              )}
             {player.isActive && !player.isReal && (
-              <View style={{ marginBottom: 2.5 }}>
-                <Icon
-                  name={Icons.robot}
-                  color={colors.WHITE}
-                  size={30}
-                />
+              <View style={{marginBottom: 2.5}}>
+                <Icon name={Icons.robot} color={colors.WHITE} size={30} />
               </View>
             )}
             {!player.isActive && (
-              <Icon
-                name={Icons.help}
-                color={colors.WHITE}
-                size={30}
-              />
+              <Icon name={Icons.help} color={colors.WHITE} size={30} />
             )}
           </View>
         </TouchableHighlight>
       </View>
     </View>
   );
-};
+}
 
 const playerStyles = StyleSheet.create({
   playerCardContainer: {
@@ -217,8 +211,7 @@ function WaitingRoomScreen({
   socketRef,
   sessionRef,
 }: WaitingRoomScreenProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   const dispatch = useDispatch();
@@ -226,40 +219,46 @@ function WaitingRoomScreen({
   const [timerInner, setTimerInner] = useState(countDownTime);
   const timer = useRef(countDownTime);
 
-  socketRef.current?.on(SocketTypes.setTimeRelayPositiveResponse, (response: SetTimeGameServerResponse) => {
-    if (
-      DEBUG &&
-      response.data.sessionName !== sessionRef.current.name
-    ) console.warn(`[${SocketTypes.setTimeRelayPositiveResponse}]`, JSON.stringify(response));
-    // Check if incoming response is for player
-    if (response.data.sessionName !== sessionRef.current.name) return;
-    if (sessionRef.current.playerNumber === 1) return;
-    if (!response.time) return;
-    // Set the time
-    setTimerInner(response.time);
-    timer.current = response.time;
-    // Change screens when time runs out
-    console.log('timer', timer.current);
-    if (timer.current === 1) {
-      dispatch(changeScreen(ScreenType.game));
-    }
-  });
+  socketRef.current?.on(
+    SocketTypes.setTimeRelayPositiveResponse,
+    (response: SetTimeGameServerResponse) => {
+      if (DEBUG && response.data.sessionName !== sessionRef.current.name)
+        console.warn(
+          `[${SocketTypes.setTimeRelayPositiveResponse}]`,
+          JSON.stringify(response),
+        );
+      // Check if incoming response is for player
+      if (response.data.sessionName !== sessionRef.current.name) return;
+      if (sessionRef.current.playerNumber === 1) return;
+      if (!response.time) return;
+      // Set the time
+      setTimerInner(response.time);
+      timer.current = response.time;
+      // Change screens when time runs out
+      console.log('timer', timer.current);
+      if (timer.current === 1) {
+        dispatch(changeScreen(ScreenType.game));
+      }
+    },
+  );
 
-  socketRef.current?.on(SocketTypes.eventRelayPositiveResponse, (response: EventGameServerResponse) => {
-    if (
-      DEBUG &&
-      response.data.sessionName !== sessionRef.current.name
-    ) console.warn(`[${SocketTypes.eventRelayPositiveResponse}]`, JSON.stringify(response.data));
-    // Check if objects has keys
-    if (Object.keys(response.state).length === 0) return;
-    // const state = response.state as SessionDetails;
-    // Trigger game start
-    if (
-      response.data.event.type === 'started'
-    ) {
-      dispatch(changeScreen(ScreenType.game));
-    }
-  });
+  socketRef.current?.on(
+    SocketTypes.eventRelayPositiveResponse,
+    (response: EventGameServerResponse) => {
+      if (DEBUG && response.data.sessionName !== sessionRef.current.name)
+        console.warn(
+          `[${SocketTypes.eventRelayPositiveResponse}]`,
+          JSON.stringify(response.data),
+        );
+      // Check if objects has keys
+      if (Object.keys(response.state).length === 0) return;
+      // const state = response.state as SessionDetails;
+      // Trigger game start
+      if (response.data.event.type === 'started') {
+        dispatch(changeScreen(ScreenType.game));
+      }
+    },
+  );
 
   useEffect(() => {
     if (sessionRef.current.playerNumber === 1) {
@@ -275,7 +274,7 @@ function WaitingRoomScreen({
             sessionName: sessionRef.current.name,
             playerNumber: sessionRef.current.playerNumber,
             secret: sessionRef.current.secret,
-            event: { type: 'started' },
+            event: {type: 'started'},
           });
         }
       }
@@ -300,19 +299,19 @@ function WaitingRoomScreen({
       style={{
         ...styles.waitingRoomContainer,
         width: width,
-      }}
-    >
+      }}>
       <SplashImage />
       <ScrollView
         style={styles.waitingRoomScrollContainer}
-        contentContainerStyle={styles.waitingRoomScrollContainerContent}
-      >
+        contentContainerStyle={styles.waitingRoomScrollContainerContent}>
         <View style={styles.waitingRoomHeadingContainer}>
           <GameText
             text={
-              sessionRef.current.name ?
-              sessionRef.current.name.length <  20 ? sessionRef.current.name : `${sessionRef.current.name.substring(0, 20)}...` :
-                'Random session name'
+              sessionRef.current.name
+                ? sessionRef.current.name.length < 20
+                  ? sessionRef.current.name
+                  : `${sessionRef.current.name.substring(0, 20)}...`
+                : 'Random session name'
             }
             charSize={25}
           />
@@ -320,22 +319,19 @@ function WaitingRoomScreen({
         <View>
           <Image
             source={imageNames.gameWillStartInText}
-            resizeMode='contain'
+            resizeMode="contain"
             style={{
               width: 280,
               height: 40,
             }}
           />
         </View>
-        <GameText
-          text={timer.current.toString()}
-          charSize={30}
-        />
+        <GameText text={timer.current.toString()} charSize={30} />
         <View style={styles.waitingRoomTextContainer}>
           {sessionRef.current.playerNumber === 1 && (
             <Image
               source={imageNames.youArePlayer1Text}
-              resizeMode='contain'
+              resizeMode="contain"
               style={{
                 width: 240,
                 height: 50,
@@ -345,7 +341,7 @@ function WaitingRoomScreen({
           {sessionRef.current.playerNumber === 2 && (
             <Image
               source={imageNames.youArePlayer2Text}
-              resizeMode='contain'
+              resizeMode="contain"
               style={{
                 width: 240,
                 height: 50,
@@ -355,7 +351,7 @@ function WaitingRoomScreen({
           {sessionRef.current.playerNumber === 3 && (
             <Image
               source={imageNames.youArePlayer3Text}
-              resizeMode='contain'
+              resizeMode="contain"
               style={{
                 width: 240,
                 height: 50,
@@ -365,7 +361,7 @@ function WaitingRoomScreen({
           {sessionRef.current.playerNumber === 4 && (
             <Image
               source={imageNames.youArePlayer4Text}
-              resizeMode='contain'
+              resizeMode="contain"
               style={{
                 width: 240,
                 height: 50,
@@ -375,7 +371,7 @@ function WaitingRoomScreen({
           {sessionRef.current.playerNumber === 5 && (
             <Image
               source={imageNames.youArePlayer5Text}
-              resizeMode='contain'
+              resizeMode="contain"
               style={{
                 width: 240,
                 height: 50,
@@ -386,44 +382,44 @@ function WaitingRoomScreen({
         <View style={styles.waitingRoomTextContainer}>
           <Image
             source={imageNames.playersText}
-            resizeMode='contain'
+            resizeMode="contain"
             style={{
               width: 140,
               height: 40,
             }}
           />
         </View>
-        {sessionRef.current.players && sessionRef.current.players.map((player, idx) => {
-          return (
-            <PlayerCard
-              key={idx}
-              sessionRef={sessionRef}
-              playerNumber={idx + 1}
-              player={player}
-            />
-          );
-        })}
+        {sessionRef.current.players &&
+          sessionRef.current.players.map((player, idx) => {
+            return (
+              <PlayerCard
+                key={idx}
+                sessionRef={sessionRef}
+                playerNumber={idx + 1}
+                player={player}
+              />
+            );
+          })}
         {sessionRef.current.playerNumber === 1 && (
           <View style={styles.waitingRoomButtonContainer}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 socketRef.current?.emit(SocketTypes.eventRelay, {
                   sessionName: sessionRef.current.name,
                   playerNumber: sessionRef.current.playerNumber,
                   secret: sessionRef.current.secret,
-                  event: { type: 'started' },
+                  event: {type: 'started'},
                 });
               }}
               style={{
                 ...styles.waitingRoomButton,
                 width: isVertical ? width * 0.8 : width * 0.4,
               }}
-              underlayColor='rgba(255,255,255,0.25)'
-            >
+              underlayColor="rgba(255,255,255,0.25)">
               <Image
                 source={imageNames.startGameText}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 200,
                   height: 50,

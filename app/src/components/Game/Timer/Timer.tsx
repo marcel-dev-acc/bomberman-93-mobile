@@ -1,27 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {StyleSheet, View, Text} from 'react-native';
 
-import { GameText, Icon, Icons } from '../../General';
+import {GameText, Icon, Icons} from '../../General';
 import colors from '../../../constants/colors';
-import { useSelector } from 'react-redux';
-import { GameEventProps } from '../../../constants/types';
-import { DEBUG } from '../../../constants/app';
+import {useSelector} from 'react-redux';
+import {GameEventProps} from '../../../constants/types';
+import {DEBUG} from '../../../constants/app';
 
 type TimerProps = {
   baseTimer: number;
   dispatcher: (event: GameEventProps) => void;
 };
 
-function Timer({
-  baseTimer,
-  dispatcher,
-}: TimerProps): JSX.Element {
-
-  const debuggerEnabled: boolean = useSelector((state: any) => state.screens.debuggerEnabled);
+function Timer({baseTimer, dispatcher}: TimerProps): JSX.Element {
+  const debuggerEnabled: boolean = useSelector(
+    (state: any) => state.screens.debuggerEnabled,
+  );
 
   const [timerInner, setTimerInner] = useState(baseTimer);
   const timer = useRef(baseTimer);
@@ -34,7 +28,7 @@ function Timer({
           timer.current = timerInner - 1;
         } else {
           // Timer finished
-          dispatcher({ type: 'time-over' });
+          dispatcher({type: 'time-over'});
         }
       }, 1000);
     }
@@ -42,19 +36,13 @@ function Timer({
 
   return (
     <View style={styles.timerContainer}>
-      <Icon
-        name={Icons.timer}
-        color={colors.WHITE}
-        size={30}
-      />
-      <View style={{ marginLeft: 0, marginRight: 20, }}>
+      <Icon name={Icons.timer} color={colors.WHITE} size={30} />
+      <View style={{marginLeft: 0, marginRight: 20}}>
         <Text style={styles.timerText}>
-          {`${
-            Math.floor(timer.current / 60)
-          }:${
-            timer.current - Math.floor(timer.current / 60) * 60 > 9 ?
-              timer.current - Math.floor(timer.current / 60) * 60 :
-              `0${timer.current - Math.floor(timer.current / 60) * 60}`
+          {`${Math.floor(timer.current / 60)}:${
+            timer.current - Math.floor(timer.current / 60) * 60 > 9
+              ? timer.current - Math.floor(timer.current / 60) * 60
+              : `0${timer.current - Math.floor(timer.current / 60) * 60}`
           }`}
         </Text>
         {/* <GameText

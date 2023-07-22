@@ -1,17 +1,11 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  useWindowDimensions,
-} from 'react-native';
-import { getIsVertical } from '../../../constants/screen';
+import {View, StyleSheet, Image, useWindowDimensions} from 'react-native';
+import {getIsVertical} from '../../../constants/screen';
 import imageNames from '../../../constants/imageNames';
 import colors from '../../../constants/colors';
 
 function IntroImage(): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   return (
@@ -20,10 +14,9 @@ function IntroImage(): JSX.Element {
         ...styles.splashImageContainer,
         width: width,
         height: height,
-      }}
-    >
+      }}>
       <Image
-        resizeMode='contain'
+        resizeMode="contain"
         style={{
           height: isVertical ? width : height,
         }}

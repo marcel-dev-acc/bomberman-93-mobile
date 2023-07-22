@@ -1,9 +1,32 @@
-import imageNames from "../../../constants/imageNames";
+import imageNames from '../../../constants/imageNames';
 
 const alphabet = [
-  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-  'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-  's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
 ];
 
 const map = (char: string): any => {
@@ -153,11 +176,17 @@ const textMapper = (text: string): TextMap[] => {
   let textArr: TextMap[] = [];
   for (let i = 0; i < text.length; i++) {
     const char: string = text.substring(i, i + 1);
-    textArr = [...textArr, {
-      char: char,
-      isCapital: [...alphabet.map(letter => letter.toUpperCase()), 'd'].includes(char),
-      image: map(char),
-    }];
+    textArr = [
+      ...textArr,
+      {
+        char: char,
+        isCapital: [
+          ...alphabet.map(letter => letter.toUpperCase()),
+          'd',
+        ].includes(char),
+        image: map(char),
+      },
+    ];
   }
   return textArr;
 };

@@ -7,4 +7,4 @@ export interface AndroidGamepadProfile {
   downKey?: number;
   leftKey?: number;
   rightKey?: number;
-};
+}

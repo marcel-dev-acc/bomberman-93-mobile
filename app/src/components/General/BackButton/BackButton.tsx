@@ -4,7 +4,6 @@ import {
   Image,
   StyleSheet,
   TouchableHighlight,
-
 } from 'react-native';
 import imageNames from '../../../constants/imageNames';
 
@@ -12,19 +11,15 @@ type BackButtonProps = {
   onPress: (pressEvent: GestureResponderEvent) => void;
 };
 
-function BackButton({
-  onPress,
-}: BackButtonProps): JSX.Element {
-
+function BackButton({onPress}: BackButtonProps): JSX.Element {
   return (
     <TouchableHighlight
       onPress={onPress}
-      underlayColor='rgba(255,255,255,0.25)'
-      style={styles.backButtonIcon}
-    >
+      underlayColor="rgba(255,255,255,0.25)"
+      style={styles.backButtonIcon}>
       <Image
         source={imageNames.arrowLeftText}
-        resizeMode='contain'
+        resizeMode="contain"
         style={{
           width: 40,
           height: 40,

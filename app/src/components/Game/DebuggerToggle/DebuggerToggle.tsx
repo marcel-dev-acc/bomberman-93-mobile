@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,13 +6,15 @@ import {
   Text,
   GestureResponderEvent,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-import { toggleDebugger } from '../../../state/screens/reducer';
+import {toggleDebugger} from '../../../state/screens/reducer';
 import colors from '../../../constants/colors';
 
 function DebuggerToggle(): JSX.Element {
-  const debuggerEnabled: boolean = useSelector((state: any) => state.screens.debuggerEnabled);
+  const debuggerEnabled: boolean = useSelector(
+    (state: any) => state.screens.debuggerEnabled,
+  );
 
   const dispatch = useDispatch();
 
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   },
   debuggerToggleText: {
     marginLeft: 5,
-    color: colors.RED
+    color: colors.RED,
   },
 });
 

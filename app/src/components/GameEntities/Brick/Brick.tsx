@@ -1,13 +1,9 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 
 import colors from '../../../constants/colors';
-import { entitySizes } from '../../../constants/entitySizes';
-import { useSelector } from 'react-redux';
+import {entitySizes} from '../../../constants/entitySizes';
+import {useSelector} from 'react-redux';
 import imageNames from '../../../constants/imageNames';
 
 type BrickProps = {
@@ -16,14 +12,17 @@ type BrickProps = {
 };
 
 function Brick(props: BrickProps): JSX.Element {
+  const graphicsEnabled: boolean = useSelector(
+    (state: any) => state.screens.graphicsEnabled,
+  );
 
-  const graphicsEnabled: boolean = useSelector((state: any) => state.screens.graphicsEnabled);
-
-  const withoutGraphicsContainerStyle = graphicsEnabled ? {} : {
-    backgroundColor: colors.FIREBRICK_RED,
-    borderWidth: 1,
-    borderColor: colors.WHITE
-  };
+  const withoutGraphicsContainerStyle = graphicsEnabled
+    ? {}
+    : {
+        backgroundColor: colors.FIREBRICK_RED,
+        borderWidth: 1,
+        borderColor: colors.WHITE,
+      };
 
   return graphicsEnabled ? (
     <Image
@@ -35,13 +34,13 @@ function Brick(props: BrickProps): JSX.Element {
       source={imageNames.brick}
     />
   ) : (
-    <View style={{
-      ...styles.brickContainer,
-      ...withoutGraphicsContainerStyle,
-      top: props.top,
-      left: props.left,
-    }}>
-    </View>
+    <View
+      style={{
+        ...styles.brickContainer,
+        ...withoutGraphicsContainerStyle,
+        top: props.top,
+        left: props.left,
+      }}></View>
   );
 }
 

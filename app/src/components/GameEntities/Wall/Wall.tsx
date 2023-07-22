@@ -1,27 +1,22 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import colors from '../../../constants/colors';
-import { entitySizes } from '../../../constants/entitySizes';
+import {entitySizes} from '../../../constants/entitySizes';
 
 interface WallProps {
   left: number;
   top: number;
-};
+}
 
 function Wall(props: WallProps): JSX.Element {
-
   return (
     <View
       style={{
         ...styles.wallContainer,
         left: props.left,
         top: props.top,
-      }}
-    ></View>
+      }}></View>
   );
 }
 
@@ -32,7 +27,7 @@ const styles = StyleSheet.create({
     height: entitySizes.square.height,
     backgroundColor: colors.GREY,
     borderWidth: 1,
-    borderColor: colors.BLACK
+    borderColor: colors.BLACK,
   },
 });
 

@@ -60,6 +60,6 @@ enum SocketTypes {
   disconnectRelayPositiveResponse = 'disconnectRelayPositiveResponse',
   disconnectNegativeResponse = 'disconnectNegativeResponse',
   disconnectRelayNegativeResponse = 'disconnectRelayNegativeResponse',
-};
+}
 
 export default SocketTypes;

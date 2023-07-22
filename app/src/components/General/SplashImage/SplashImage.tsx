@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  useWindowDimensions,
-} from 'react-native';
-import { getIsVertical } from '../../../constants/screen';
+import {View, StyleSheet, Image, useWindowDimensions} from 'react-native';
+import {getIsVertical} from '../../../constants/screen';
 import imageNames from '../../../constants/imageNames';
 
 const {
@@ -19,9 +14,8 @@ type SplashImageProps = {
   includeHeader?: boolean;
 };
 
-function SplashImage({ includeHeader, }: SplashImageProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+function SplashImage({includeHeader}: SplashImageProps): JSX.Element {
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   const [splash, setSplash] = useState(splashVertical);
@@ -44,10 +38,9 @@ function SplashImage({ includeHeader, }: SplashImageProps): JSX.Element {
         ...styles.splashImageContainer,
         width: width,
         height: height,
-      }}
-    >
+      }}>
       <Image
-        resizeMode='contain'
+        resizeMode="contain"
         style={{
           height: height,
         }}

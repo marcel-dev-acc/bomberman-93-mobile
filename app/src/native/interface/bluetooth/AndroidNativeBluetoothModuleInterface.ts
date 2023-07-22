@@ -1,5 +1,5 @@
-import { NativeModules } from 'react-native';
-import { Device } from './types';
+import {NativeModules} from 'react-native';
+import {Device} from './types';
 
 export const isBluetoothModuleAvailable = async (): Promise<boolean> => {
   try {
@@ -7,12 +7,18 @@ export const isBluetoothModuleAvailable = async (): Promise<boolean> => {
       NativeModules.AndroidBluetoothModule &&
       NativeModules.AndroidBluetoothModule.isUsable
     ) {
-      const isAvailable: boolean = await NativeModules.AndroidBluetoothModule.isUsable();
+      const isAvailable: boolean =
+        await NativeModules.AndroidBluetoothModule.isUsable();
       return isAvailable;
     }
-    console.warn('[isBluetoothModuleAvailable] AndroidBluetoothModule NOT enabled');
+    console.warn(
+      '[isBluetoothModuleAvailable] AndroidBluetoothModule NOT enabled',
+    );
   } catch (err: any) {
-    console.error('[isBluetoothModuleAvailable] AndroidBluetoothModule has NOT loaded, Error:', err);
+    console.error(
+      '[isBluetoothModuleAvailable] AndroidBluetoothModule has NOT loaded, Error:',
+      err,
+    );
   }
   return false;
 };
@@ -23,14 +29,18 @@ export const isBluetoothEnabled = async (): Promise<boolean> => {
       NativeModules.AndroidBluetoothModule &&
       NativeModules.AndroidBluetoothModule.isBluetoothEnabled
     ) {
-      const isEnabled: boolean = await NativeModules.AndroidBluetoothModule.isBluetoothEnabled();
+      const isEnabled: boolean =
+        await NativeModules.AndroidBluetoothModule.isBluetoothEnabled();
       return isEnabled;
     }
     console.warn('[isBluetoothEnabled] AndroidBluetoothModule NOT enabled');
   } catch (err: any) {
-    console.error('[isBluetoothEnabled] AndroidBluetoothModule has NOT loaded, Error:', err);
+    console.error(
+      '[isBluetoothEnabled] AndroidBluetoothModule has NOT loaded, Error:',
+      err,
+    );
   }
-    return false;
+  return false;
 };
 
 export const isBluetoothOn = async (): Promise<boolean> => {
@@ -39,14 +49,18 @@ export const isBluetoothOn = async (): Promise<boolean> => {
       NativeModules.AndroidBluetoothModule &&
       NativeModules.AndroidBluetoothModule.isBluetoothOn
     ) {
-      const isOn: boolean = await NativeModules.AndroidBluetoothModule.isBluetoothOn();
+      const isOn: boolean =
+        await NativeModules.AndroidBluetoothModule.isBluetoothOn();
       return isOn;
     }
     console.warn('[isBluetoothEnabled] AndroidBluetoothModule NOT enabled');
   } catch (err: any) {
-    console.error('[isBluetoothEnabled] AndroidBluetoothModule has NOT loaded, Error:', err);
+    console.error(
+      '[isBluetoothEnabled] AndroidBluetoothModule has NOT loaded, Error:',
+      err,
+    );
   }
-    return false;
+  return false;
 };
 
 export const hasBluetoothPermission = async (): Promise<boolean> => {
@@ -55,12 +69,16 @@ export const hasBluetoothPermission = async (): Promise<boolean> => {
       NativeModules.AndroidBluetoothModule &&
       NativeModules.AndroidBluetoothModule.checkBluetoothConnectPermission
     ) {
-      const hasPermission: boolean = await NativeModules.AndroidBluetoothModule.checkBluetoothConnectPermission();
+      const hasPermission: boolean =
+        await NativeModules.AndroidBluetoothModule.checkBluetoothConnectPermission();
       return hasPermission;
     }
     console.warn('[hasBluetoothPermission] AndroidBluetoothModule NOT enabled');
   } catch (err: any) {
-    console.error('[hasBluetoothPermission] AndroidBluetoothModule has NOT loaded, Error:', err);
+    console.error(
+      '[hasBluetoothPermission] AndroidBluetoothModule has NOT loaded, Error:',
+      err,
+    );
   }
   return false;
 };
@@ -71,9 +89,12 @@ export const listConnectedBluetoothDevices = async (): Promise<Device[]> => {
       NativeModules.AndroidBluetoothModule &&
       NativeModules.AndroidBluetoothModule.listBluetoothDevices
     ) {
-      const devices: any[][] = await NativeModules.AndroidBluetoothModule.listBluetoothDevices();
+      const devices: any[][] =
+        await NativeModules.AndroidBluetoothModule.listBluetoothDevices();
       if (devices === null) {
-        console.warn('[listConnectedBluetoothDevices] Bluetooth permission not granted')
+        console.warn(
+          '[listConnectedBluetoothDevices] Bluetooth permission not granted',
+        );
         return [] as Device[];
       }
       return devices.map(device => {
@@ -83,9 +104,14 @@ export const listConnectedBluetoothDevices = async (): Promise<Device[]> => {
         };
       });
     }
-    console.warn('[listConnectedBluetoothDevices] AndroidBluetoothModule NOT enabled');
+    console.warn(
+      '[listConnectedBluetoothDevices] AndroidBluetoothModule NOT enabled',
+    );
   } catch (err: any) {
-    console.error('[listConnectedBluetoothDevices] AndroidBluetoothModule has NOT loaded, Error:', err);
+    console.error(
+      '[listConnectedBluetoothDevices] AndroidBluetoothModule has NOT loaded, Error:',
+      err,
+    );
   }
   return [] as Device[];
 };
@@ -96,16 +122,20 @@ export const listDeviceServices = async (address: string) => {
       NativeModules.AndroidBluetoothModule &&
       NativeModules.AndroidBluetoothModule.listDeviceServices
     ) {
-      const services: any[][] = await NativeModules.AndroidBluetoothModule.listBluetoothDevices();
+      const services: any[][] =
+        await NativeModules.AndroidBluetoothModule.listBluetoothDevices();
       if (services === null) {
-        console.warn('[listDeviceServices] Bluetooth permission not granted')
+        console.warn('[listDeviceServices] Bluetooth permission not granted');
         return [] as any[];
       }
       return services;
     }
     console.warn('[listDeviceServices] AndroidBluetoothModule NOT enabled');
   } catch (err: any) {
-    console.error('[listDeviceServices] AndroidBluetoothModule has NOT loaded, Error:', err);
+    console.error(
+      '[listDeviceServices] AndroidBluetoothModule has NOT loaded, Error:',
+      err,
+    );
   }
   return [] as any[];
 };

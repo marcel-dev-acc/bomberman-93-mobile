@@ -1,4 +1,3 @@
-
 import {
   ScrollView,
   StyleSheet,
@@ -6,15 +5,15 @@ import {
   TouchableHighlight,
   View,
   useWindowDimensions,
-} from "react-native";
+} from 'react-native';
 
-import sharedStyles from "../SharedStyles";
-import { Icon, Icons } from "../../../components/General";
-import { AndroidGamepadEvent } from "../../../native/interface";
-import colors from "../../../constants/colors";
-import { AndroidGamepadProfile } from "../types";
-import { getIsVertical } from "../../../constants/screen";
-import { Direction } from "../../../constants/types";
+import sharedStyles from '../SharedStyles';
+import {Icon, Icons} from '../../../components/General';
+import {AndroidGamepadEvent} from '../../../native/interface';
+import colors from '../../../constants/colors';
+import {AndroidGamepadProfile} from '../types';
+import {getIsVertical} from '../../../constants/screen';
+import {Direction} from '../../../constants/types';
 
 type KeyToProfileModalProps = {
   setShowKeyToProfileModal: (showKeyToProfileModal: boolean) => void;
@@ -29,8 +28,7 @@ function KeyToProfileModal({
   activeEvent,
   handleKeySettingForProfile,
 }: KeyToProfileModalProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   return (
@@ -39,27 +37,20 @@ function KeyToProfileModal({
         ...sharedStyles.remoteControlDeviceModal,
         width: width,
         height: width,
-      }}
-    >
+      }}>
       <View
         style={{
           ...sharedStyles.remoteControlDeviceModalContainer,
           width: width * 0.9,
-        }}
-      >
+        }}>
         <TouchableHighlight
-          onPress={(pressEvent) => {
+          onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) return;
             setShowKeyToProfileModal(false);
           }}
-          underlayColor='rgba(255,255,255,0.25)'
-          style={sharedStyles.remoteControlsIcon}
-        >
-          <Icon
-            name={Icons.close}
-            size={30}
-            color={colors.WHITE}
-          />
+          underlayColor="rgba(255,255,255,0.25)"
+          style={sharedStyles.remoteControlsIcon}>
+          <Icon name={Icons.close} size={30} color={colors.WHITE} />
         </TouchableHighlight>
         <View style={sharedStyles.remoteControlsTextContainer}>
           <Text style={sharedStyles.remoteControlsHeaderText}>
@@ -70,10 +61,13 @@ function KeyToProfileModal({
           style={{
             ...sharedStyles.remoteControlsTextContainer,
             marginTop: 10,
-          }}
-        >
+          }}>
           <Text style={sharedStyles.remoteControlsText}>
-            {`Profile ${displayProfiles.filter((profile) => profile.deviceId === activeEvent.deviceId)[0].profileName}`}
+            {`Profile ${
+              displayProfiles.filter(
+                profile => profile.deviceId === activeEvent.deviceId,
+              )[0].profileName
+            }`}
           </Text>
         </View>
         <View
@@ -83,8 +77,7 @@ function KeyToProfileModal({
             justifyContent: 'space-between',
             marginTop: 10,
             paddingHorizontal: 20,
-          }}
-        >
+          }}>
           <Text style={sharedStyles.remoteControlsText}>
             {`KeyCode ${activeEvent.keyCode}`}
           </Text>
@@ -98,8 +91,7 @@ function KeyToProfileModal({
             width: width * 0.9,
             height: isVertical ? 300 : 160,
           }}
-          contentContainerStyle={sharedStyles.remoteControlsTextContainer}
-        >
+          contentContainerStyle={sharedStyles.remoteControlsTextContainer}>
           <View
             style={{
               width: width * 0.75,
@@ -107,27 +99,19 @@ function KeyToProfileModal({
               borderTopColor: colors.WHITE,
               marginTop: 5,
               paddingVertical: 5,
-            }}
-          >
+            }}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 handleKeySettingForProfile(Direction.up);
               }}
-              underlayColor='rgba(255,255,255,0.25)'
+              underlayColor="rgba(255,255,255,0.25)"
               style={{
                 borderRadius: 5,
-              }}
-            >
+              }}>
               <View style={styles.remoteControlsArrowInputContainer}>
-                <Icon
-                  name={Icons.arrowUp}
-                  color={colors.WHITE}
-                  size={30}
-                />
-                <Text style={sharedStyles.remoteControlsText}>
-                  Up
-                </Text>
+                <Icon name={Icons.arrowUp} color={colors.WHITE} size={30} />
+                <Text style={sharedStyles.remoteControlsText}>Up</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -138,27 +122,19 @@ function KeyToProfileModal({
               borderTopColor: colors.WHITE,
               marginTop: 5,
               paddingVertical: 5,
-            }}
-          >
+            }}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 handleKeySettingForProfile(Direction.down);
               }}
-              underlayColor='rgba(255,255,255,0.25)'
+              underlayColor="rgba(255,255,255,0.25)"
               style={{
                 borderRadius: 5,
-              }}
-            >
+              }}>
               <View style={styles.remoteControlsArrowInputContainer}>
-                <Icon
-                  name={Icons.arrowDown}
-                  color={colors.WHITE}
-                  size={30}
-                />
-                <Text style={sharedStyles.remoteControlsText}>
-                  Down
-                </Text>
+                <Icon name={Icons.arrowDown} color={colors.WHITE} size={30} />
+                <Text style={sharedStyles.remoteControlsText}>Down</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -169,27 +145,19 @@ function KeyToProfileModal({
               borderTopColor: colors.WHITE,
               marginTop: 5,
               paddingVertical: 5,
-            }}
-          >
+            }}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 handleKeySettingForProfile(Direction.left);
               }}
-              underlayColor='rgba(255,255,255,0.25)'
+              underlayColor="rgba(255,255,255,0.25)"
               style={{
                 borderRadius: 5,
-              }}
-            >
+              }}>
               <View style={styles.remoteControlsArrowInputContainer}>
-                <Icon
-                  name={Icons.arrowLeft}
-                  color={colors.WHITE}
-                  size={30}
-                />
-                <Text style={sharedStyles.remoteControlsText}>
-                  Left
-                </Text>
+                <Icon name={Icons.arrowLeft} color={colors.WHITE} size={30} />
+                <Text style={sharedStyles.remoteControlsText}>Left</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -200,27 +168,19 @@ function KeyToProfileModal({
               borderTopColor: colors.WHITE,
               marginTop: 5,
               paddingVertical: 5,
-            }}
-          >
+            }}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 handleKeySettingForProfile(Direction.right);
               }}
-              underlayColor='rgba(255,255,255,0.25)'
+              underlayColor="rgba(255,255,255,0.25)"
               style={{
                 borderRadius: 5,
-              }}
-            >
+              }}>
               <View style={styles.remoteControlsArrowInputContainer}>
-                <Icon
-                  name={Icons.arrowRight}
-                  color={colors.WHITE}
-                  size={30}
-                />
-                <Text style={sharedStyles.remoteControlsText}>
-                  Right
-                </Text>
+                <Icon name={Icons.arrowRight} color={colors.WHITE} size={30} />
+                <Text style={sharedStyles.remoteControlsText}>Right</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -231,27 +191,19 @@ function KeyToProfileModal({
               borderTopColor: colors.WHITE,
               marginTop: 5,
               paddingVertical: 5,
-            }}
-          >
+            }}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 handleKeySettingForProfile('bomb');
               }}
-              underlayColor='rgba(255,255,255,0.25)'
+              underlayColor="rgba(255,255,255,0.25)"
               style={{
                 borderRadius: 5,
-              }}
-            >
+              }}>
               <View style={styles.remoteControlsArrowInputContainer}>
-                <Icon
-                  name={Icons.bomb}
-                  color={colors.WHITE}
-                  size={30}
-                />
-                <Text style={sharedStyles.remoteControlsText}>
-                  Bomb
-                </Text>
+                <Icon name={Icons.bomb} color={colors.WHITE} size={30} />
+                <Text style={sharedStyles.remoteControlsText}>Bomb</Text>
               </View>
             </TouchableHighlight>
           </View>

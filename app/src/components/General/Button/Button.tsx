@@ -23,24 +23,24 @@ function Button({
   onPress,
   text,
 }: ButtonProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
 
   return (
     <TouchableHighlight
       onPress={onPress}
-      style={{ borderRadius: 5, }}
-      underlayColor='rgba(255,255,255,0.25)'
-    >
-      <View style={{
-        ...styles.buttonContainer,
-        width: width * 0.8,
-        ...customButtonStyle,
-      }}>
-        <Text style={{
-          ...styles.buttonText,
-          ...customTextStyle,
+      style={{borderRadius: 5}}
+      underlayColor="rgba(255,255,255,0.25)">
+      <View
+        style={{
+          ...styles.buttonContainer,
+          width: width * 0.8,
+          ...customButtonStyle,
         }}>
+        <Text
+          style={{
+            ...styles.buttonText,
+            ...customTextStyle,
+          }}>
           {text}
         </Text>
       </View>

@@ -9,12 +9,10 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 
 import colors from '../../../constants/colors';
-import { UIError } from '../../../state/errors/reducer';
+import {UIError} from '../../../state/errors/reducer';
 import Icon from '../Icon/Icon';
-import { Icons } from '../Icon/iconMap';
-import { removeError } from '../../../state/errors/reducer';
-
-
+import {Icons} from '../Icon/iconMap';
+import {removeError} from '../../../state/errors/reducer';
 
 function ErrorsContainer(): JSX.Element {
   const errors: UIError[] = useSelector((state: any) => state.errors.errors);
@@ -23,47 +21,46 @@ function ErrorsContainer(): JSX.Element {
 
   return (
     <View style={styles.errorsContainer}>
-      {errors.length > 0 && errors.map((error, idx) => {
-        return (
-          <View
-            key={idx}
-            style={{
-              ...styles.errorContainer,
-              width: screenWidth * 0.9,
-            }}
-          >
-            <View style={{
-              ...styles.errorCol,
-              flex: 9
-            }}>
-              <Text style={styles.errorTitle}>{error.title} ({idx + 1})</Text>
-              <Text style={styles.errorText}>{error.value}</Text>
-            </View>
-            <View style={{
-              ...styles.errorCol,
-              ...styles.errorColEnd,
-              flex: 1,
-            }}>
-              <TouchableHighlight
-                onPress={(pressEvent) => {
-                  if (pressEvent.nativeEvent.target === undefined) return;
-                  dispatch(removeError(idx));
-                }}
-                underlayColor='rgba(0,0,0,0.1)'
+      {errors.length > 0 &&
+        errors.map((error, idx) => {
+          return (
+            <View
+              key={idx}
+              style={{
+                ...styles.errorContainer,
+                width: screenWidth * 0.9,
+              }}>
+              <View
                 style={{
-                  borderRadius: 100,
-                }}
-              >
-                <Icon
-                  name={Icons.close}
-                  size={30}
-                  color={colors.WHITE}
-                />
-              </TouchableHighlight>
+                  ...styles.errorCol,
+                  flex: 9,
+                }}>
+                <Text style={styles.errorTitle}>
+                  {error.title} ({idx + 1})
+                </Text>
+                <Text style={styles.errorText}>{error.value}</Text>
+              </View>
+              <View
+                style={{
+                  ...styles.errorCol,
+                  ...styles.errorColEnd,
+                  flex: 1,
+                }}>
+                <TouchableHighlight
+                  onPress={pressEvent => {
+                    if (pressEvent.nativeEvent.target === undefined) return;
+                    dispatch(removeError(idx));
+                  }}
+                  underlayColor="rgba(0,0,0,0.1)"
+                  style={{
+                    borderRadius: 100,
+                  }}>
+                  <Icon name={Icons.close} size={30} color={colors.WHITE} />
+                </TouchableHighlight>
+              </View>
             </View>
-          </View>
-        );
-      })}
+          );
+        })}
     </View>
   );
 }

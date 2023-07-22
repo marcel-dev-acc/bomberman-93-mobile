@@ -1,21 +1,14 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
-import { Icon, Icons } from '../../General';
+import {StyleSheet, View} from 'react-native';
+import {Icon, Icons} from '../../General';
 
 import colors from '../../../constants/colors';
-
 
 type BombsCountProps = {
   bombsCount: number;
 };
 
-function BombsCount({
-  bombsCount,
-}: BombsCountProps): JSX.Element {
-
+function BombsCount({bombsCount}: BombsCountProps): JSX.Element {
   let bombsArray: number[] = [];
   for (let i = 0; i < bombsCount; i++) {
     bombsArray.push(i + 1);

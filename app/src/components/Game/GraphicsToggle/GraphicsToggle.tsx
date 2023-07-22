@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,13 +6,15 @@ import {
   Text,
   GestureResponderEvent,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-import { toggleGraphics } from '../../../state/screens/reducer';
+import {toggleGraphics} from '../../../state/screens/reducer';
 import colors from '../../../constants/colors';
 
 function GraphicsToggle(): JSX.Element {
-  const graphicsEnabled: boolean = useSelector((state: any) => state.screens.graphicsEnabled);
+  const graphicsEnabled: boolean = useSelector(
+    (state: any) => state.screens.graphicsEnabled,
+  );
 
   const dispatch = useDispatch();
 
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   },
   graphicsToggleText: {
     marginLeft: 5,
-    color: colors.RED
+    color: colors.RED,
   },
 });
 

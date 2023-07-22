@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import colors from '../../../constants/colors';
-import { entitySizes } from '../../../constants/entitySizes';
+import {entitySizes} from '../../../constants/entitySizes';
 
 type PillarProps = {
   top: number;
@@ -19,8 +16,7 @@ function Pillar(props: any): JSX.Element {
         ...styles.wallContainer,
         left: props.left,
         top: props.top,
-      }}
-    ></View>
+      }}></View>
   );
 }
 

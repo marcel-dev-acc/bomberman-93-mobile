@@ -1,13 +1,8 @@
-import {
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from "react-native";
-import sharedStyles from "../SharedStyles";
-import { Button, GameText } from "../../../components/General";
-import { AndroidGamepadEvent } from "../../../native/interface";
-import { getIsVertical } from "../../../constants/screen";
+import {ScrollView, Text, View, useWindowDimensions} from 'react-native';
+import sharedStyles from '../SharedStyles';
+import {Button, GameText} from '../../../components/General';
+import {AndroidGamepadEvent} from '../../../native/interface';
+import {getIsVertical} from '../../../constants/screen';
 
 type ScrollViewKeysProps = {
   displayedEvents: AndroidGamepadEvent[];
@@ -20,19 +15,13 @@ function ScrollViewKeys({
   setActiveEvent,
   setShowKeyToProfileModal,
 }: ScrollViewKeysProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   return (
-    <ScrollView
-      style={sharedStyles.remoteControlsScrollContainer}
-    >
+    <ScrollView style={sharedStyles.remoteControlsScrollContainer}>
       {displayedEvents.map((event, idx) => (
-        <View
-          key={idx}
-          style={sharedStyles.remoteControlsScrollViewItem}
-        >
+        <View key={idx} style={sharedStyles.remoteControlsScrollViewItem}>
           {/* <Text style={sharedStyles.remoteControlsScrollViewItemText}>
             {`Device ID ${event.deviceId}`}
           </Text> */}
@@ -42,7 +31,7 @@ function ScrollViewKeys({
           />
           <Button
             text={`Log KeyCode ${event.keyCode}`}
-            onPress={(pressEvent) => {
+            onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) return;
               setActiveEvent(event);
               setShowKeyToProfileModal(true);
@@ -54,7 +43,7 @@ function ScrollViewKeys({
           />
         </View>
       ))}
-    </ScrollView>  
+    </ScrollView>
   );
 }
 

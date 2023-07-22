@@ -6,13 +6,13 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 
-import { IntroImage, ServerStatus, SplashImage } from '../../components/General';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
-import { getIsVertical } from '../../constants/screen';
+import {IntroImage, ServerStatus, SplashImage} from '../../components/General';
+import {ScreenType, changeScreen} from '../../state/screens/reducer';
+import {getIsVertical} from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
-import { DEBUG } from '../../constants/app';
+import {DEBUG} from '../../constants/app';
 
 type WelcomeScreenProps = {
   showIntro: boolean;
@@ -23,8 +23,7 @@ function WelcomeScreen({
   showIntro,
   serverStatus,
 }: WelcomeScreenProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   const dispatch = useDispatch();
@@ -34,16 +33,17 @@ function WelcomeScreen({
       style={{
         ...styles.welcomeContainer,
         width: width,
-        justifyContent: !isVertical && serverStatus !== ServerStatus.unregistered ?
-          'flex-end' : 'center',
-      }}
-    >
+        justifyContent:
+          !isVertical && serverStatus !== ServerStatus.unregistered
+            ? 'flex-end'
+            : 'center',
+      }}>
       {!DEBUG && showIntro && <IntroImage />}
       <SplashImage includeHeader />
       <View style={styles.forEducationalPurposesOnlyContainer}>
         <Image
           source={imageNames.forEducationalPurposesOnlyText}
-          resizeMode='contain'
+          resizeMode="contain"
           style={{
             width: isVertical ? 400 : 480,
             height: 30,
@@ -55,10 +55,9 @@ function WelcomeScreen({
           style={{
             ...styles.welcomeButtonContainer,
             marginTop: isVertical ? 0 : 40,
-          }}
-        >
+          }}>
           <TouchableHighlight
-            onPress={(pressEvent) => {
+            onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) return;
               dispatch(changeScreen(ScreenType.register));
             }}
@@ -66,11 +65,10 @@ function WelcomeScreen({
               ...styles.welcomeButton,
               width: isVertical ? width * 0.8 : width * 0.5,
             }}
-            underlayColor='rgba(255,255,255,0.25)'
-          >
+            underlayColor="rgba(255,255,255,0.25)">
             <Image
               source={imageNames.registerText}
-              resizeMode='contain'
+              resizeMode="contain"
               style={{
                 width: 240,
                 height: 40,
@@ -83,7 +81,7 @@ function WelcomeScreen({
         <View>
           <View style={styles.welcomeButtonContainer}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 dispatch(changeScreen(ScreenType.createSession));
               }}
@@ -91,11 +89,10 @@ function WelcomeScreen({
                 ...styles.welcomeButton,
                 width: isVertical ? width * 0.8 : width * 0.5,
               }}
-              underlayColor='rgba(255,255,255,0.25)'
-            >
+              underlayColor="rgba(255,255,255,0.25)">
               <Image
                 source={imageNames.createSessionText}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 260,
                   height: 50,
@@ -105,7 +102,7 @@ function WelcomeScreen({
           </View>
           <View style={styles.welcomeButtonContainer}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 dispatch(changeScreen(ScreenType.joinSession));
               }}
@@ -113,11 +110,10 @@ function WelcomeScreen({
                 ...styles.welcomeButton,
                 width: isVertical ? width * 0.8 : width * 0.5,
               }}
-              underlayColor='rgba(255,255,255,0.25)'
-            >
+              underlayColor="rgba(255,255,255,0.25)">
               <Image
                 source={imageNames.joinSessionText}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 210,
                   height: 50,
@@ -136,7 +132,7 @@ function WelcomeScreen({
           </View> */}
           <View style={styles.welcomeButtonContainer}>
             <TouchableHighlight
-              onPress={(pressEvent) => {
+              onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) return;
                 dispatch(changeScreen(ScreenType.settings));
               }}
@@ -144,11 +140,10 @@ function WelcomeScreen({
                 ...styles.welcomeButton,
                 width: isVertical ? width * 0.8 : width * 0.5,
               }}
-              underlayColor='rgba(255,255,255,0.25)'
-            >
+              underlayColor="rgba(255,255,255,0.25)">
               <Image
                 source={imageNames.settingsText}
-                resizeMode='contain'
+                resizeMode="contain"
                 style={{
                   width: 135,
                   height: 50,

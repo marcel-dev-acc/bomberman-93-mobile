@@ -1,11 +1,9 @@
-import { Socket } from 'socket.io-client';
-import {
-  AndroidGamepadEvent,
-} from '../../native/interface';
-import { Session } from '../../types/session';
-import { Direction, GameEventProps } from '../../constants/types';
+import {Socket} from 'socket.io-client';
+import {AndroidGamepadEvent} from '../../native/interface';
+import {Session} from '../../types/session';
+import {Direction, GameEventProps} from '../../types/serverTypes';
 import SocketTypes from '../../types/socketTypes';
-import { AndroidGamepadProfile } from './types';
+import {AndroidGamepadProfile} from './types';
 
 const eventCatcher = (
   event: AndroidGamepadEvent,

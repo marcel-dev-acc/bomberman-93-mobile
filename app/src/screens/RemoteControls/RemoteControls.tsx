@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   DeviceEventEmitter,
   Platform,
@@ -10,23 +10,20 @@ import {
   Image,
 } from 'react-native';
 
-import { Direction } from '../../constants/types';
+import {Direction} from '../../constants/types';
 import colors from '../../constants/colors';
-import {
-  BackButton,
-  SplashImage
-} from '../../components/General';
+import {BackButton, SplashImage} from '../../components/General';
 import {
   isGamepadModuleAvailableOnAndroid,
   AndroidGamepadEvent,
 } from '../../native/interface';
-import { useDispatch } from 'react-redux';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
+import {useDispatch} from 'react-redux';
+import {ScreenType, changeScreen} from '../../state/screens/reducer';
 import imageNames from '../../constants/imageNames';
-import { StorageKeys, fetchData, storeData } from '../../utils/localStorage';
-import { Socket } from 'socket.io-client';
-import type { Session } from '../../types/session';
-import { AndroidGamepadProfile } from './types';
+import {StorageKeys, fetchData, storeData} from '../../utils/localStorage';
+import {Socket} from 'socket.io-client';
+import type {Session} from '../../types/session';
+import {AndroidGamepadProfile} from './types';
 import eventCatcher from './eventCatcher';
 import ScrollViewProfiles from './components/ScrollViewProfiles';
 import ScrollViewDevices from './components/ScrollViewDevices';
@@ -34,9 +31,9 @@ import ScrollViewKeys from './components/ScrollViewKeys';
 import DeviceToProfileModal from './components/DeviceToProfileModal';
 import KeyToProfileModal from './components/KeyToProfileModal';
 import sharedStyles from './SharedStyles';
-import TabNavigation, { Tabs } from './components/TabNavigation';
-import { addError } from '../../state/errors/reducer';
-import { getIsVertical } from '../../constants/screen';
+import TabNavigation, {Tabs} from './components/TabNavigation';
+import {addError} from '../../state/errors/reducer';
+import {getIsVertical} from '../../constants/screen';
 
 type RemoteControlsScreenProps = {
   socketRef: React.MutableRefObject<Socket>;
@@ -47,15 +44,15 @@ function RemoteControlsScreen({
   socketRef,
   sessionRef,
 }: RemoteControlsScreenProps): JSX.Element {
-
-  const { height, width } = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const isVertical = getIsVertical(width, height);
 
   const dispatch = useDispatch();
 
   const handleIsGamepadModuleAvailable = async () => {
     if (Platform.OS === 'android') {
-      const gamepadIsAvailable: boolean = await isGamepadModuleAvailableOnAndroid();
+      const gamepadIsAvailable: boolean =
+        await isGamepadModuleAvailableOnAndroid();
       setGamepadModuleIsAvailable(gamepadIsAvailable);
     }
   };
@@ -65,22 +62,26 @@ function RemoteControlsScreen({
     if (profiles) setDisplayProfiles(JSON.parse(profiles));
   };
 
-  const handleKeySettingForProfile = (
-    directionOrBomb: Direction | 'bomb',
-  ) => {
+  const handleKeySettingForProfile = (directionOrBomb: Direction | 'bomb') => {
     if (!activeEvent) {
-      dispatch(addError({
-        title: 'Warning',
-        value: 'No active event set, please try again',
-      }));
+      dispatch(
+        addError({
+          title: 'Warning',
+          value: 'No active event set, please try again',
+        }),
+      );
       return;
     }
-    const matchingProfiles = displayProfiles.filter((profile) => profile.deviceId === activeEvent.deviceId);
+    const matchingProfiles = displayProfiles.filter(
+      profile => profile.deviceId === activeEvent.deviceId,
+    );
     if (matchingProfiles.length === 0) {
-      dispatch(addError({
-        title: 'Warning',
-        value: 'No matching profiles',
-      }));
+      dispatch(
+        addError({
+          title: 'Warning',
+          value: 'No matching profiles',
+        }),
+      );
       return;
     }
     let activeProfile = matchingProfiles[0];
@@ -103,31 +104,48 @@ function RemoteControlsScreen({
     }
     const currentProfiles = displayProfiles;
     setDisplayProfiles([
-      ...currentProfiles.filter((profile) => profile.deviceId !== activeEvent.deviceId),
+      ...currentProfiles.filter(
+        profile => profile.deviceId !== activeEvent.deviceId,
+      ),
       activeProfile,
     ]);
-    storeData(StorageKeys.profiles, JSON.stringify([
-      ...currentProfiles.filter((profile) => profile.deviceId !== activeEvent.deviceId),
-      activeProfile,
-    ]));
+    storeData(
+      StorageKeys.profiles,
+      JSON.stringify([
+        ...currentProfiles.filter(
+          profile => profile.deviceId !== activeEvent.deviceId,
+        ),
+        activeProfile,
+      ]),
+    );
     setActiveEvent(undefined);
     setActiveProfileName('');
     setShowKeyToProfileModal(false);
     setActiveTab(Tabs.profiles);
   };
 
-  const [showDeviceToProfileModal, setShowDeviceToProfileModal] = useState(false);
+  const [showDeviceToProfileModal, setShowDeviceToProfileModal] =
+    useState(false);
   const [showKeyToProfileModal, setShowKeyToProfileModal] = useState(false);
-  const [gamepadModuleIsAvailable, setGamepadModuleIsAvailable] = useState(false);
+  const [gamepadModuleIsAvailable, setGamepadModuleIsAvailable] =
+    useState(false);
   const [gamepadIsEnabled, setGamepadIsEnabled] = useState(true);
   const [activeTab, setActiveTab] = useState(Tabs.profiles);
-  const [activeEvent, setActiveEvent] = useState(undefined as undefined | AndroidGamepadEvent);
+  const [activeEvent, setActiveEvent] = useState(
+    undefined as undefined | AndroidGamepadEvent,
+  );
   const [activeProfileName, setActiveProfileName] = useState('');
-  const [displayProfiles, setDisplayProfiles] = useState([] as AndroidGamepadProfile[]);
-  const [displayedEvents, setDisplayedEvents] = useState([] as AndroidGamepadEvent[]);
+  const [displayProfiles, setDisplayProfiles] = useState(
+    [] as AndroidGamepadProfile[],
+  );
+  const [displayedEvents, setDisplayedEvents] = useState(
+    [] as AndroidGamepadEvent[],
+  );
   const [displayDeviceIds, setDisplayDevicesIds] = useState([] as number[]);
 
-  const activeGamepadProfileRef = useRef(undefined as AndroidGamepadProfile | undefined);
+  const activeGamepadProfileRef = useRef(
+    undefined as AndroidGamepadProfile | undefined,
+  );
   const displayEventsRef = useRef(displayedEvents);
 
   const buttonReleased = useRef(false);
@@ -138,20 +156,10 @@ function RemoteControlsScreen({
     activeGamepadProfile: AndroidGamepadProfile,
   ) => {
     setTimeout(() => {
-      eventCatcher(
-        event,
-        session,
-        socketRef,
-        activeGamepadProfile,
-      );
+      eventCatcher(event, session, socketRef, activeGamepadProfile);
       // Check if loop needs to re-initialised
       if (!buttonReleased) {
-        buttonLooper(
-          event,
-          session,
-          socketRef,
-          activeGamepadProfile,
-        );
+        buttonLooper(event, session, socketRef, activeGamepadProfile);
       }
     }, 500);
   };
@@ -163,30 +171,34 @@ function RemoteControlsScreen({
     // Add listener for events
     if (gamepadIsEnabled && gamepadModuleIsAvailable) {
       if (Platform.OS === 'android') {
-        DeviceEventEmitter.addListener('onGamepadKeyEvent', (event: AndroidGamepadEvent) => {
-          try {
-            // Set the events to display
-            const currentDisplayEvents = [...displayEventsRef.current, event];
-            displayEventsRef.current = currentDisplayEvents;
-            setDisplayedEvents(currentDisplayEvents);
-            
-            // Define a unique list of device id's to show
-            if (
-              !(displayDeviceIds.some(id => id === event.deviceId))
-              ) setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
-            
-            // Emit the event to the game server
-            if (event.deviceId === activeGamepadProfileRef.current?.deviceId) {
-              buttonReleased.current = event.action === 1;
-              buttonLooper(
-                event,
-                sessionRef.current,
-                socketRef,
-                activeGamepadProfileRef.current,
-              );
-            }
-          } catch (err: any) {}
-        });
+        DeviceEventEmitter.addListener(
+          'onGamepadKeyEvent',
+          (event: AndroidGamepadEvent) => {
+            try {
+              // Set the events to display
+              const currentDisplayEvents = [...displayEventsRef.current, event];
+              displayEventsRef.current = currentDisplayEvents;
+              setDisplayedEvents(currentDisplayEvents);
+
+              // Define a unique list of device id's to show
+              if (!displayDeviceIds.some(id => id === event.deviceId))
+                setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
+
+              // Emit the event to the game server
+              if (
+                event.deviceId === activeGamepadProfileRef.current?.deviceId
+              ) {
+                buttonReleased.current = event.action === 1;
+                buttonLooper(
+                  event,
+                  sessionRef.current,
+                  socketRef,
+                  activeGamepadProfileRef.current,
+                );
+              }
+            } catch (err: any) {}
+          },
+        );
       }
     }
   }, [gamepadModuleIsAvailable, gamepadIsEnabled]);
@@ -196,11 +208,10 @@ function RemoteControlsScreen({
       style={{
         ...styles.remoteControlsContainer,
         width: width,
-      }}
-    >
+      }}>
       <SplashImage />
       <BackButton
-        onPress={(pressEvent) => {
+        onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) return;
           dispatch(changeScreen(ScreenType.settings));
         }}
@@ -210,8 +221,7 @@ function RemoteControlsScreen({
           position: 'absolute',
           top: 15,
           right: 5,
-        }}
-      >
+        }}>
         <View style={sharedStyles.remoteControlsEnableControls}>
           <Switch
             trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -222,7 +232,7 @@ function RemoteControlsScreen({
           />
           <Image
             source={imageNames.enableGamepadsText}
-            resizeMode='contain'
+            resizeMode="contain"
             style={{
               width: 180,
               height: 25,
@@ -235,11 +245,10 @@ function RemoteControlsScreen({
         style={{
           ...styles.remoteControlsHeaderContainer,
           marginTop: isVertical ? 60 : 30,
-        }}
-      >
+        }}>
         <Image
           source={imageNames.controlsSettingsText}
-          resizeMode='contain'
+          resizeMode="contain"
           style={{
             width: 280,
             height: 40,
@@ -250,13 +259,13 @@ function RemoteControlsScreen({
         style={{
           ...sharedStyles.remoteControlsTextContainer,
           marginBottom: 10,
-        }}
-      >
+        }}>
         <Text style={sharedStyles.remoteControlsText}>
-          {!gamepadIsEnabled ?
-            'Gamepad disabled' :
-            gamepadModuleIsAvailable ? 'Gamepad module is available' : 'Could not find the gamepad module'
-          }
+          {!gamepadIsEnabled
+            ? 'Gamepad disabled'
+            : gamepadModuleIsAvailable
+            ? 'Gamepad module is available'
+            : 'Could not find the gamepad module'}
         </Text>
       </View>
       <TabNavigation

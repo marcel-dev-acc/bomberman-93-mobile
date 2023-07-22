@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import colors from "../../constants/colors";
+import {StyleSheet} from 'react-native';
+import colors from '../../constants/colors';
 
 const sharedStyles = StyleSheet.create({
   remoteControlsTabButton: {
@@ -55,7 +55,7 @@ const sharedStyles = StyleSheet.create({
     left: 0,
     top: 0,
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.8)'
+    backgroundColor: 'rgba(0,0,0,0.8)',
   },
   remoteControlDeviceModalContainer: {
     backgroundColor: colors.DARK_BLUE,

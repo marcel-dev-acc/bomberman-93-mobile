@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet, View, TouchableHighlight} from 'react-native';
 import {
-  StyleSheet,
-  View,
-  TouchableHighlight,
-} from 'react-native';
-import { GameLoop, GameLoopUpdateEventOptionType } from 'react-native-game-engine';
-import { useSelector } from 'react-redux';
-import { Icon, Icons } from '../../General';
+  GameLoop,
+  GameLoopUpdateEventOptionType,
+} from 'react-native-game-engine';
+import {useSelector} from 'react-redux';
+import {Icon, Icons} from '../../General';
 
 import {
   PerkComp,
@@ -16,15 +15,17 @@ import {
   FireComp,
 } from '../../GameEntities';
 import colors from '../../../constants/colors';
-import { ComponentType } from '../../../constants/types';
-import { GameEventProps, SessionDetails } from '../../../types/serverTypes';
-import { dimensions } from '../../../constants/screen';
-import { DEBUG } from '../../../constants/app';
-import { Socket } from 'socket.io-client';
+import {ComponentType} from '../../../constants/types';
+import {GameEventProps, SessionDetails} from '../../../types/serverTypes';
+import {dimensions} from '../../../constants/screen';
+import {DEBUG} from '../../../constants/app';
+import {Socket} from 'socket.io-client';
 import SocketTypes from '../../../types/socketTypes';
-import type { Session } from '../../../types/session';
-import { NegativeResponse, TickGameServerResponse } from '../../../types/serverTypes';
-
+import type {Session} from '../../../types/session';
+import {
+  NegativeResponse,
+  TickGameServerResponse,
+} from '../../../types/serverTypes';
 
 type LoopProps = {
   socketRef: React.MutableRefObject<Socket | undefined>;
@@ -45,8 +46,9 @@ function Loop({
   handleReset,
   dispatcher,
 }: LoopProps): JSX.Element {
-
-  const debuggerEnabled: boolean = useSelector((state: any) => state.screens.debuggerEnabled);
+  const debuggerEnabled: boolean = useSelector(
+    (state: any) => state.screens.debuggerEnabled,
+  );
 
   const updateHandler = (args: GameLoopUpdateEventOptionType) => {
     // Disable updateHandler loop if debugger is enabled
@@ -64,52 +66,58 @@ function Loop({
 
   const engine = useRef(null as any);
   const bombCountRef = useRef(1);
-  
+
   const [volatileEntities, setVolatileEntities] = useState(entities);
 
   useEffect(() => {
     if (Object.keys(entities).length > 0) setVolatileEntities(entities);
   }, [entities]);
 
-  socketRef.current?.on(SocketTypes.tickRelayPositiveResponse, (response: TickGameServerResponse) => {
-    if (
-      DEBUG &&
-      response.data.sessionName !== sessionRef.current.name
-    ) console.warn(`[${SocketTypes.tickRelayPositiveResponse}]`, JSON.stringify(response.data), JSON.stringify(sessionRef.current));
-    // Check if incoming response is for the player
-    if (response.data.sessionName !== sessionRef.current.name) return;
-    // Check if objects has keys
-    if (Object.keys(response.state).length === 0) return;
-    const state = response.state as SessionDetails
-    // Validate that the tick has been kept correctly
-    if (
-      state &&
-      state.tick === gameTickRef.current + 1
-    ) {
-      gameTickRef.current = state.tick;
-      setVolatileEntities(state.entities);
-    }
-    // Check if a winner has been defined
-    if (
-      state &&
-      state.isRunning !== undefined &&
-      state.isRunning === false &&
-      state.winner !== undefined
-    ) {
-      dispatcher({ type: 'winner', winner: state.winner });
-      dispatcher({ type: 'stopped' });
-    }
-  });
+  socketRef.current?.on(
+    SocketTypes.tickRelayPositiveResponse,
+    (response: TickGameServerResponse) => {
+      if (DEBUG && response.data.sessionName !== sessionRef.current.name)
+        console.warn(
+          `[${SocketTypes.tickRelayPositiveResponse}]`,
+          JSON.stringify(response.data),
+          JSON.stringify(sessionRef.current),
+        );
+      // Check if incoming response is for the player
+      if (response.data.sessionName !== sessionRef.current.name) return;
+      // Check if objects has keys
+      if (Object.keys(response.state).length === 0) return;
+      const state = response.state as SessionDetails;
+      // Validate that the tick has been kept correctly
+      if (state && state.tick === gameTickRef.current + 1) {
+        gameTickRef.current = state.tick;
+        setVolatileEntities(state.entities);
+      }
+      // Check if a winner has been defined
+      if (
+        state &&
+        state.isRunning !== undefined &&
+        state.isRunning === false &&
+        state.winner !== undefined
+      ) {
+        dispatcher({type: 'winner', winner: state.winner});
+        dispatcher({type: 'stopped'});
+      }
+    },
+  );
 
-  socketRef.current?.on(SocketTypes.tickRelayNegativeResponse, (response: NegativeResponse) => {
-    if (
-      DEBUG &&
-      response.data?.secret !== sessionRef.current.secret
-    ) console.warn(`[${SocketTypes.tickRelayNegativeResponse}]`, response.error);
-    // Check if incoming response is for the player
-    if (response.data?.secret !== sessionRef.current.secret) return;
-    console.warn('[TICK ERROR]', response.error);
-  });
+  socketRef.current?.on(
+    SocketTypes.tickRelayNegativeResponse,
+    (response: NegativeResponse) => {
+      if (DEBUG && response.data?.secret !== sessionRef.current.secret)
+        console.warn(
+          `[${SocketTypes.tickRelayNegativeResponse}]`,
+          response.error,
+        );
+      // Check if incoming response is for the player
+      if (response.data?.secret !== sessionRef.current.secret) return;
+      console.warn('[TICK ERROR]', response.error);
+    },
+  );
 
   return (
     <View>
@@ -120,82 +128,69 @@ function Loop({
           width: dimensions.width,
           height: dimensions.height,
         }}
-        onUpdate={updateHandler}
-      >
-        {Object.keys(volatileEntities).length > 0 && Object.keys(volatileEntities).map((key, idx) => {
-          const entity = volatileEntities[key];
-          const entityName = entity.name as ComponentType;
-          switch (entityName) {
-            case ComponentType.bomber:
-              return (
-                <BomberComp
-                  key={idx}
-                  number={entity.number}
-                  top={entity.top}
-                  left={entity.left}
-                  color={entity.color}
-                  direction={entity.direction}
-                  previous={entity.previous}
-                  isMovementChangeable={entity.isMovementChangeable}
-                  isLeft={entity.isLeft}
-                  chaosType={entity.chaosType}
-                  bomberCount={bombCountRef.current}
-                />
-              );
-            case ComponentType.perk:
-              return (
-                <PerkComp
-                  key={idx}
-                  top={entity.top}
-                  left={entity.left}
-                  type={entity.type}
-                  isDark={entity.isDark}
-                />
-              );
-            case ComponentType.brick:
-              return (
-                <BrickComp
-                  key={idx}
-                  top={entity.top}
-                  left={entity.left}
-                />
-              );
-            case ComponentType.bomb:
-              return (
-                <BombComp
-                  key={idx}
-                  top={entity.top}
-                  left={entity.left}
-                />
-              );
-            case ComponentType.fire:
-              return (
-                <FireComp
-                  key={idx}
-                  top={entity.top}
-                  left={entity.left}
-                  type={entity.type}
-                />
-              );
-            default:
-              return null;
-          }
-        })}
+        onUpdate={updateHandler}>
+        {Object.keys(volatileEntities).length > 0 &&
+          Object.keys(volatileEntities).map((key, idx) => {
+            const entity = volatileEntities[key];
+            const entityName = entity.name as ComponentType;
+            switch (entityName) {
+              case ComponentType.bomber:
+                return (
+                  <BomberComp
+                    key={idx}
+                    number={entity.number}
+                    top={entity.top}
+                    left={entity.left}
+                    color={entity.color}
+                    direction={entity.direction}
+                    previous={entity.previous}
+                    isMovementChangeable={entity.isMovementChangeable}
+                    isLeft={entity.isLeft}
+                    chaosType={entity.chaosType}
+                    bomberCount={bombCountRef.current}
+                  />
+                );
+              case ComponentType.perk:
+                return (
+                  <PerkComp
+                    key={idx}
+                    top={entity.top}
+                    left={entity.left}
+                    type={entity.type}
+                    isDark={entity.isDark}
+                  />
+                );
+              case ComponentType.brick:
+                return (
+                  <BrickComp key={idx} top={entity.top} left={entity.left} />
+                );
+              case ComponentType.bomb:
+                return (
+                  <BombComp key={idx} top={entity.top} left={entity.left} />
+                );
+              case ComponentType.fire:
+                return (
+                  <FireComp
+                    key={idx}
+                    top={entity.top}
+                    left={entity.left}
+                    type={entity.type}
+                  />
+                );
+              default:
+                return null;
+            }
+          })}
       </GameLoop>
       {DEBUG && (
         <TouchableHighlight
-          onPress={(pressEvent) => {
+          onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) return;
             handleReset();
           }}
           style={styles.loopReset}
-          underlayColor='rgba(255,255,255,0.25)'
-        >
-          <Icon
-            name={Icons.reload}
-            color={colors.RED}
-            size={30}
-          />
+          underlayColor="rgba(255,255,255,0.25)">
+          <Icon name={Icons.reload} color={colors.RED} size={30} />
         </TouchableHighlight>
       )}
     </View>

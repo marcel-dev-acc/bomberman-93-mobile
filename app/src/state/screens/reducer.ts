@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { DEBUG } from '../../constants/app';
+import {createSlice} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
+import {DEBUG} from '../../constants/app';
 
 export enum ScreenType {
   welcome = 'welcome',
@@ -14,7 +14,7 @@ export enum ScreenType {
   winner = 'winner',
   remoteControls = 'remote-controls',
   settings = 'settings',
-};
+}
 
 type Screens = {
   screen: ScreenType;
@@ -54,8 +54,8 @@ export const screenSlice = createSlice({
     toggleIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-  }
-})
+  },
+});
 
 // Action creators are generated for each case reducer function
 export const {
@@ -64,6 +64,6 @@ export const {
   toggleDebugger,
   toggleMusic,
   toggleIsLoading,
-} = screenSlice.actions
+} = screenSlice.actions;
 
-export default screenSlice.reducer
+export default screenSlice.reducer;

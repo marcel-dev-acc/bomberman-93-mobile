@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
-import { Icon, Icons } from '../../General';
+import {StyleSheet, View} from 'react-native';
+import {Icon, Icons} from '../../General';
 
 import colors from '../../../constants/colors';
 
@@ -11,10 +8,7 @@ type FireCountProps = {
   fireCount: number;
 };
 
-function FireCount({
-  fireCount,
-}: FireCountProps): JSX.Element {
-
+function FireCount({fireCount}: FireCountProps): JSX.Element {
   let fireArray: number[] = [];
   for (let i = 0; i < fireCount; i++) {
     fireArray.push(i + 1);

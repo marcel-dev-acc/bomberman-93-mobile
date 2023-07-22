@@ -10,16 +10,20 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 
 import colors from '../../../constants/colors';
-import { ScreenType, toggleMusic } from '../../../state/screens/reducer';
+import {ScreenType, toggleMusic} from '../../../state/screens/reducer';
 import Icon from '../Icon/Icon';
-import { Icons } from '../Icon/iconMap';
-import { isMusicPlayerModuleAvailableOnAndroid, playSoundOnAndroid } from '../../../native/interface';
+import {Icons} from '../Icon/iconMap';
+import {
+  isMusicPlayerModuleAvailableOnAndroid,
+  playSoundOnAndroid,
+} from '../../../native/interface';
 import music from '../../../constants/music';
-
 
 function MusicToggle(): JSX.Element {
   const screen: ScreenType = useSelector((state: any) => state.screens.screen);
-  const musicEnabled: boolean = useSelector((state: any) => state.screens.musicEnabled);
+  const musicEnabled: boolean = useSelector(
+    (state: any) => state.screens.musicEnabled,
+  );
 
   const dispatch = useDispatch();
 
@@ -67,26 +71,23 @@ function MusicToggle(): JSX.Element {
 
   // Disabled for certain screens
   if (
-    [
-      ScreenType.game,
-      ScreenType.remoteControls,
-    ].includes(screen) ||
+    [ScreenType.game, ScreenType.remoteControls].includes(screen) ||
     !musicPlayerIsAvailable
-  ) return <></>;
+  )
+    return <></>;
 
   // Default is to show
   return (
     <View style={styles.musicToggleContainer}>
       <TouchableHighlight
-        onPress={(pressEvent) => {
+        onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) return;
           handleMusicToggle();
         }}
-        underlayColor='rgba(0,0,0,0.1)'
+        underlayColor="rgba(0,0,0,0.1)"
         style={{
           borderRadius: 100,
-        }}
-      >
+        }}>
         <Icon
           name={musicEnabled ? Icons.music : Icons.musicOff}
           size={30}

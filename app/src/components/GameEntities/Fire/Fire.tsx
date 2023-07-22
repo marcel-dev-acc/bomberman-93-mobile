@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 
 import colors from '../../../constants/colors';
-import { entitySizes } from '../../../constants/entitySizes';
-import { useSelector } from 'react-redux';
-import { FireType } from '../../../constants/types';
-import { getSpriteCoordinates } from './animation';
+import {entitySizes} from '../../../constants/entitySizes';
+import {useSelector} from 'react-redux';
+import {FireType} from '../../../constants/types';
+import {getSpriteCoordinates} from './animation';
 import imageNames from '../../../constants/imageNames';
 
 type FireProps = {
@@ -19,19 +15,22 @@ type FireProps = {
 };
 
 function Fire(props: FireProps): JSX.Element {
+  const graphicsEnabled: boolean = useSelector(
+    (state: any) => state.screens.graphicsEnabled,
+  );
 
-  const graphicsEnabled: boolean = useSelector((state: any) => state.screens.graphicsEnabled);
-
-  const withoutGraphicsContainerStyle = graphicsEnabled ? {} : {
-    backgroundColor: colors.DARK_ORANGE,
-    borderWidth: 1,
-    borderColor: colors.RED,
-  };
+  const withoutGraphicsContainerStyle = graphicsEnabled
+    ? {}
+    : {
+        backgroundColor: colors.DARK_ORANGE,
+        borderWidth: 1,
+        borderColor: colors.RED,
+      };
 
   const {
     top: spriteTop,
     left: spriteLeft,
-    transform: spriteTransform
+    transform: spriteTransform,
   } = getSpriteCoordinates(props.type);
 
   return graphicsEnabled ? (
@@ -41,19 +40,18 @@ function Fire(props: FireProps): JSX.Element {
         left: props.left,
         // width and height of image you want display
         ...styles.animatedFireContainer,
-      }}
-    >
-        <Image
-          style={{
-            ...styles.fireContainer,
-            // position of image you want display
-            top: spriteTop,
-            left: spriteLeft,
-            transform: spriteTransform,
-          }}
-          source={imageNames.fireEffectSprite}
-          resizeMode='contain'
-        />
+      }}>
+      <Image
+        style={{
+          ...styles.fireContainer,
+          // position of image you want display
+          top: spriteTop,
+          left: spriteLeft,
+          transform: spriteTransform,
+        }}
+        source={imageNames.fireEffectSprite}
+        resizeMode="contain"
+      />
     </View>
   ) : (
     <View
@@ -62,8 +60,7 @@ function Fire(props: FireProps): JSX.Element {
         ...withoutGraphicsContainerStyle,
         left: props.left,
         top: props.top,
-      }}
-    ></View>
+      }}></View>
   );
 }
 

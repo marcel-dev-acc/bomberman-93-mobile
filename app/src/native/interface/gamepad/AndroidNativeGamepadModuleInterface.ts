@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import {NativeModules, NativeEventEmitter} from 'react-native';
 
 export const isGamepadModuleAvailable = async (): Promise<boolean> => {
   try {
@@ -6,12 +6,16 @@ export const isGamepadModuleAvailable = async (): Promise<boolean> => {
       NativeModules.AndroidGamepadModule &&
       NativeModules.AndroidGamepadModule.isUsable
     ) {
-      const isAvailable: boolean = await NativeModules.AndroidGamepadModule.isUsable();
+      const isAvailable: boolean =
+        await NativeModules.AndroidGamepadModule.isUsable();
       return isAvailable;
     }
     console.info('[isGamepadModuleAvailable] AndroidGamepadModule NOT enabled');
   } catch (err: any) {
-    console.error('[isGamepadModuleAvailable] AndroidGamepadModule has NOT loaded, Error:', err);
+    console.error(
+      '[isGamepadModuleAvailable] AndroidGamepadModule has NOT loaded, Error:',
+      err,
+    );
   }
   return false;
 };
