@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Create android index file
+npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+echo
+echo "Finished creating output..."
+echo
+
+# Remove output in mdpi folder
+IMG_FOLDER="./android/app/src/main/res/drawable-mdpi"
+for FILE in $(ls $IMG_FOLDER)
+do
+  rm -f "$IMG_FOLDER/$FILE"
+done
+echo "Finished removing output mdpi files..."
+echo
+
+cd ./android
+./gradlew assembleRelease
+cd ..
+echo "Finished creating release APK..."
+echo
