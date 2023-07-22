@@ -51,7 +51,9 @@ Release APK
 
 You will need a Java generated signing key which is a keystore file used to generate a React Native executable binary for Android. You can create one using the keytool in the terminal with the following command
 
-`keytool -genkey -v -keystore your_key_name.keystore -alias your_key_alias -keyalg RSA -keysize 2048 -validity 10000`
+```
+keytool -genkey -v -keystore your_key_name.keystore -alias your_key_alias -keyalg RSA -keysize 2048 -validity 10000
+```
 
 Once you run the keytool utility, you’ll be prompted to type in a password. *Make sure you remember the password
 
@@ -98,6 +100,25 @@ signingConfigs {
     keyAlias System.console().readLine("\nAlias: ")
     keyPassword System.console().readLine("\nAlias password: ")
    }
+}
+```
+
+Or alternatively, you may store the password in environment variables
+
+```
+signingConfigs {
+  debug {
+      storeFile file('debug.keystore')
+      storePassword 'android'
+      keyAlias 'androiddebugkey'
+      keyPassword 'android'
+  }
+  release {
+      storeFile file('bomb_with_me.keystore')
+      storePassword System.getenv("BOMB_WITH_ME_STORE_PASSWORD")
+      keyAlias 'bomb_with_me_alias'
+      keyPassword System.getenv("BOMB_WITH_ME_KEY_PASSWORD")
+  }
 }
 ```
 

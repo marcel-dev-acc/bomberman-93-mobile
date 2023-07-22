@@ -228,7 +228,6 @@ function WaitingRoomScreen({
   const timer = useRef(countDownTime);
 
   socketRef.current?.on(SocketTypes.setTimeRelayPositiveResponse, (response: SetTimeGameServerResponse) => {
-    console.log('time', response);
     if (
       DEBUG &&
       response.data.secret !== sessionRef.current.secret

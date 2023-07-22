@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { BackButton, SplashImage } from '../../components/General';
 import { Session } from '../../types/session';
 import colors from '../../constants/colors';
-import { ScreenType, changeScreen } from '../../state/screens/reducer';
+import { ScreenType, changeScreen, toggleIsLoading } from '../../state/screens/reducer';
 import { io, type Socket } from 'socket.io-client';
 import SocketTypes from '../../types/socketTypes';
 import { addError } from '../../state/errors/reducer';
@@ -85,6 +85,7 @@ function CreateSessionScreen({
       title: `[${SocketTypes.createSessionRelayNegativeResponse}] Server error response`,
       value: response.error,
     }));
+    dispatch(toggleIsLoading(false));
   });
 
   socketRef.current?.on(SocketTypes.joinSessionRelayPositiveResponse, (response: JoinSessionGameServerResponse) => {
@@ -102,6 +103,7 @@ function CreateSessionScreen({
       secret: response.secret,
     } as Session;
     dispatch(changeScreen(ScreenType.waitingRoom));
+    dispatch(toggleIsLoading(false));
     // Reset the internal state values (delay so we don't generate server errors)
     setTimeout(() => {
       setSessionName('');
@@ -122,6 +124,7 @@ function CreateSessionScreen({
         title: `[${SocketTypes.joinSessionRelayNegativeResponse}] Server error response`,
         value: response.error,
       }));
+      dispatch(toggleIsLoading(false));
     }
   });
 
@@ -172,6 +175,8 @@ function CreateSessionScreen({
         <TouchableHighlight
           onPress={async (pressEvent) => {
             if (pressEvent.nativeEvent.target === undefined) return;
+            // Set loader
+            dispatch(toggleIsLoading(true));
             // Validate if the sessionNameRef current value is blank
             if (!sessionNameRef.current) {
               sessionNameRef.current = '';
@@ -180,6 +185,7 @@ function CreateSessionScreen({
                 title: `[Create Session] Game Error`,
                 value: 'Session name was empty',
               }));
+              dispatch(toggleIsLoading(false));
               return;
             }
             const token = await fetchData(StorageKeys.token);
@@ -189,6 +195,7 @@ function CreateSessionScreen({
                 title: `Socket Url Error`,
                 value: 'Socket url is undefined',
               }));
+              dispatch(toggleIsLoading(false));
               return;
             }
             socketRef.current = io(webSocketUrl, { auth: { token } });
@@ -202,6 +209,7 @@ function CreateSessionScreen({
                 title: `[Server Connection] Server error response`,
                 value: 'Failed to connect to the server',
               }));
+              dispatch(toggleIsLoading(false));
               return;
             }
             socketRef.current.emit(SocketTypes.createSessionRelay, {
