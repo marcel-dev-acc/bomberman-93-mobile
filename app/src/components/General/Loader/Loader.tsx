@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Animated,
   Easing,
@@ -6,22 +6,22 @@ import {
   StyleSheet,
   View,
   useWindowDimensions,
-} from 'react-native';
-import imageNames from '../../../constants/imageNames';
+} from 'react-native'
+import imageNames from '../../../constants/imageNames'
 
 function sin(deg: number) {
-  return Math.sin((deg * Math.PI) / 180.0);
+  return Math.sin((deg * Math.PI) / 180.0)
 }
 
 function cos(deg: number) {
-  return Math.cos((deg * Math.PI) / 180.0);
+  return Math.cos((deg * Math.PI) / 180.0)
 }
 
 function AnimatedLoader(): JSX.Element {
-  const numDots = 8; // Number of dots in spinner
-  const angleIncrement = 360 / numDots;
-  const radius = 50;
-  const dots = [...Array(numDots).keys()].map(i => i + 1);
+  const numDots = 8 // Number of dots in spinner
+  const angleIncrement = 360 / numDots
+  const radius = 50
+  const dots = [...Array(numDots).keys()].map(i => i + 1)
 
   return (
     <View>
@@ -39,17 +39,17 @@ function AnimatedLoader(): JSX.Element {
               transform: [{rotate: `${(i - 1) * angleIncrement}deg`}],
             }}
           />
-        );
+        )
       })}
     </View>
-  );
+  )
 }
 
 function Loader(): JSX.Element {
-  const {height, width} = useWindowDimensions();
+  const {height, width} = useWindowDimensions()
 
   // Set the animation
-  const spinValue = new Animated.Value(0);
+  const spinValue = new Animated.Value(0)
   Animated.loop(
     Animated.timing(spinValue, {
       toValue: 1,
@@ -57,11 +57,11 @@ function Loader(): JSX.Element {
       easing: Easing.linear,
       useNativeDriver: true,
     }),
-  ).start();
+  ).start()
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
-  });
+  })
 
   return (
     <View
@@ -81,7 +81,7 @@ function Loader(): JSX.Element {
         <AnimatedLoader />
       </Animated.View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
-});
+})
 
-export default Loader;
+export default Loader

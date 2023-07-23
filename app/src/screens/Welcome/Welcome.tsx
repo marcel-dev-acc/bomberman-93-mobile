@@ -1,32 +1,32 @@
-import React from 'react';
+import React from 'react'
 import {
   Image,
   StyleSheet,
   TouchableHighlight,
   View,
   useWindowDimensions,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 
-import {IntroImage, ServerStatus, SplashImage} from '../../components/General';
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import {getIsVertical} from '../../constants/screen';
-import imageNames from '../../constants/imageNames';
-import {DEBUG} from '../../constants/app';
+import {IntroImage, ServerStatus, SplashImage} from '../../components/General'
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import {getIsVertical} from '../../constants/screen'
+import imageNames from '../../constants/imageNames'
+import {DEBUG} from '../../constants/app'
 
 type WelcomeScreenProps = {
-  showIntro: boolean;
-  serverStatus: ServerStatus;
-};
+  showIntro: boolean
+  serverStatus: ServerStatus
+}
 
 function WelcomeScreen({
   showIntro,
   serverStatus,
 }: WelcomeScreenProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   return (
     <View
@@ -59,9 +59,9 @@ function WelcomeScreen({
           <TouchableHighlight
             onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              dispatch(changeScreen(ScreenType.register));
+              dispatch(changeScreen(ScreenType.register))
             }}
             style={{
               ...styles.welcomeButton,
@@ -85,9 +85,9 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                dispatch(changeScreen(ScreenType.createSession));
+                dispatch(changeScreen(ScreenType.createSession))
               }}
               style={{
                 ...styles.welcomeButton,
@@ -108,9 +108,9 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                dispatch(changeScreen(ScreenType.joinSession));
+                dispatch(changeScreen(ScreenType.joinSession))
               }}
               style={{
                 ...styles.welcomeButton,
@@ -140,9 +140,9 @@ function WelcomeScreen({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                dispatch(changeScreen(ScreenType.settings));
+                dispatch(changeScreen(ScreenType.settings))
               }}
               style={{
                 ...styles.welcomeButton,
@@ -162,7 +162,7 @@ function WelcomeScreen({
         </View>
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -182,6 +182,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
   },
-});
+})
 
-export default WelcomeScreen;
+export default WelcomeScreen

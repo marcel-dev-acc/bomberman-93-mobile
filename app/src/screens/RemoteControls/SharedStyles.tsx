@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import colors from '../../constants/colors';
+import {StyleSheet} from 'react-native'
+import colors from '../../constants/colors'
 
 const sharedStyles = StyleSheet.create({
   remoteControlsTabButton: {
@@ -71,6 +71,6 @@ const sharedStyles = StyleSheet.create({
     borderRadius: 200,
     padding: 2.5,
   },
-});
+})
 
-export default sharedStyles;
+export default sharedStyles

@@ -1,17 +1,17 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react'
 import {
   StyleSheet,
   TouchableHighlight,
   View,
   useWindowDimensions,
   GestureResponderEvent,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+} from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 
-import {Icon, Icons} from '../../components/General';
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import colors from '../../constants/colors';
-import type {Session} from '../../types/session';
+import {Icon, Icons} from '../../components/General'
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import colors from '../../constants/colors'
+import type {Session} from '../../types/session'
 import {
   BombsCount,
   Controls,
@@ -22,105 +22,105 @@ import {
   StaticEntities,
   GameOptionsMenu,
   Timer,
-} from '../../components/Game';
+} from '../../components/Game'
 import {
   Direction,
   GameEventProps,
   SessionDetails,
-} from '../../types/serverTypes';
-import {DEBUG} from '../../constants/app';
-import {Socket} from 'socket.io-client';
-import SocketTypes from '../../types/socketTypes';
+} from '../../types/serverTypes'
+import {DEBUG} from '../../constants/app'
+import {Socket} from 'socket.io-client'
+import SocketTypes from '../../types/socketTypes'
 import {
   EventGameServerResponse,
   NegativeResponse,
-} from '../../types/serverTypes';
+} from '../../types/serverTypes'
 
-const countDownTime: number = 3 * 60;
+const countDownTime: number = 3 * 60
 
 type GameScreenProps = {
-  socketRef: React.MutableRefObject<Socket | undefined>;
-  sessionRef: React.MutableRefObject<Session>;
-};
+  socketRef: React.MutableRefObject<Socket | undefined>
+  sessionRef: React.MutableRefObject<Session>
+}
 
 function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
+  const {height, width} = useWindowDimensions()
   // const session: Session = useSelector((state: any) => state.session);
   const debuggerEnabled: boolean = useSelector(
     (state: any) => state.screens.debuggerEnabled,
-  );
+  )
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleMovePress = (direction: Direction, isMoving: boolean) => {
     const event: GameEventProps = {
       type: 'movement',
       movement: direction,
-    };
-    dispatcher(event);
+    }
+    dispatcher(event)
     if (debuggerEnabled) {
       socketRef.current?.emit(SocketTypes.tickRelay, {
         sessionName: sessionRef.current.name,
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
         tick: gameTickRef.current,
-      });
+      })
     }
     if (isMoving) {
       if (direction === Direction.up) {
-        isMovingUp.current = true;
+        isMovingUp.current = true
       }
       if (direction === Direction.down) {
-        isMovingDown.current = true;
+        isMovingDown.current = true
       }
       if (direction === Direction.left) {
-        isMovingLeft.current = true;
+        isMovingLeft.current = true
       }
       if (direction === Direction.right) {
-        isMovingRight.current = true;
+        isMovingRight.current = true
       }
     }
     setTimeout(() => {
       if (direction === Direction.up && isMovingUp.current) {
-        handleMovePress(direction, isMovingUp.current);
+        handleMovePress(direction, isMovingUp.current)
       }
       if (direction === Direction.down && isMovingDown.current) {
-        handleMovePress(direction, isMovingDown.current);
+        handleMovePress(direction, isMovingDown.current)
       }
       if (direction === Direction.left && isMovingLeft.current) {
-        handleMovePress(direction, isMovingLeft.current);
+        handleMovePress(direction, isMovingLeft.current)
       }
       if (direction === Direction.right && isMovingRight.current) {
-        handleMovePress(direction, isMovingRight.current);
+        handleMovePress(direction, isMovingRight.current)
       }
-    }, 100);
-  };
+    }, 100)
+  }
 
   const handleBombPress = (pressEvent: GestureResponderEvent) => {
     if (pressEvent.nativeEvent.target === undefined) {
-      return;
+      return
     }
-    dispatcher({type: 'bomb'});
-  };
+    dispatcher({type: 'bomb'})
+  }
 
   const handleReset = () => {
-    dispatcher({type: 'stopped'});
-    dispatcher({type: 'started'});
-    setTimer(countDownTime);
-  };
+    dispatcher({type: 'stopped'})
+    dispatcher({type: 'started'})
+    setTimer(countDownTime)
+  }
 
-  const gameStartedRef = useRef(false);
-  const gameTickRef = useRef(0);
-  const isMovingUp = useRef(false);
-  const isMovingDown = useRef(false);
-  const isMovingLeft = useRef(false);
-  const isMovingRight = useRef(false);
+  const gameStartedRef = useRef(false)
+  const gameTickRef = useRef(0)
+  const isMovingUp = useRef(false)
+  const isMovingDown = useRef(false)
+  const isMovingLeft = useRef(false)
+  const isMovingRight = useRef(false)
 
-  const [gameRunning, setGameRunning] = useState(true);
-  const [bombsCount, setBombsCount] = useState(0);
-  const [fireCount, setFireCount] = useState(0); // This should be adjusted based on state changes, on events
-  const [entities, setEntities] = useState({} as any);
-  const [timer, setTimer] = useState(countDownTime);
+  const [gameRunning, setGameRunning] = useState(true)
+  const [bombsCount, setBombsCount] = useState(0)
+  const [fireCount, setFireCount] = useState(0) // This should be adjusted based on state changes, on events
+  const [entities, setEntities] = useState({} as any)
+  const [timer, setTimer] = useState(countDownTime)
 
   const handleEvent = useCallback(
     (e: GameEventProps) => {
@@ -128,12 +128,12 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         sessionRef.current = {
           ...sessionRef.current,
           winner: sessionRef.current.players[e.winner - 1],
-        } as Session;
+        } as Session
         // Set entities to an empty object
-        setEntities({});
-        setGameRunning(false);
+        setEntities({})
+        setGameRunning(false)
         // Navigate to outcome screen
-        dispatch(changeScreen(ScreenType.winner));
+        dispatch(changeScreen(ScreenType.winner))
       }
       if (e.type === 'stopped') {
       }
@@ -144,12 +144,12 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         // Handle any extra add-bomb specific UI
       }
       if (e.type === 'add-bomb-strength') {
-        const newBombsStrengthCount = fireCount + 1;
-        setFireCount(newBombsStrengthCount);
+        const newBombsStrengthCount = fireCount + 1
+        setFireCount(newBombsStrengthCount)
       }
     },
     [dispatch, fireCount, sessionRef],
-  );
+  )
 
   const dispatcher = useCallback(
     (event: GameEventProps) => {
@@ -159,11 +159,11 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
         event: event,
-      });
-      handleEvent(event);
+      })
+      handleEvent(event)
     },
     [socketRef, sessionRef, handleEvent],
-  );
+  )
 
   socketRef.current?.on(
     SocketTypes.eventRelayPositiveResponse,
@@ -172,21 +172,21 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         console.warn(
           `[${SocketTypes.eventRelayPositiveResponse}]`,
           JSON.stringify(response.data),
-        );
+        )
       }
       // Check if incoming response is for the player
       if (response.data.secret !== sessionRef.current.secret) {
-        return;
+        return
       }
       // Check if objects has keys
       if (Object.keys(response.state).length === 0) {
-        return;
+        return
       }
-      const state = response.state as SessionDetails;
+      const state = response.state as SessionDetails
       // This is specifically for the game start scenario
       if (!gameStartedRef.current && state && state?.entities) {
-        setEntities(state.entities);
-        gameStartedRef.current = true;
+        setEntities(state.entities)
+        gameStartedRef.current = true
       }
       /* Other events are logged here currently */
       // Calculate how many bombs player has
@@ -194,13 +194,13 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         entityKey =>
           state?.entities[entityKey].name === 'bomber' &&
           state?.entities[entityKey].number === sessionRef.current.playerNumber,
-      );
+      )
       if (filteredEntity.length) {
-        setBombsCount(state?.entities[filteredEntity[0]].bombs);
-        setFireCount(state?.entities[filteredEntity[0]].bombDepth);
+        setBombsCount(state?.entities[filteredEntity[0]].bombs)
+        setFireCount(state?.entities[filteredEntity[0]].bombDepth)
       }
     },
-  );
+  )
 
   socketRef.current?.on(
     SocketTypes.eventRelayNegativeResponse,
@@ -209,29 +209,29 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         console.warn(
           `[${SocketTypes.joinSessionRelayNegativeResponse}]`,
           response.error,
-        );
+        )
       }
       // Check if incoming response is for the player
       if (response.data?.secret !== sessionRef.current.secret) {
-        return;
+        return
       }
-      console.warn('[EVENT ERROR]', response.error);
+      console.warn('[EVENT ERROR]', response.error)
     },
-  );
+  )
 
   useEffect(() => {
     if (width < height) {
       // In portrait mode
-      dispatch(changeScreen(ScreenType.rotate));
+      dispatch(changeScreen(ScreenType.rotate))
     }
-  }, [width, height, dispatch]);
+  }, [width, height, dispatch])
 
   // Get the initial game state
   useEffect(() => {
     if (!gameStartedRef.current) {
-      dispatcher({type: 'started'});
+      dispatcher({type: 'started'})
     }
-  }, [dispatcher]);
+  }, [dispatcher])
 
   return (
     <View
@@ -245,10 +245,10 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            dispatcher({type: gameRunning ? 'paused' : 'unpaused'});
-            setGameRunning(!gameRunning);
+            dispatcher({type: gameRunning ? 'paused' : 'unpaused'})
+            setGameRunning(!gameRunning)
           }}
           style={{borderRadius: 5, marginRight: 20}}
           underlayColor="rgba(255,255,255,0.25)">
@@ -293,7 +293,7 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         </TouchableHighlight>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -321,6 +321,6 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
     fontSize: 20,
   },
-});
+})
 
-export default GameScreen;
+export default GameScreen

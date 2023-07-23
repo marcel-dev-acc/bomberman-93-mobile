@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react'
 import {
   StyleSheet,
   View,
@@ -6,77 +6,77 @@ import {
   Platform,
   AppState,
   AppStateStatus,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+} from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 
-import colors from '../../../constants/colors';
-import {ScreenType, toggleMusic} from '../../../state/screens/reducer';
-import Icon from '../Icon/Icon';
-import {Icons} from '../Icon/iconMap';
+import colors from '../../../constants/colors'
+import {ScreenType, toggleMusic} from '../../../state/screens/reducer'
+import Icon from '../Icon/Icon'
+import {Icons} from '../Icon/iconMap'
 import {
   isMusicPlayerModuleAvailableOnAndroid,
   playSoundOnAndroid,
-} from '../../../native/interface';
-import music from '../../../constants/music';
+} from '../../../native/interface'
+import music from '../../../constants/music'
 
 function MusicToggle(): JSX.Element {
-  const screen: ScreenType = useSelector((state: any) => state.screens.screen);
+  const screen: ScreenType = useSelector((state: any) => state.screens.screen)
   const musicEnabled: boolean = useSelector(
     (state: any) => state.screens.musicEnabled,
-  );
+  )
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handlePlayMusic = useCallback(async () => {
     if (Platform.OS === 'android') {
       if (await isMusicPlayerModuleAvailableOnAndroid()) {
-        setMusicPlayerIsAvailable(true);
-        const isPlaying = await playSoundOnAndroid(music.welcome);
-        dispatch(toggleMusic(isPlaying));
+        setMusicPlayerIsAvailable(true)
+        const isPlaying = await playSoundOnAndroid(music.welcome)
+        dispatch(toggleMusic(isPlaying))
       }
     }
-  }, [dispatch]);
+  }, [dispatch])
 
   const handleStopMusic = useCallback(async () => {
     if (Platform.OS === 'android') {
       if (await isMusicPlayerModuleAvailableOnAndroid()) {
-        await playSoundOnAndroid(music.nothing);
-        dispatch(toggleMusic(false));
+        await playSoundOnAndroid(music.nothing)
+        dispatch(toggleMusic(false))
       }
     }
-  }, [dispatch]);
+  }, [dispatch])
 
   const handleMusicToggle = async () => {
     if (!musicEnabled) {
-      handlePlayMusic();
+      handlePlayMusic()
     } else {
-      handleStopMusic();
+      handleStopMusic()
     }
-  };
+  }
 
-  const [musicPlayerIsAvailable, setMusicPlayerIsAvailable] = useState(false);
-  const trackIsPlaying = useRef(false);
+  const [musicPlayerIsAvailable, setMusicPlayerIsAvailable] = useState(false)
+  const trackIsPlaying = useRef(false)
 
   useEffect(() => {
     if (!trackIsPlaying.current) {
-      trackIsPlaying.current = true;
-      handlePlayMusic();
+      trackIsPlaying.current = true
+      handlePlayMusic()
     }
 
     // Apply an app state listener to detect once the app goes into background
     AppState.addEventListener('change', (appState: AppStateStatus) => {
       if (appState !== 'active') {
-        handleStopMusic();
+        handleStopMusic()
       }
-    });
-  }, [handlePlayMusic, handleStopMusic]);
+    })
+  }, [handlePlayMusic, handleStopMusic])
 
   // Disabled for certain screens
   if (
     [ScreenType.game, ScreenType.remoteControls].includes(screen) ||
     !musicPlayerIsAvailable
   ) {
-    return <></>;
+    return <></>
   }
 
   // Default is to show
@@ -85,9 +85,9 @@ function MusicToggle(): JSX.Element {
       <TouchableHighlight
         onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) {
-            return;
+            return
           }
-          handleMusicToggle();
+          handleMusicToggle()
         }}
         underlayColor="rgba(0,0,0,0.1)"
         style={{
@@ -100,7 +100,7 @@ function MusicToggle(): JSX.Element {
         />
       </TouchableHighlight>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -114,6 +114,6 @@ const styles = StyleSheet.create({
     height: 40,
     zIndex: 20,
   },
-});
+})
 
-export default MusicToggle;
+export default MusicToggle

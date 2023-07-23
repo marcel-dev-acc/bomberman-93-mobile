@@ -62,4 +62,4 @@ enum SocketTypes {
   disconnectRelayNegativeResponse = 'disconnectRelayNegativeResponse',
 }
 
-export default SocketTypes;
+export default SocketTypes

@@ -1,12 +1,12 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import store from './src/state/store';
-import {Provider as ReduxProvider} from 'react-redux';
+import React from 'react'
+import {SafeAreaView, StyleSheet} from 'react-native'
+import store from './src/state/store'
+import {Provider as ReduxProvider} from 'react-redux'
 
-import colors from './src/constants/colors';
-import Navigation from './Navigation';
-import {ErrorsContainer, MusicToggle} from './src/components/General';
-import {DEBUG} from './src/constants/app';
+import colors from './src/constants/colors'
+import Navigation from './Navigation'
+import {ErrorsContainer, MusicToggle} from './src/components/General'
+import {DEBUG} from './src/constants/app'
 
 function App(): JSX.Element {
   return (
@@ -21,7 +21,7 @@ function App(): JSX.Element {
         {!DEBUG && <MusicToggle />}
       </SafeAreaView>
     </ReduxProvider>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default App;
+export default App

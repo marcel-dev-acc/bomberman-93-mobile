@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect} from 'react'
 import {
   StyleSheet,
   View,
@@ -6,41 +6,41 @@ import {
   useWindowDimensions,
   TouchableHighlight,
   Image,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {Socket} from 'socket.io-client';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
+import {Socket} from 'socket.io-client'
 
-import {GameText, SplashImage} from '../../components/General';
-import type {Session} from '../../types/session';
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import imageNames from '../../constants/imageNames';
-import {getIsVertical} from '../../constants/screen';
+import {GameText, SplashImage} from '../../components/General'
+import type {Session} from '../../types/session'
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import imageNames from '../../constants/imageNames'
+import {getIsVertical} from '../../constants/screen'
 
 type WinnerScreenProps = {
-  socketRef: React.MutableRefObject<Socket | undefined>;
-  sessionRef: React.MutableRefObject<Session>;
-};
+  socketRef: React.MutableRefObject<Socket | undefined>
+  sessionRef: React.MutableRefObject<Session>
+}
 
 function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleGameReset = (pressEvent: GestureResponderEvent) => {
     if (pressEvent.nativeEvent.target === undefined) {
-      return;
+      return
     }
     sessionRef.current = {
       ...sessionRef.current,
       winner: undefined,
-    } as Session;
-    dispatch(changeScreen(ScreenType.welcome));
-  };
+    } as Session
+    dispatch(changeScreen(ScreenType.welcome))
+  }
 
   useEffect(() => {
-    socketRef.current = undefined;
-  }, [socketRef]);
+    socketRef.current = undefined
+  }, [socketRef])
 
   return (
     <View
@@ -73,7 +73,7 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
         </TouchableHighlight>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 45,
   },
-});
+})
 
-export default WinnerScreen;
+export default WinnerScreen

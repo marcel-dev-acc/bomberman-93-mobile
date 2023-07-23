@@ -1,20 +1,20 @@
-import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import React from 'react'
+import {StyleSheet, View, Image} from 'react-native'
 
-import colors from '../../../constants/colors';
-import {entitySizes} from '../../../constants/entitySizes';
-import {useSelector} from 'react-redux';
-import imageNames from '../../../constants/imageNames';
+import colors from '../../../constants/colors'
+import {entitySizes} from '../../../constants/entitySizes'
+import {useSelector} from 'react-redux'
+import imageNames from '../../../constants/imageNames'
 
 type BrickProps = {
-  top: number;
-  left: number;
-};
+  top: number
+  left: number
+}
 
 function Brick(props: BrickProps): JSX.Element {
   const graphicsEnabled: boolean = useSelector(
     (state: any) => state.screens.graphicsEnabled,
-  );
+  )
 
   const withoutGraphicsContainerStyle = graphicsEnabled
     ? {}
@@ -22,7 +22,7 @@ function Brick(props: BrickProps): JSX.Element {
         backgroundColor: colors.FIREBRICK_RED,
         borderWidth: 1,
         borderColor: colors.WHITE,
-      };
+      }
 
   return graphicsEnabled ? (
     <Image
@@ -42,7 +42,7 @@ function Brick(props: BrickProps): JSX.Element {
         left: props.left,
       }}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
     width: entitySizes.square.width,
     height: entitySizes.square.height,
   },
-});
+})
 
-export default Brick;
+export default Brick

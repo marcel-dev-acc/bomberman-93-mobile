@@ -1,19 +1,19 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
   TouchableHighlight,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 
-import colors from '../../constants/colors';
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import {Icon, Icons} from '../../components/General';
+import colors from '../../constants/colors'
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import {Icon, Icons} from '../../components/General'
 
 function RulesScreen(): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   return (
     <View style={styles.rulesContainer}>
@@ -21,9 +21,9 @@ function RulesScreen(): JSX.Element {
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            dispatch(changeScreen(ScreenType.welcome));
+            dispatch(changeScreen(ScreenType.welcome))
           }}
           style={{borderRadius: 200}}
           underlayColor="rgba(255,255,255,0.25)">
@@ -51,7 +51,7 @@ function RulesScreen(): JSX.Element {
         </Text>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     width: Dimensions.get('window').width * 0.95,
   },
-});
+})
 
-export default RulesScreen;
+export default RulesScreen

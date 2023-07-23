@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   View,
@@ -6,16 +6,16 @@ import {
   TouchableHighlight,
   useWindowDimensions,
   GestureResponderEvent,
-} from 'react-native';
+} from 'react-native'
 
-import colors from '../../../constants/colors';
+import colors from '../../../constants/colors'
 
 type ButtonProps = {
-  customButtonStyle?: any;
-  customTextStyle?: any;
-  onPress: (pressEvent: GestureResponderEvent) => void;
-  text: string;
-};
+  customButtonStyle?: any
+  customTextStyle?: any
+  onPress: (pressEvent: GestureResponderEvent) => void
+  text: string
+}
 
 function Button({
   customButtonStyle,
@@ -23,7 +23,7 @@ function Button({
   onPress,
   text,
 }: ButtonProps): JSX.Element {
-  const {width} = useWindowDimensions();
+  const {width} = useWindowDimensions()
 
   return (
     <TouchableHighlight
@@ -45,7 +45,7 @@ function Button({
         </Text>
       </View>
     </TouchableHighlight>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
     fontSize: 20,
   },
-});
+})
 
-export default Button;
+export default Button

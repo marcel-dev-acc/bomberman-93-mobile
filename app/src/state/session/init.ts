@@ -1,8 +1,8 @@
-import {Avatar, Session} from '../../types/session';
+import {Avatar, Session} from '../../types/session'
 
 const defaultAvatar: Avatar = {
   gender: 'male',
-};
+}
 
 const initialState: Session = {
   name: '',
@@ -45,6 +45,6 @@ const initialState: Session = {
       avatar: defaultAvatar,
     },
   ],
-};
+}
 
-export default initialState;
+export default initialState

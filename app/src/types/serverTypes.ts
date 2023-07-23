@@ -1,56 +1,56 @@
 /* Session types */
 export interface HandleCreateSessionData {
-  sessionName: string;
+  sessionName: string
 }
 
 export interface HandleJoinSessionData extends HandleCreateSessionData {
-  playerNumber: 1 | 2 | 3 | 4 | 5;
+  playerNumber: 1 | 2 | 3 | 4 | 5
 }
 
 export interface HandleSetTimeData extends HandleJoinSessionData {
-  secret: string;
-  time: number;
+  secret: string
+  time: number
 }
 
 export interface HandleDisconnectSessionData extends HandleJoinSessionData {
-  secret: string;
+  secret: string
 }
 
 export interface HandleTickData extends HandleJoinSessionData {
-  secret: string;
-  tick: number;
+  secret: string
+  tick: number
 }
 
 export interface HandleEventsData extends HandleJoinSessionData {
-  secret: string;
-  event: GameEventProps;
+  secret: string
+  event: GameEventProps
 }
 
 /* General server types */
 
 export interface JoinSessionGameServerResponse {
-  data: HandleJoinSessionData;
-  secret: string;
+  data: HandleJoinSessionData
+  secret: string
 }
 
 export interface SetTimeGameServerResponse {
-  data: HandleSetTimeData;
-  time?: number;
+  data: HandleSetTimeData
+  time?: number
 }
 
 export interface EventGameServerResponse {
-  data: HandleEventsData;
-  state: SessionDetails | {};
+  data: HandleEventsData
+  state: SessionDetails | {}
 }
 
 export interface TickGameServerResponse {
-  data: HandleTickData;
-  state: SessionDetails | {};
+  data: HandleTickData
+  state: SessionDetails | {}
 }
 
 export interface NegativeResponse {
-  data: any;
-  error: string;
+  data: any
+  error: string
 }
 
 export enum Direction {
@@ -61,19 +61,19 @@ export enum Direction {
 }
 
 export type PlayerDetails = {
-  hasJoined: boolean;
-  secret: string;
-  isActive: boolean;
-  isReal: boolean;
+  hasJoined: boolean
+  secret: string
+  isActive: boolean
+  isReal: boolean
   avatar: {
-    gender: 'male' | 'female';
-  };
-};
+    gender: 'male' | 'female'
+  }
+}
 
 export type TopLeftPairProps = {
-  top: number;
-  left: number;
-};
+  top: number
+  left: number
+}
 
 export type GameEventProps = {
   type:
@@ -88,20 +88,20 @@ export type GameEventProps = {
     | 'add-bomb-strength'
     | 'time-over'
     | 'winner'
-    | 'draw';
-  movement?: Direction;
-  winner?: number;
-};
+    | 'draw'
+  movement?: Direction
+  winner?: number
+}
 
 export interface ServerGameEventProps extends GameEventProps {
-  playerNumber: 1 | 2 | 3 | 4 | 5;
+  playerNumber: 1 | 2 | 3 | 4 | 5
 }
 
 export type ActionsProps = {
-  touches: any;
-  dispatch: any;
-  events: GameEventProps[];
-};
+  touches: any
+  dispatch: any
+  events: GameEventProps[]
+}
 
 export enum FireType {
   up = 'up',
@@ -116,48 +116,48 @@ export enum FireType {
 }
 
 export interface FireTopLeftPairProps extends TopLeftPairProps {
-  type: FireType;
+  type: FireType
 }
 
 export const getEndPairFireTpye = (fireTpye: FireType) => {
   switch (fireTpye) {
     case FireType.up:
-      return FireType.upEnd;
+      return FireType.upEnd
     case FireType.down:
-      return FireType.downEnd;
+      return FireType.downEnd
     case FireType.left:
-      return FireType.leftEnd;
+      return FireType.leftEnd
     case FireType.right:
-      return FireType.rightEnd;
+      return FireType.rightEnd
     default:
-      return fireTpye;
+      return fireTpye
   }
-};
+}
 
 export type SessionDetails = {
-  1: PlayerDetails;
-  2: PlayerDetails;
-  3: PlayerDetails;
-  4: PlayerDetails;
-  5: PlayerDetails;
-  boardType: 'green';
-  isRunning: boolean;
-  waitingRoomTimer?: number;
-  winner: undefined | 0 | 1 | 2 | 3 | 4 | 5; // 0 == draw
-  tick: number;
-  events: ServerGameEventProps[];
-  loopTimer: number;
-  timeOver: boolean;
-  timeOverLoopTimer: number;
-  bombersCount: number;
-  boardContents: (string | undefined)[][];
-  gridPairs: TopLeftPairProps[][];
-  entities: any;
-};
+  1: PlayerDetails
+  2: PlayerDetails
+  3: PlayerDetails
+  4: PlayerDetails
+  5: PlayerDetails
+  boardType: 'green'
+  isRunning: boolean
+  waitingRoomTimer?: number
+  winner: undefined | 0 | 1 | 2 | 3 | 4 | 5 // 0 == draw
+  tick: number
+  events: ServerGameEventProps[]
+  loopTimer: number
+  timeOver: boolean
+  timeOverLoopTimer: number
+  bombersCount: number
+  boardContents: (string | undefined)[][]
+  gridPairs: TopLeftPairProps[][]
+  entities: any
+}
 
 export type SessionNames = {
-  [sessionName: string]: SessionDetails;
-};
+  [sessionName: string]: SessionDetails
+}
 
 export enum PerkType {
   bombStrength = 'bomb-strength',
@@ -185,8 +185,8 @@ export enum PerkTypePercentage {
 export const isHandleCreateSessionData = (
   data: HandleCreateSessionData | unknown,
 ): data is HandleCreateSessionData => {
-  return (data as HandleJoinSessionData).sessionName !== undefined;
-};
+  return (data as HandleJoinSessionData).sessionName !== undefined
+}
 
 export const isHandleJoinSessionData = (
   data: HandleJoinSessionData | unknown,
@@ -195,8 +195,8 @@ export const isHandleJoinSessionData = (
     (data as HandleJoinSessionData).sessionName !== undefined &&
     (data as HandleJoinSessionData).playerNumber !== undefined &&
     [1, 2, 3, 4, 5].includes((data as HandleJoinSessionData).playerNumber)
-  );
-};
+  )
+}
 
 export const isHandleSetTime = (
   data: HandleSetTimeData | unknown,
@@ -207,8 +207,8 @@ export const isHandleSetTime = (
     [1, 2, 3, 4, 5].includes((data as HandleSetTimeData).playerNumber) &&
     (data as HandleSetTimeData).secret !== undefined &&
     (data as HandleSetTimeData).time !== undefined
-  );
-};
+  )
+}
 
 export const isHandleDisconnectSessionData = (
   data: HandleDisconnectSessionData | unknown,
@@ -218,8 +218,8 @@ export const isHandleDisconnectSessionData = (
     (data as HandleDisconnectSessionData).playerNumber !== undefined &&
     [1, 2, 3, 4, 5].includes((data as HandleJoinSessionData).playerNumber) &&
     (data as HandleDisconnectSessionData).secret !== undefined
-  );
-};
+  )
+}
 
 export const isHandleEventData = (
   data: HandleEventsData | unknown,
@@ -243,8 +243,8 @@ export const isHandleEventData = (
       'winner',
       'draw',
     ].includes((data as HandleEventsData).event.type)
-  );
-};
+  )
+}
 
 export const isHandleTickData = (
   data: HandleTickData | unknown,
@@ -255,5 +255,5 @@ export const isHandleTickData = (
     [1, 2, 3, 4, 5].includes((data as HandleJoinSessionData).playerNumber) &&
     (data as HandleTickData).secret !== undefined &&
     (data as HandleTickData).tick !== undefined
-  );
-};
+  )
+}

@@ -13,6 +13,6 @@ const colors = {
   DARK_ORANGE: 'rgb(255,140,0)',
   METALLIC_GOLD: 'rgb(212,175,55)',
   DARK_GREY: 'rgb(90,90,90)',
-};
+}
 
-export default colors;
+export default colors

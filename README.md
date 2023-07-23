@@ -25,6 +25,7 @@ A debug .apk file will allow you to install and test your app before publishing 
 You’ll need to enable debugging options on your phone to run this apk.
 
 Prerequisite:
+
 - react-native version > 0.58
 
 How to generate one in 3 steps?
@@ -43,7 +44,7 @@ Step 3: Now in this android folder, run this command
 `./gradlew assembleDebug`
 
 There! you’ll find the apk file in the following path:
-__yourProject/android/app/build/outputs/apk/debug/app-debug.apk__
+**yourProject/android/app/build/outputs/apk/debug/app-debug.apk**
 
 Release APK
 
@@ -55,7 +56,7 @@ You will need a Java generated signing key which is a keystore file used to gene
 keytool -genkey -v -keystore your_key_name.keystore -alias your_key_alias -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-Once you run the keytool utility, you’ll be prompted to type in a password. *Make sure you remember the password
+Once you run the keytool utility, you’ll be prompted to type in a password. \*Make sure you remember the password
 
 You can change your_key_name with any name you want, as well as your_key_alias. This key uses key-size 2048, instead of default 1024 for security reason.
 
@@ -66,7 +67,6 @@ Firstly, you need to copy the file your_key_name.keystore and paste it under the
 On Terminal: `mv my-release-key.keystore /android/app`
 
 You need to open your android\app\build.gradle file and add the keystore configuration. There are two ways of configuring the project with keystore. First, the common and unsecured way:
-
 
 ```
 android {
@@ -128,7 +128,6 @@ Run in /app folder
 npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
 ```
 
-
 ### Step 3. Release APK Generation
 
 Place your terminal directory to android using:
@@ -140,7 +139,7 @@ For Windows,
 For Linux and Mac OSX:
 `./gradlew assembleRelease`
 
-As a result, the APK creation process is done. You can find the generated APK at __android/app/build/outputs/apk/app-release.apk__. This is the actual app, which you can send to your phone or upload to the Google Play Store. Congratulations, you’ve just generated a React Native Release Build APK for Android.
+As a result, the APK creation process is done. You can find the generated APK at **android/app/build/outputs/apk/app-release.apk**. This is the actual app, which you can send to your phone or upload to the Google Play Store. Congratulations, you’ve just generated a React Native Release Build APK for Android.
 
 ## Documentation
 
@@ -148,4 +147,4 @@ Potentially could use https://jsdoc.app/ for simplicity.
 
 ## Typography
 
-All text is created using the https://textcraft.net/style/psychobattleaxeninja/8-bit-arcade website. We only use the first box to enter the text, then click on Minecraftia, choose 4 pix for the border of the text, use colour #663D00 for the border. Choose the default gold / yellow coloured inner for the text (bottom row , third inwards). Deselect 3D-styled-view. Then right click the image and choose __save as__.
+All text is created using the https://textcraft.net/style/psychobattleaxeninja/8-bit-arcade website. We only use the first box to enter the text, then click on Minecraftia, choose 4 pix for the border of the text, use colour #663D00 for the border. Choose the default gold / yellow coloured inner for the text (bottom row , third inwards). Deselect 3D-styled-view. Then right click the image and choose **save as**.

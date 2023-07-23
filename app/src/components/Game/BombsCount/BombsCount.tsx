@@ -1,17 +1,17 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Icon, Icons} from '../../General';
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
+import {Icon, Icons} from '../../General'
 
-import colors from '../../../constants/colors';
+import colors from '../../../constants/colors'
 
 type BombsCountProps = {
-  bombsCount: number;
-};
+  bombsCount: number
+}
 
 function BombsCount({bombsCount}: BombsCountProps): JSX.Element {
-  let bombsArray: number[] = [];
+  let bombsArray: number[] = []
   for (let i = 0; i < bombsCount; i++) {
-    bombsArray.push(i + 1);
+    bombsArray.push(i + 1)
   }
 
   return (
@@ -25,7 +25,7 @@ function BombsCount({bombsCount}: BombsCountProps): JSX.Element {
         />
       ))}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default BombsCount;
+export default BombsCount

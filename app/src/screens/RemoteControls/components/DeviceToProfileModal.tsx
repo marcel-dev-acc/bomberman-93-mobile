@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -6,24 +6,24 @@ import {
   TouchableHighlight,
   View,
   useWindowDimensions,
-} from 'react-native';
+} from 'react-native'
 
-import sharedStyles from '../SharedStyles';
-import {Button, GameText, Icon, Icons} from '../../../components/General';
-import {AndroidGamepadEvent} from '../../../native/interface';
-import colors from '../../../constants/colors';
-import {AndroidGamepadProfile} from '../types';
-import {StorageKeys, storeData} from '../../../utils/localStorage';
+import sharedStyles from '../SharedStyles'
+import {Button, GameText, Icon, Icons} from '../../../components/General'
+import {AndroidGamepadEvent} from '../../../native/interface'
+import colors from '../../../constants/colors'
+import {AndroidGamepadProfile} from '../types'
+import {StorageKeys, storeData} from '../../../utils/localStorage'
 
 type DeviceToProfileModalProps = {
-  setShowDeviceToProfileModal: (showDeviceToProfileModal: boolean) => void;
-  activeEvent: AndroidGamepadEvent;
-  setActiveEvent: (event: AndroidGamepadEvent | undefined) => void;
-  activeProfileName: string;
-  setActiveProfileName: (activeProfileName: string) => void;
-  displayProfiles: AndroidGamepadProfile[];
-  setDisplayProfiles: (displayProfiles: AndroidGamepadProfile[]) => void;
-};
+  setShowDeviceToProfileModal: (showDeviceToProfileModal: boolean) => void
+  activeEvent: AndroidGamepadEvent
+  setActiveEvent: (event: AndroidGamepadEvent | undefined) => void
+  activeProfileName: string
+  setActiveProfileName: (activeProfileName: string) => void
+  displayProfiles: AndroidGamepadProfile[]
+  setDisplayProfiles: (displayProfiles: AndroidGamepadProfile[]) => void
+}
 
 function DeviceToProfileModal({
   setShowDeviceToProfileModal,
@@ -34,9 +34,9 @@ function DeviceToProfileModal({
   displayProfiles,
   setDisplayProfiles,
 }: DeviceToProfileModalProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
+  const {height, width} = useWindowDimensions()
 
-  const [textInputColor, setTextInputColor] = useState(colors.BLACK);
+  const [textInputColor, setTextInputColor] = useState(colors.BLACK)
 
   return (
     <View
@@ -53,9 +53,9 @@ function DeviceToProfileModal({
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            setShowDeviceToProfileModal(false);
+            setShowDeviceToProfileModal(false)
           }}
           underlayColor="rgba(255,255,255,0.25)"
           style={sharedStyles.remoteControlsIcon}>
@@ -97,7 +97,7 @@ function DeviceToProfileModal({
             text="Create"
             onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
               const newProfiles = displayProfiles.some(
                 profile => profile.profileName === activeProfileName,
@@ -134,12 +134,12 @@ function DeviceToProfileModal({
                       deviceId: activeEvent.deviceId,
                       selected: false,
                     },
-                  ];
-              setDisplayProfiles(newProfiles);
-              storeData(StorageKeys.profiles, JSON.stringify(newProfiles));
-              setActiveProfileName('');
-              setActiveEvent(undefined);
-              setShowDeviceToProfileModal(false);
+                  ]
+              setDisplayProfiles(newProfiles)
+              storeData(StorageKeys.profiles, JSON.stringify(newProfiles))
+              setActiveProfileName('')
+              setActiveEvent(undefined)
+              setShowDeviceToProfileModal(false)
             }}
           />
         </View>
@@ -160,7 +160,7 @@ function DeviceToProfileModal({
                     text={profile.profileName}
                     onPress={pressEvent => {
                       if (pressEvent.nativeEvent.target === undefined) {
-                        return;
+                        return
                       }
                       const newProfiles = [
                         ...displayProfiles.filter(
@@ -177,24 +177,24 @@ function DeviceToProfileModal({
                           rightKey: profile.rightKey,
                           bombKey: profile.bombKey,
                         },
-                      ];
-                      setDisplayProfiles(newProfiles);
+                      ]
+                      setDisplayProfiles(newProfiles)
                       storeData(
                         StorageKeys.profiles,
                         JSON.stringify(newProfiles),
-                      );
-                      setActiveProfileName('');
-                      setActiveEvent(undefined);
-                      setShowDeviceToProfileModal(false);
+                      )
+                      setActiveProfileName('')
+                      setActiveEvent(undefined)
+                      setShowDeviceToProfileModal(false)
                     }}
                   />
-                );
+                )
               })}
           </ScrollView>
         </View>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -204,6 +204,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     fontSize: 20,
   },
-});
+})
 
-export default DeviceToProfileModal;
+export default DeviceToProfileModal

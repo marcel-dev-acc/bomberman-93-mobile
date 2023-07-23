@@ -1,51 +1,51 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
 
-import colors from '../../../constants/colors';
-import {entitySizes} from '../../../constants/entitySizes';
-import {Icon, Icons} from '../../General';
-import {PerkType} from '../../../types/serverTypes';
-import {useSelector} from 'react-redux';
+import colors from '../../../constants/colors'
+import {entitySizes} from '../../../constants/entitySizes'
+import {Icon, Icons} from '../../General'
+import {PerkType} from '../../../types/serverTypes'
+import {useSelector} from 'react-redux'
 
 type PerkProps = {
-  top: number;
-  left: number;
-  type: PerkType;
-  isDark: boolean;
-};
+  top: number
+  left: number
+  type: PerkType
+  isDark: boolean
+}
 
 function Perk(props: PerkProps): JSX.Element {
   const graphicsEnabled: boolean = useSelector(
     (state: any) => state.screens.graphicsEnabled,
-  );
+  )
 
-  const perkType = props.type as PerkType;
+  const perkType = props.type as PerkType
   let iconName = Icons.fire as
     | Icons.fire
     | Icons.bomb
     | Icons.runFast
     | Icons.bombOff
     | Icons.accessPointMinus
-    | Icons.arrowULeftBottom;
+    | Icons.arrowULeftBottom
   switch (perkType) {
     case PerkType.bombStrength:
-      iconName = Icons.fire;
-      break;
+      iconName = Icons.fire
+      break
     case PerkType.chaosBackwards:
-      iconName = Icons.arrowULeftBottom;
-      break;
+      iconName = Icons.arrowULeftBottom
+      break
     case PerkType.chaosFaster:
-      iconName = Icons.runFast;
-      break;
+      iconName = Icons.runFast
+      break
     case PerkType.chaosNoBombs:
-      iconName = Icons.bombOff;
-      break;
+      iconName = Icons.bombOff
+      break
     case PerkType.chaosSmallBombs:
-      iconName = Icons.accessPointMinus;
-      break;
+      iconName = Icons.accessPointMinus
+      break
     case PerkType.bombNumber:
-      iconName = Icons.bomb;
-      break;
+      iconName = Icons.bomb
+      break
   }
 
   return (
@@ -65,7 +65,7 @@ function Perk(props: PerkProps): JSX.Element {
         color={graphicsEnabled && !props.isDark ? colors.BLACK : colors.WHITE}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
   },
-});
+})
 
-export default Perk;
+export default Perk

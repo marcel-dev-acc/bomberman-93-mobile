@@ -1,23 +1,23 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   View,
   Text,
   TouchableHighlight,
   useWindowDimensions,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+} from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 
-import colors from '../../../constants/colors';
-import {UIError} from '../../../state/errors/reducer';
-import Icon from '../Icon/Icon';
-import {Icons} from '../Icon/iconMap';
-import {removeError} from '../../../state/errors/reducer';
+import colors from '../../../constants/colors'
+import {UIError} from '../../../state/errors/reducer'
+import Icon from '../Icon/Icon'
+import {Icons} from '../Icon/iconMap'
+import {removeError} from '../../../state/errors/reducer'
 
 function ErrorsContainer(): JSX.Element {
-  const errors: UIError[] = useSelector((state: any) => state.errors.errors);
-  const dispatch = useDispatch();
-  const screenWidth = useWindowDimensions().width;
+  const errors: UIError[] = useSelector((state: any) => state.errors.errors)
+  const dispatch = useDispatch()
+  const screenWidth = useWindowDimensions().width
 
   return (
     <View style={styles.errorsContainer}>
@@ -49,9 +49,9 @@ function ErrorsContainer(): JSX.Element {
                 <TouchableHighlight
                   onPress={pressEvent => {
                     if (pressEvent.nativeEvent.target === undefined) {
-                      return;
+                      return
                     }
-                    dispatch(removeError(idx));
+                    dispatch(removeError(idx))
                   }}
                   underlayColor="rgba(0,0,0,0.1)"
                   style={{
@@ -61,10 +61,10 @@ function ErrorsContainer(): JSX.Element {
                 </TouchableHighlight>
               </View>
             </View>
-          );
+          )
         })}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.WHITE,
   },
-});
+})
 
-export default ErrorsContainer;
+export default ErrorsContainer

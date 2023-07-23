@@ -1,6 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import type {PayloadAction} from '@reduxjs/toolkit';
-import {DEBUG} from '../../constants/app';
+import {createSlice} from '@reduxjs/toolkit'
+import type {PayloadAction} from '@reduxjs/toolkit'
+import {DEBUG} from '../../constants/app'
 
 export enum ScreenType {
   welcome = 'welcome',
@@ -17,13 +17,13 @@ export enum ScreenType {
 }
 
 type Screens = {
-  screen: ScreenType;
-  previousScreen?: ScreenType;
-  graphicsEnabled?: boolean;
-  debuggerEnabled?: boolean;
-  musicEnabled?: boolean;
-  isLoading: boolean;
-};
+  screen: ScreenType
+  previousScreen?: ScreenType
+  graphicsEnabled?: boolean
+  debuggerEnabled?: boolean
+  musicEnabled?: boolean
+  isLoading: boolean
+}
 
 const initialState: Screens = {
   screen: ScreenType.welcome,
@@ -32,30 +32,30 @@ const initialState: Screens = {
   debuggerEnabled: DEBUG,
   musicEnabled: true,
   isLoading: false,
-};
+}
 
 export const screenSlice = createSlice({
   name: 'screens',
   initialState: initialState,
   reducers: {
     changeScreen: (state, action: PayloadAction<ScreenType>) => {
-      state.previousScreen = state.screen;
-      state.screen = action.payload;
+      state.previousScreen = state.screen
+      state.screen = action.payload
     },
     toggleGraphics: state => {
-      state.graphicsEnabled = !state.graphicsEnabled;
+      state.graphicsEnabled = !state.graphicsEnabled
     },
     toggleDebugger: state => {
-      state.debuggerEnabled = !state.debuggerEnabled;
+      state.debuggerEnabled = !state.debuggerEnabled
     },
     toggleMusic: (state, action: PayloadAction<boolean>) => {
-      state.musicEnabled = action.payload;
+      state.musicEnabled = action.payload
     },
     toggleIsLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
+      state.isLoading = action.payload
     },
   },
-});
+})
 
 // Action creators are generated for each case reducer function
 export const {
@@ -64,6 +64,6 @@ export const {
   toggleDebugger,
   toggleMusic,
   toggleIsLoading,
-} = screenSlice.actions;
+} = screenSlice.actions
 
-export default screenSlice.reducer;
+export default screenSlice.reducer

@@ -1,35 +1,35 @@
-import React, {useState} from 'react';
-import {StyleSheet, TouchableHighlight, View, Text} from 'react-native';
-import {Icon, Icons} from '../../General';
+import React, {useState} from 'react'
+import {StyleSheet, TouchableHighlight, View, Text} from 'react-native'
+import {Icon, Icons} from '../../General'
 
-import colors from '../../../constants/colors';
-import {useDispatch} from 'react-redux';
-import {ScreenType, changeScreen} from '../../../state/screens/reducer';
+import colors from '../../../constants/colors'
+import {useDispatch} from 'react-redux'
+import {ScreenType, changeScreen} from '../../../state/screens/reducer'
 
 type GameOptionsMenuProps = {
-  setGameRunning: (gameRunning: boolean) => void;
-  handleReset: () => void;
-};
+  setGameRunning: (gameRunning: boolean) => void
+  handleReset: () => void
+}
 
-const modalWidth = 200;
+const modalWidth = 200
 
 function GameOptionsMenu({
   setGameRunning,
   handleReset,
 }: GameOptionsMenuProps): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
 
   return (
     <View style={styles.gameOptionsMenuContainer}>
       <TouchableHighlight
         onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) {
-            return;
+            return
           }
-          setGameRunning(false);
-          setShowModal(true);
+          setGameRunning(false)
+          setShowModal(true)
         }}
         underlayColor="rgba(255,255,255,0.25)">
         <Icon name={Icons.dotsVertical} size={30} color={colors.WHITE} />
@@ -44,9 +44,9 @@ function GameOptionsMenu({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                setShowModal(false);
+                setShowModal(false)
               }}
               underlayColor="rgba(0,0,0,0.1)">
               <Icon name={Icons.close} size={30} color={colors.BLACK} />
@@ -60,12 +60,12 @@ function GameOptionsMenu({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                setShowModal(false);
-                handleReset();
-                setGameRunning(false);
-                dispatch(changeScreen(ScreenType.welcome));
+                setShowModal(false)
+                handleReset()
+                setGameRunning(false)
+                dispatch(changeScreen(ScreenType.welcome))
               }}
               underlayColor="rgba(0,0,0,0.1)">
               <View
@@ -82,7 +82,7 @@ function GameOptionsMenu({
         </View>
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
   },
-});
+})
 
-export default GameOptionsMenu;
+export default GameOptionsMenu

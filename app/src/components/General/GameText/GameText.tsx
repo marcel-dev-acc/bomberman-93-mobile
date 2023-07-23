@@ -1,14 +1,14 @@
-import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import textMapper from './map';
+import React from 'react'
+import {Image, StyleSheet, View} from 'react-native'
+import textMapper from './map'
 
 type GameTextProps = {
-  text: string;
-  charSize: number;
-};
+  text: string
+  charSize: number
+}
 
 function GameText({text, charSize}: GameTextProps): JSX.Element {
-  const textMap = textMapper(text);
+  const textMap = textMapper(text)
 
   return (
     <View style={styles.gameTextContainer}>
@@ -30,7 +30,7 @@ function GameText({text, charSize}: GameTextProps): JSX.Element {
           ),
         )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-});
+})
 
-export default GameText;
+export default GameText

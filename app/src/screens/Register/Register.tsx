@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import {
   Image,
   StyleSheet,
@@ -6,38 +6,38 @@ import {
   TouchableHighlight,
   View,
   useWindowDimensions,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 
-import {ServerStatus, SplashImage} from '../../components/General';
+import {ServerStatus, SplashImage} from '../../components/General'
 import {
   ScreenType,
   changeScreen,
   toggleIsLoading,
-} from '../../state/screens/reducer';
-import {getIsVertical} from '../../constants/screen';
-import imageNames from '../../constants/imageNames';
-import colors from '../../constants/colors';
-import {requestToken} from './registration';
-import {addError} from '../../state/errors/reducer';
-import {StorageKeys, storeData} from '../../utils/localStorage';
+} from '../../state/screens/reducer'
+import {getIsVertical} from '../../constants/screen'
+import imageNames from '../../constants/imageNames'
+import colors from '../../constants/colors'
+import {requestToken} from './registration'
+import {addError} from '../../state/errors/reducer'
+import {StorageKeys, storeData} from '../../utils/localStorage'
 
 type RegisterScreenProps = {
-  setServerStatus: (serverStatus: ServerStatus) => void;
-};
+  setServerStatus: (serverStatus: ServerStatus) => void
+}
 
 function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [showExplanation, setShowExplanation] = useState(true);
-  const [showEmailForm, setShowEmailForm] = useState(false);
-  const [showCodeForm, setShowCodeForm] = useState(false);
-  const [email, setEmail] = useState('');
-  const [textInputColor, setTextInputColor] = useState(colors.BLACK);
-  const [code, setCode] = useState('');
+  const [showExplanation, setShowExplanation] = useState(true)
+  const [showEmailForm, setShowEmailForm] = useState(false)
+  const [showCodeForm, setShowCodeForm] = useState(false)
+  const [email, setEmail] = useState('')
+  const [textInputColor, setTextInputColor] = useState(colors.BLACK)
+  const [code, setCode] = useState('')
 
   return (
     <View
@@ -50,12 +50,12 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
       <TouchableHighlight
         onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) {
-            return;
+            return
           }
-          setShowEmailForm(true);
-          setShowEmailForm(false);
-          setShowCodeForm(false);
-          dispatch(changeScreen(ScreenType.welcome));
+          setShowEmailForm(true)
+          setShowEmailForm(false)
+          setShowCodeForm(false)
+          dispatch(changeScreen(ScreenType.welcome))
         }}
         underlayColor="rgba(255,255,255,0.25)"
         style={styles.registerBackIcon}>
@@ -98,10 +98,10 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
           <TouchableHighlight
             onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              setShowExplanation(false);
-              setShowEmailForm(true);
+              setShowExplanation(false)
+              setShowEmailForm(true)
             }}
             style={{
               ...styles.registerButton,
@@ -143,22 +143,22 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
           <TouchableHighlight
             onPress={async pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              dispatch(toggleIsLoading(true));
-              const res = await requestToken(email);
+              dispatch(toggleIsLoading(true))
+              const res = await requestToken(email)
               if (res.ok) {
-                setShowEmailForm(false);
-                setShowCodeForm(true);
+                setShowEmailForm(false)
+                setShowCodeForm(true)
               } else {
                 dispatch(
                   addError({
                     title: '[Server Response] Server error response',
                     value: res.message,
                   }),
-                );
+                )
               }
-              dispatch(toggleIsLoading(false));
+              dispatch(toggleIsLoading(false))
             }}
             style={{
               ...styles.registerButton,
@@ -200,13 +200,13 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
           <TouchableHighlight
             onPress={async pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
               // Store the code locally
-              await storeData(StorageKeys.token, code);
-              setServerStatus(ServerStatus.localToken);
+              await storeData(StorageKeys.token, code)
+              setServerStatus(ServerStatus.localToken)
               // Go back to welcome screen
-              dispatch(changeScreen(ScreenType.welcome));
+              dispatch(changeScreen(ScreenType.welcome))
             }}
             style={{
               ...styles.registerButton,
@@ -225,7 +225,7 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
         </View>
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -266,6 +266,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-});
+})
 
-export default RegisterScreen;
+export default RegisterScreen

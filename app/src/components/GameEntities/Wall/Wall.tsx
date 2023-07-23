@@ -1,12 +1,12 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
 
-import colors from '../../../constants/colors';
-import {entitySizes} from '../../../constants/entitySizes';
+import colors from '../../../constants/colors'
+import {entitySizes} from '../../../constants/entitySizes'
 
 interface WallProps {
-  left: number;
-  top: number;
+  left: number
+  top: number
 }
 
 function Wall(props: WallProps): JSX.Element {
@@ -18,7 +18,7 @@ function Wall(props: WallProps): JSX.Element {
         top: props.top,
       }}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.BLACK,
   },
-});
+})
 
-export default Wall;
+export default Wall

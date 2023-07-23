@@ -1,18 +1,18 @@
-import React from 'react';
-import {ScrollView, Text, View, useWindowDimensions} from 'react-native';
-import sharedStyles from '../SharedStyles';
-import {AndroidGamepadProfile} from '../types';
-import {Button, GameText} from '../../../components/General';
-import {AndroidGamepadEvent} from '../../../native/interface';
-import {getIsVertical} from '../../../constants/screen';
+import React from 'react'
+import {ScrollView, Text, View, useWindowDimensions} from 'react-native'
+import sharedStyles from '../SharedStyles'
+import {AndroidGamepadProfile} from '../types'
+import {Button, GameText} from '../../../components/General'
+import {AndroidGamepadEvent} from '../../../native/interface'
+import {getIsVertical} from '../../../constants/screen'
 
 type ScrollViewDevicesProps = {
-  displayDeviceIds: number[];
-  displayedEvents: AndroidGamepadEvent[];
-  displayProfiles: AndroidGamepadProfile[];
-  setActiveEvent: (event: AndroidGamepadEvent) => void;
-  setShowDeviceToProfileModal: (showDeviceToProfileModal: boolean) => void;
-};
+  displayDeviceIds: number[]
+  displayedEvents: AndroidGamepadEvent[]
+  displayProfiles: AndroidGamepadProfile[]
+  setActiveEvent: (event: AndroidGamepadEvent) => void
+  setShowDeviceToProfileModal: (showDeviceToProfileModal: boolean) => void
+}
 
 function ScrollViewDevices({
   displayDeviceIds,
@@ -21,8 +21,8 @@ function ScrollViewDevices({
   setActiveEvent,
   setShowDeviceToProfileModal,
 }: ScrollViewDevicesProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
   return (
     <ScrollView
@@ -33,7 +33,7 @@ function ScrollViewDevices({
         displayDeviceIds.map((id, idx) => {
           const event = displayedEvents.filter(
             _event => _event.deviceId === id,
-          )[0];
+          )[0]
           return (
             <View key={idx} style={sharedStyles.remoteControlsScrollViewItem}>
               <GameText
@@ -55,10 +55,10 @@ function ScrollViewDevices({
                   text="Add to a profile"
                   onPress={pressEvent => {
                     if (pressEvent.nativeEvent.target === undefined) {
-                      return;
+                      return
                     }
-                    setActiveEvent(event);
-                    setShowDeviceToProfileModal(true);
+                    setActiveEvent(event)
+                    setShowDeviceToProfileModal(true)
                   }}
                   customButtonStyle={{
                     ...sharedStyles.remoteControlsScrollViewItemButton,
@@ -67,10 +67,10 @@ function ScrollViewDevices({
                 />
               )}
             </View>
-          );
+          )
         })}
     </ScrollView>
-  );
+  )
 }
 
-export default ScrollViewDevices;
+export default ScrollViewDevices

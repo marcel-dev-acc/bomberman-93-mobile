@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 import {
   GestureResponderEvent,
   Image,
   StyleSheet,
   TouchableHighlight,
-} from 'react-native';
-import imageNames from '../../../constants/imageNames';
+} from 'react-native'
+import imageNames from '../../../constants/imageNames'
 
 type BackButtonProps = {
-  onPress: (pressEvent: GestureResponderEvent) => void;
-};
+  onPress: (pressEvent: GestureResponderEvent) => void
+}
 
 function BackButton({onPress}: BackButtonProps): JSX.Element {
   return (
@@ -26,7 +26,7 @@ function BackButton({onPress}: BackButtonProps): JSX.Element {
         }}
       />
     </TouchableHighlight>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     borderRadius: 200,
     padding: 2.5,
   },
-});
+})
 
-export default BackButton;
+export default BackButton

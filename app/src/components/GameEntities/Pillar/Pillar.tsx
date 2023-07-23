@@ -1,13 +1,13 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
 
-import colors from '../../../constants/colors';
-import {entitySizes} from '../../../constants/entitySizes';
+import colors from '../../../constants/colors'
+import {entitySizes} from '../../../constants/entitySizes'
 
 type PillarProps = {
-  top: number;
-  left: number;
-};
+  top: number
+  left: number
+}
 
 function Pillar(props: PillarProps): JSX.Element {
   return (
@@ -18,7 +18,7 @@ function Pillar(props: PillarProps): JSX.Element {
         top: props.top,
       }}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
     borderColor: colors.BLACK,
     borderRadius: 3,
   },
-});
+})
 
-export default Pillar;
+export default Pillar

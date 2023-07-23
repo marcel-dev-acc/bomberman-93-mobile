@@ -1,17 +1,17 @@
-import React from 'react';
-import {StyleSheet, View, TouchableHighlight} from 'react-native';
-import {Icon, Icons} from '../../General';
+import React from 'react'
+import {StyleSheet, View, TouchableHighlight} from 'react-native'
+import {Icon, Icons} from '../../General'
 
-import colors from '../../../constants/colors';
-import {Direction} from '../../../types/serverTypes';
+import colors from '../../../constants/colors'
+import {Direction} from '../../../types/serverTypes'
 
 type ControlsProps = {
-  handleMovePress: (direction: Direction, isMoving: boolean) => void;
-  isMovingUp: React.MutableRefObject<boolean>;
-  isMovingDown: React.MutableRefObject<boolean>;
-  isMovingLeft: React.MutableRefObject<boolean>;
-  isMovingRight: React.MutableRefObject<boolean>;
-};
+  handleMovePress: (direction: Direction, isMoving: boolean) => void
+  isMovingUp: React.MutableRefObject<boolean>
+  isMovingDown: React.MutableRefObject<boolean>
+  isMovingLeft: React.MutableRefObject<boolean>
+  isMovingRight: React.MutableRefObject<boolean>
+}
 
 function Controls({
   handleMovePress,
@@ -26,15 +26,15 @@ function Controls({
         <TouchableHighlight
           onPressIn={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            handleMovePress(Direction.up, true);
+            handleMovePress(Direction.up, true)
           }}
           onPressOut={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            isMovingUp.current = false;
+            isMovingUp.current = false
           }}
           style={{borderRadius: 5}}
           underlayColor="rgba(255,255,255,0.25)">
@@ -46,15 +46,15 @@ function Controls({
           <TouchableHighlight
             onPressIn={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              handleMovePress(Direction.left, true);
+              handleMovePress(Direction.left, true)
             }}
             onPressOut={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              isMovingLeft.current = false;
+              isMovingLeft.current = false
             }}
             style={{borderRadius: 5}}
             underlayColor="rgba(255,255,255,0.25)">
@@ -65,15 +65,15 @@ function Controls({
           <TouchableHighlight
             onPressIn={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              handleMovePress(Direction.right, true);
+              handleMovePress(Direction.right, true)
             }}
             onPressOut={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              isMovingRight.current = false;
+              isMovingRight.current = false
             }}
             style={{borderRadius: 5}}
             underlayColor="rgba(255,255,255,0.25)">
@@ -85,15 +85,15 @@ function Controls({
         <TouchableHighlight
           onPressIn={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            handleMovePress(Direction.down, true);
+            handleMovePress(Direction.down, true)
           }}
           onPressOut={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            isMovingDown.current = false;
+            isMovingDown.current = false
           }}
           style={{borderRadius: 5}}
           underlayColor="rgba(255,255,255,0.25)">
@@ -101,7 +101,7 @@ function Controls({
         </TouchableHighlight>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -120,6 +120,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-});
+})
 
-export default Controls;
+export default Controls

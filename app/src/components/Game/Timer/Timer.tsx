@@ -1,38 +1,38 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react'
+import {StyleSheet, View, Text} from 'react-native'
 
-import {Icon, Icons} from '../../General';
-import colors from '../../../constants/colors';
-import {useSelector} from 'react-redux';
-import {GameEventProps} from '../../../types/serverTypes';
-import {DEBUG} from '../../../constants/app';
+import {Icon, Icons} from '../../General'
+import colors from '../../../constants/colors'
+import {useSelector} from 'react-redux'
+import {GameEventProps} from '../../../types/serverTypes'
+import {DEBUG} from '../../../constants/app'
 
 type TimerProps = {
-  baseTimer: number;
-  dispatcher: (event: GameEventProps) => void;
-};
+  baseTimer: number
+  dispatcher: (event: GameEventProps) => void
+}
 
 function Timer({baseTimer, dispatcher}: TimerProps): JSX.Element {
   const debuggerEnabled: boolean = useSelector(
     (state: any) => state.screens.debuggerEnabled,
-  );
+  )
 
-  const [timerInner, setTimerInner] = useState(baseTimer);
-  const timer = useRef(baseTimer);
+  const [timerInner, setTimerInner] = useState(baseTimer)
+  const timer = useRef(baseTimer)
 
   useEffect(() => {
     if (!DEBUG && !debuggerEnabled) {
       setTimeout(() => {
         if (timer.current > -1) {
-          setTimerInner(timerInner - 1);
-          timer.current = timerInner - 1;
+          setTimerInner(timerInner - 1)
+          timer.current = timerInner - 1
         } else {
           // Timer finished
-          dispatcher({type: 'time-over'});
+          dispatcher({type: 'time-over'})
         }
-      }, 1000);
+      }, 1000)
     }
-  }, [debuggerEnabled, timerInner, dispatcher]);
+  }, [debuggerEnabled, timerInner, dispatcher])
 
   return (
     <View style={styles.timerContainer}>
@@ -57,7 +57,7 @@ function Timer({baseTimer, dispatcher}: TimerProps): JSX.Element {
         /> */}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
     fontSize: 20,
   },
-});
+})
 
-export default Timer;
+export default Timer

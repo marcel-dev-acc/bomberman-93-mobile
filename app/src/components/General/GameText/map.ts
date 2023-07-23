@@ -1,4 +1,4 @@
-import imageNames from '../../../constants/imageNames';
+import imageNames from '../../../constants/imageNames'
 
 const alphabet = [
   'a',
@@ -27,155 +27,155 @@ const alphabet = [
   'x',
   'y',
   'z',
-];
+]
 
 const map = (char: string): any => {
   switch (char) {
     case ' ':
-      return undefined;
+      return undefined
     case '0':
-      return imageNames.zeroText;
+      return imageNames.zeroText
     case '1':
-      return imageNames.oneText;
+      return imageNames.oneText
     case '2':
-      return imageNames.twoText;
+      return imageNames.twoText
     case '3':
-      return imageNames.threeText;
+      return imageNames.threeText
     case '4':
-      return imageNames.fourText;
+      return imageNames.fourText
     case '5':
-      return imageNames.fiveText;
+      return imageNames.fiveText
     case '6':
-      return imageNames.sixText;
+      return imageNames.sixText
     case '7':
-      return imageNames.sevenText;
+      return imageNames.sevenText
     case '8':
-      return imageNames.eightText;
+      return imageNames.eightText
     case '9':
-      return imageNames.nineText;
+      return imageNames.nineText
     case 'a':
-      return imageNames.aText;
+      return imageNames.aText
     case 'b':
-      return imageNames.bText;
+      return imageNames.bText
     case 'c':
-      return imageNames.cText;
+      return imageNames.cText
     case 'd':
-      return imageNames.dText;
+      return imageNames.dText
     case 'e':
-      return imageNames.eText;
+      return imageNames.eText
     case 'f':
-      return imageNames.fText;
+      return imageNames.fText
     case 'g':
-      return imageNames.gText;
+      return imageNames.gText
     case 'h':
-      return imageNames.hText;
+      return imageNames.hText
     case 'i':
-      return imageNames.iText;
+      return imageNames.iText
     case 'j':
-      return imageNames.jText;
+      return imageNames.jText
     case 'k':
-      return imageNames.kText;
+      return imageNames.kText
     case 'l':
-      return imageNames.lText;
+      return imageNames.lText
     case 'm':
-      return imageNames.mText;
+      return imageNames.mText
     case 'n':
-      return imageNames.nText;
+      return imageNames.nText
     case 'o':
-      return imageNames.oText;
+      return imageNames.oText
     case 'p':
-      return imageNames.pText;
+      return imageNames.pText
     case 'q':
-      return imageNames.qText;
+      return imageNames.qText
     case 'r':
-      return imageNames.rText;
+      return imageNames.rText
     case 's':
-      return imageNames.sText;
+      return imageNames.sText
     case 't':
-      return imageNames.tText;
+      return imageNames.tText
     case 'u':
-      return imageNames.uText;
+      return imageNames.uText
     case 'v':
-      return imageNames.vText;
+      return imageNames.vText
     case 'w':
-      return imageNames.wText;
+      return imageNames.wText
     case 'x':
-      return imageNames.xText;
+      return imageNames.xText
     case 'y':
-      return imageNames.yText;
+      return imageNames.yText
     case 'z':
-      return imageNames.zText;
+      return imageNames.zText
     case 'A':
-      return imageNames.AText;
+      return imageNames.AText
     case 'B':
-      return imageNames.BText;
+      return imageNames.BText
     case 'C':
-      return imageNames.CText;
+      return imageNames.CText
     case 'D':
-      return imageNames.DText;
+      return imageNames.DText
     case 'E':
-      return imageNames.EText;
+      return imageNames.EText
     case 'F':
-      return imageNames.FText;
+      return imageNames.FText
     case 'G':
-      return imageNames.GText;
+      return imageNames.GText
     case 'H':
-      return imageNames.HText;
+      return imageNames.HText
     case 'I':
-      return imageNames.IText;
+      return imageNames.IText
     case 'J':
-      return imageNames.JText;
+      return imageNames.JText
     case 'K':
-      return imageNames.KText;
+      return imageNames.KText
     case 'L':
-      return imageNames.LText;
+      return imageNames.LText
     case 'M':
-      return imageNames.MText;
+      return imageNames.MText
     case 'N':
-      return imageNames.NText;
+      return imageNames.NText
     case 'O':
-      return imageNames.OText;
+      return imageNames.OText
     case 'P':
-      return imageNames.PText;
+      return imageNames.PText
     case 'Q':
-      return imageNames.QText;
+      return imageNames.QText
     case 'R':
-      return imageNames.RText;
+      return imageNames.RText
     case 'S':
-      return imageNames.SText;
+      return imageNames.SText
     case 'T':
-      return imageNames.TText;
+      return imageNames.TText
     case 'U':
-      return imageNames.UText;
+      return imageNames.UText
     case 'V':
-      return imageNames.VText;
+      return imageNames.VText
     case 'W':
-      return imageNames.WText;
+      return imageNames.WText
     case 'X':
-      return imageNames.XText;
+      return imageNames.XText
     case 'Y':
-      return imageNames.YText;
+      return imageNames.YText
     case 'Z':
-      return imageNames.ZText;
+      return imageNames.ZText
     case ':':
-      return imageNames.symbolColonText;
+      return imageNames.symbolColonText
     case '.':
-      return imageNames.symbolFullStopText;
+      return imageNames.symbolFullStopText
     default:
-      return imageNames.symbolQuestionMarkText;
+      return imageNames.symbolQuestionMarkText
   }
-};
+}
 
 type TextMap = {
-  char: string;
-  isCapital: boolean;
-  image: any;
-};
+  char: string
+  isCapital: boolean
+  image: any
+}
 
 const textMapper = (text: string): TextMap[] => {
-  let textArr: TextMap[] = [];
+  let textArr: TextMap[] = []
   for (let i = 0; i < text.length; i++) {
-    const char: string = text.substring(i, i + 1);
+    const char: string = text.substring(i, i + 1)
     textArr = [
       ...textArr,
       {
@@ -186,9 +186,9 @@ const textMapper = (text: string): TextMap[] => {
         ].includes(char),
         image: map(char),
       },
-    ];
+    ]
   }
-  return textArr;
-};
+  return textArr
+}
 
-export default textMapper;
+export default textMapper

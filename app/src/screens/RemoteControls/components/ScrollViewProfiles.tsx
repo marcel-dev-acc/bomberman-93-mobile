@@ -1,20 +1,20 @@
-import React from 'react';
-import {ScrollView, Text, TouchableHighlight, View} from 'react-native';
-import sharedStyles from '../SharedStyles';
-import {AndroidGamepadProfile} from '../types';
-import {Icon, Icons} from '../../../components/General';
-import colors from '../../../constants/colors';
-import {AndroidGamepadEvent} from '../../../native/interface';
-import {StorageKeys, storeData} from '../../../utils/localStorage';
+import React from 'react'
+import {ScrollView, Text, TouchableHighlight, View} from 'react-native'
+import sharedStyles from '../SharedStyles'
+import {AndroidGamepadProfile} from '../types'
+import {Icon, Icons} from '../../../components/General'
+import colors from '../../../constants/colors'
+import {AndroidGamepadEvent} from '../../../native/interface'
+import {StorageKeys, storeData} from '../../../utils/localStorage'
 
 type ScrollViewProfilesProps = {
-  displayedEvents: AndroidGamepadEvent[];
-  displayProfiles: AndroidGamepadProfile[];
-  setDisplayProfiles: (displayProfiles: AndroidGamepadProfile[]) => void;
+  displayedEvents: AndroidGamepadEvent[]
+  displayProfiles: AndroidGamepadProfile[]
+  setDisplayProfiles: (displayProfiles: AndroidGamepadProfile[]) => void
   activeGamepadProfileRef: React.MutableRefObject<
     AndroidGamepadProfile | undefined
-  >;
-};
+  >
+}
 
 function ScrollViewProfiles({
   displayedEvents,
@@ -32,12 +32,12 @@ function ScrollViewProfiles({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
                 if (
                   profile.deviceId === activeGamepadProfileRef.current?.deviceId
                 ) {
-                  activeGamepadProfileRef.current = undefined;
+                  activeGamepadProfileRef.current = undefined
                   const newProfiles = [
                     ...displayProfiles.filter(
                       _profile => profile.deviceId !== _profile.deviceId,
@@ -48,9 +48,9 @@ function ScrollViewProfiles({
                       )[0],
                       selected: false,
                     },
-                  ];
-                  setDisplayProfiles(newProfiles);
-                  storeData(StorageKeys.profiles, JSON.stringify(newProfiles));
+                  ]
+                  setDisplayProfiles(newProfiles)
+                  storeData(StorageKeys.profiles, JSON.stringify(newProfiles))
                 } else {
                   activeGamepadProfileRef.current = {
                     profileName: profile.profileName,
@@ -61,7 +61,7 @@ function ScrollViewProfiles({
                     leftKey: profile.leftKey,
                     rightKey: profile.rightKey,
                     bombKey: profile.bombKey,
-                  };
+                  }
                   const newProfiles = [
                     ...displayProfiles.filter(
                       _profile => profile.deviceId !== _profile.deviceId,
@@ -72,9 +72,9 @@ function ScrollViewProfiles({
                       )[0],
                       selected: true,
                     },
-                  ];
-                  setDisplayProfiles(newProfiles);
-                  storeData(StorageKeys.profiles, JSON.stringify(newProfiles));
+                  ]
+                  setDisplayProfiles(newProfiles)
+                  storeData(StorageKeys.profiles, JSON.stringify(newProfiles))
                 }
               }}
               underlayColor="rgba(255,255,255,0.25)"
@@ -167,13 +167,13 @@ function ScrollViewProfiles({
           <TouchableHighlight
             onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
               setDisplayProfiles([
                 ...displayProfiles.filter(
                   _profile => _profile.deviceId !== profile.deviceId,
                 ),
-              ]);
+              ])
               storeData(
                 StorageKeys.profiles,
                 JSON.stringify([
@@ -181,7 +181,7 @@ function ScrollViewProfiles({
                     _profile => _profile.deviceId !== profile.deviceId,
                   ),
                 ]),
-              );
+              )
             }}
             underlayColor="rgba(255,255,255,0.25)"
             style={sharedStyles.remoteControlsTabButton}>
@@ -190,7 +190,7 @@ function ScrollViewProfiles({
         </View>
       ))}
     </ScrollView>
-  );
+  )
 }
 
-export default ScrollViewProfiles;
+export default ScrollViewProfiles

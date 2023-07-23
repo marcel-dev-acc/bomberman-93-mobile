@@ -1,17 +1,17 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Icon, Icons} from '../../General';
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
+import {Icon, Icons} from '../../General'
 
-import colors from '../../../constants/colors';
+import colors from '../../../constants/colors'
 
 type FireCountProps = {
-  fireCount: number;
-};
+  fireCount: number
+}
 
 function FireCount({fireCount}: FireCountProps): JSX.Element {
-  let fireArray: number[] = [];
+  let fireArray: number[] = []
   for (let i = 0; i < fireCount; i++) {
-    fireArray.push(i + 1);
+    fireArray.push(i + 1)
   }
 
   return (
@@ -25,7 +25,7 @@ function FireCount({fireCount}: FireCountProps): JSX.Element {
         />
       ))}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default FireCount;
+export default FireCount

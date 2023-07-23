@@ -1,36 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Image, useWindowDimensions} from 'react-native';
-import {getIsVertical} from '../../../constants/screen';
-import imageNames from '../../../constants/imageNames';
+import React, {useEffect, useState} from 'react'
+import {View, StyleSheet, Image, useWindowDimensions} from 'react-native'
+import {getIsVertical} from '../../../constants/screen'
+import imageNames from '../../../constants/imageNames'
 
 const {
   splashVertical,
   splashVerticalWithouthHeader,
   splashHorizontal,
   splashHorizontalWithoutHeader,
-} = imageNames;
+} = imageNames
 
 type SplashImageProps = {
-  includeHeader?: boolean;
-};
+  includeHeader?: boolean
+}
 
 function SplashImage({includeHeader}: SplashImageProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const [splash, setSplash] = useState(splashVertical);
+  const [splash, setSplash] = useState(splashVertical)
 
   useEffect(() => {
     if (includeHeader && isVertical) {
-      setSplash(splashVertical);
+      setSplash(splashVertical)
     } else if (includeHeader && !isVertical) {
-      setSplash(splashHorizontal);
+      setSplash(splashHorizontal)
     } else if (!includeHeader && !isVertical) {
-      setSplash(splashHorizontalWithoutHeader);
+      setSplash(splashHorizontalWithoutHeader)
     } else {
-      setSplash(splashVerticalWithouthHeader);
+      setSplash(splashVerticalWithouthHeader)
     }
-  }, [includeHeader, isVertical]);
+  }, [includeHeader, isVertical])
 
   return (
     <View
@@ -47,7 +47,7 @@ function SplashImage({includeHeader}: SplashImageProps): JSX.Element {
         source={splash}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: -10,
   },
-});
+})
 
-export default SplashImage;
+export default SplashImage

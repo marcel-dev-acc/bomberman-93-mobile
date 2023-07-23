@@ -1,23 +1,23 @@
-import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import React from 'react'
+import {StyleSheet, View, Image} from 'react-native'
 
-import colors from '../../../constants/colors';
-import {entitySizes} from '../../../constants/entitySizes';
-import {useSelector} from 'react-redux';
-import {FireType} from '../../../constants/types';
-import {getSpriteCoordinates} from './animation';
-import imageNames from '../../../constants/imageNames';
+import colors from '../../../constants/colors'
+import {entitySizes} from '../../../constants/entitySizes'
+import {useSelector} from 'react-redux'
+import {FireType} from '../../../constants/types'
+import {getSpriteCoordinates} from './animation'
+import imageNames from '../../../constants/imageNames'
 
 type FireProps = {
-  top: number;
-  left: number;
-  type: FireType;
-};
+  top: number
+  left: number
+  type: FireType
+}
 
 function Fire(props: FireProps): JSX.Element {
   const graphicsEnabled: boolean = useSelector(
     (state: any) => state.screens.graphicsEnabled,
-  );
+  )
 
   const withoutGraphicsContainerStyle = graphicsEnabled
     ? {}
@@ -25,13 +25,13 @@ function Fire(props: FireProps): JSX.Element {
         backgroundColor: colors.DARK_ORANGE,
         borderWidth: 1,
         borderColor: colors.RED,
-      };
+      }
 
   const {
     top: spriteTop,
     left: spriteLeft,
     transform: spriteTransform,
-  } = getSpriteCoordinates(props.type);
+  } = getSpriteCoordinates(props.type)
 
   return graphicsEnabled ? (
     <View
@@ -62,7 +62,7 @@ function Fire(props: FireProps): JSX.Element {
         top: props.top,
       }}
     />
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
   },
-});
+})
 
-export default Fire;
+export default Fire

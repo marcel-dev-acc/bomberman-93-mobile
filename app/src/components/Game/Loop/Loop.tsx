@@ -1,11 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, TouchableHighlight} from 'react-native';
-import {
-  GameLoop,
-  GameLoopUpdateEventOptionType,
-} from 'react-native-game-engine';
-import {useSelector} from 'react-redux';
-import {Icon, Icons} from '../../General';
+import React, {useEffect, useRef, useState} from 'react'
+import {StyleSheet, View, TouchableHighlight} from 'react-native'
+import {GameLoop, GameLoopUpdateEventOptionType} from 'react-native-game-engine'
+import {useSelector} from 'react-redux'
+import {Icon, Icons} from '../../General'
 
 import {
   PerkComp,
@@ -13,29 +10,29 @@ import {
   BrickComp,
   BombComp,
   FireComp,
-} from '../../GameEntities';
-import colors from '../../../constants/colors';
-import {ComponentType} from '../../../constants/types';
-import {GameEventProps, SessionDetails} from '../../../types/serverTypes';
-import {dimensions} from '../../../constants/screen';
-import {DEBUG} from '../../../constants/app';
-import {Socket} from 'socket.io-client';
-import SocketTypes from '../../../types/socketTypes';
-import type {Session} from '../../../types/session';
+} from '../../GameEntities'
+import colors from '../../../constants/colors'
+import {ComponentType} from '../../../constants/types'
+import {GameEventProps, SessionDetails} from '../../../types/serverTypes'
+import {dimensions} from '../../../constants/screen'
+import {DEBUG} from '../../../constants/app'
+import {Socket} from 'socket.io-client'
+import SocketTypes from '../../../types/socketTypes'
+import type {Session} from '../../../types/session'
 import {
   NegativeResponse,
   TickGameServerResponse,
-} from '../../../types/serverTypes';
+} from '../../../types/serverTypes'
 
 type LoopProps = {
-  socketRef: React.MutableRefObject<Socket | undefined>;
-  sessionRef: React.MutableRefObject<Session>;
-  entities: any;
-  gameRunning: boolean;
-  gameTickRef: React.MutableRefObject<number>;
-  handleReset: () => void;
-  dispatcher: (event: GameEventProps) => void;
-};
+  socketRef: React.MutableRefObject<Socket | undefined>
+  sessionRef: React.MutableRefObject<Session>
+  entities: any
+  gameRunning: boolean
+  gameTickRef: React.MutableRefObject<number>
+  handleReset: () => void
+  dispatcher: (event: GameEventProps) => void
+}
 
 function Loop({
   socketRef,
@@ -48,16 +45,16 @@ function Loop({
 }: LoopProps): JSX.Element {
   const debuggerEnabled: boolean = useSelector(
     (state: any) => state.screens.debuggerEnabled,
-  );
+  )
 
   const updateHandler = (_args: GameLoopUpdateEventOptionType) => {
     // Disable updateHandler loop if debugger is enabled
     if (DEBUG && debuggerEnabled) {
-      return;
+      return
     }
     // Disable if the game is no longer running
     if (!gameRunning) {
-      return;
+      return
     }
     // Emit the tick event
     socketRef.current?.emit(SocketTypes.tickRelay, {
@@ -65,19 +62,19 @@ function Loop({
       playerNumber: sessionRef.current.playerNumber,
       secret: sessionRef.current.secret,
       tick: gameTickRef.current,
-    });
-  };
+    })
+  }
 
-  const engine = useRef(null as any);
-  const bombCountRef = useRef(1);
+  const engine = useRef(null as any)
+  const bombCountRef = useRef(1)
 
-  const [volatileEntities, setVolatileEntities] = useState(entities);
+  const [volatileEntities, setVolatileEntities] = useState(entities)
 
   useEffect(() => {
     if (Object.keys(entities).length > 0) {
-      setVolatileEntities(entities);
+      setVolatileEntities(entities)
     }
-  }, [entities]);
+  }, [entities])
 
   socketRef.current?.on(
     SocketTypes.tickRelayPositiveResponse,
@@ -87,21 +84,21 @@ function Loop({
           `[${SocketTypes.tickRelayPositiveResponse}]`,
           JSON.stringify(response.data),
           JSON.stringify(sessionRef.current),
-        );
+        )
       }
       // Check if incoming response is for the player
       if (response.data.sessionName !== sessionRef.current.name) {
-        return;
+        return
       }
       // Check if objects has keys
       if (Object.keys(response.state).length === 0) {
-        return;
+        return
       }
-      const state = response.state as SessionDetails;
+      const state = response.state as SessionDetails
       // Validate that the tick has been kept correctly
       if (state && state.tick === gameTickRef.current + 1) {
-        gameTickRef.current = state.tick;
-        setVolatileEntities(state.entities);
+        gameTickRef.current = state.tick
+        setVolatileEntities(state.entities)
       }
       // Check if a winner has been defined
       if (
@@ -110,11 +107,11 @@ function Loop({
         state.isRunning === false &&
         state.winner !== undefined
       ) {
-        dispatcher({type: 'winner', winner: state.winner});
-        dispatcher({type: 'stopped'});
+        dispatcher({type: 'winner', winner: state.winner})
+        dispatcher({type: 'stopped'})
       }
     },
-  );
+  )
 
   socketRef.current?.on(
     SocketTypes.tickRelayNegativeResponse,
@@ -123,15 +120,15 @@ function Loop({
         console.warn(
           `[${SocketTypes.tickRelayNegativeResponse}]`,
           response.error,
-        );
+        )
       }
       // Check if incoming response is for the player
       if (response.data?.secret !== sessionRef.current.secret) {
-        return;
+        return
       }
-      console.warn('[TICK ERROR]', response.error);
+      console.warn('[TICK ERROR]', response.error)
     },
-  );
+  )
 
   return (
     <View>
@@ -145,8 +142,8 @@ function Loop({
         onUpdate={updateHandler}>
         {Object.keys(volatileEntities).length > 0 &&
           Object.keys(volatileEntities).map((key, idx) => {
-            const entity = volatileEntities[key];
-            const entityName = entity.name as ComponentType;
+            const entity = volatileEntities[key]
+            const entityName = entity.name as ComponentType
             switch (entityName) {
               case ComponentType.bomber:
                 return (
@@ -163,7 +160,7 @@ function Loop({
                     chaosType={entity.chaosType}
                     bomberCount={bombCountRef.current}
                   />
-                );
+                )
               case ComponentType.perk:
                 return (
                   <PerkComp
@@ -173,15 +170,15 @@ function Loop({
                     type={entity.type}
                     isDark={entity.isDark}
                   />
-                );
+                )
               case ComponentType.brick:
                 return (
                   <BrickComp key={idx} top={entity.top} left={entity.left} />
-                );
+                )
               case ComponentType.bomb:
                 return (
                   <BombComp key={idx} top={entity.top} left={entity.left} />
-                );
+                )
               case ComponentType.fire:
                 return (
                   <FireComp
@@ -190,9 +187,9 @@ function Loop({
                     left={entity.left}
                     type={entity.type}
                   />
-                );
+                )
               default:
-                return null;
+                return null
             }
           })}
       </GameLoop>
@@ -200,9 +197,9 @@ function Loop({
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            handleReset();
+            handleReset()
           }}
           style={styles.loopReset}
           underlayColor="rgba(255,255,255,0.25)">
@@ -210,7 +207,7 @@ function Loop({
         </TouchableHighlight>
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -225,6 +222,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 20,
   },
-});
+})
 
-export default Loop;
+export default Loop

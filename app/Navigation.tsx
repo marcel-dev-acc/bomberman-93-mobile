@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import io, {Socket} from 'socket.io-client';
+import React, {useEffect, useRef, useState} from 'react'
+import {Platform, StyleSheet, View} from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
+import io, {Socket} from 'socket.io-client'
 
 import {
   WelcomeScreen,
@@ -15,58 +15,58 @@ import {
   RegisterScreen,
   SettingsScreen,
   JoinSessionScreen,
-} from './src/screens';
-import {ScreenType} from './src/state/screens/reducer';
-import {webSocketServer} from './src/constants/server';
-import SocketTypes from './src/types/socketTypes';
-import {addError} from './src/state/errors/reducer';
+} from './src/screens'
+import {ScreenType} from './src/state/screens/reducer'
+import {webSocketServer} from './src/constants/server'
+import SocketTypes from './src/types/socketTypes'
+import {addError} from './src/state/errors/reducer'
 import {
   Loader,
   ServerConnectionStatus,
   ServerStatus,
-} from './src/components/General';
-import {StorageKeys, fetchData} from './src/utils/localStorage';
-import InitSessionState from './src/state/session/init';
-import {sleep} from './src/utils/helpers';
-import {DEBUG} from './src/constants/app';
+} from './src/components/General'
+import {StorageKeys, fetchData} from './src/utils/localStorage'
+import InitSessionState from './src/state/session/init'
+import {sleep} from './src/utils/helpers'
+import {DEBUG} from './src/constants/app'
 
 function Navigation(): JSX.Element {
-  const {screen, isLoading} = useSelector((state: any) => state.screens);
+  const {screen, isLoading} = useSelector((state: any) => state.screens)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleShowIntro = async () => {
-    await new Promise((resolve: any) => setTimeout(resolve, 9000));
-    setShowIntro(false);
-  };
+    await new Promise((resolve: any) => setTimeout(resolve, 9000))
+    setShowIntro(false)
+  }
 
   const handleFetchStoredToken = async () => {
-    const token = await fetchData(StorageKeys.token);
+    const token = await fetchData(StorageKeys.token)
     // Check if a token exists, and mark as unregistered if it doesn't
     if (!token) {
-      setServerStatus(ServerStatus.unregistered);
-      return;
+      setServerStatus(ServerStatus.unregistered)
+      return
     }
-    setServerStatus(ServerStatus.localToken);
+    setServerStatus(ServerStatus.localToken)
     if (socketRef.current?.connected) {
-      setServerStatus(ServerStatus.connected);
-      return;
+      setServerStatus(ServerStatus.connected)
+      return
     }
-    const webSocketUrl = await webSocketServer();
+    const webSocketUrl = await webSocketServer()
     if (!webSocketUrl) {
       dispatch(
         addError({
           title: 'Socket Url Error',
           value: 'Socket url is undefined',
         }),
-      );
-      return;
+      )
+      return
     }
-    socketRef.current = io(webSocketUrl, {auth: {token}});
-    let count = 0;
+    socketRef.current = io(webSocketUrl, {auth: {token}})
+    let count = 0
     while (!socketRef.current?.connected && count < 10) {
-      await sleep(500);
-      count++;
+      await sleep(500)
+      count++
     }
     if (count >= 10) {
       dispatch(
@@ -74,44 +74,44 @@ function Navigation(): JSX.Element {
           title: `[${SocketTypes.connectionError}] Server connection error`,
           value: 'Failed to connect to the server (check keys)',
         }),
-      );
-      return;
+      )
+      return
     }
-    setServerStatus(ServerStatus.connected);
-  };
+    setServerStatus(ServerStatus.connected)
+  }
 
-  const [showIntro, setShowIntro] = useState(true);
-  const [serverStatus, setServerStatus] = useState(ServerStatus.unregistered);
+  const [showIntro, setShowIntro] = useState(true)
+  const [serverStatus, setServerStatus] = useState(ServerStatus.unregistered)
 
-  const socketRef = useRef(undefined as Socket | undefined);
-  const sessionRef = useRef(InitSessionState);
+  const socketRef = useRef(undefined as Socket | undefined)
+  const sessionRef = useRef(InitSessionState)
 
   useEffect(() => {
     if (showIntro) {
-      handleShowIntro();
+      handleShowIntro()
     }
-  }, [showIntro]);
+  }, [showIntro])
 
   useEffect(() => {
-    handleFetchStoredToken();
-  }, [screen]); // eslint-disable-line react-hooks/exhaustive-deps
+    handleFetchStoredToken()
+  }, [screen]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Register a connection error handler
   if (socketRef.current) {
     socketRef.current.on(SocketTypes.connectionErrorRelay, err => {
       if (DEBUG) {
-        console.warn(`[${SocketTypes.connectionErrorRelay}]`, err.message);
+        console.warn(`[${SocketTypes.connectionErrorRelay}]`, err.message)
       }
       if (!['timeout', 'xhr poll error'].includes(err.message)) {
-        setServerStatus(ServerStatus.disconnected);
+        setServerStatus(ServerStatus.disconnected)
         dispatch(
           addError({
             title: `[${SocketTypes.connectionError}] Server connection error response`,
             value: err.message,
           }),
-        );
+        )
       }
-    });
+    })
   }
 
   return (
@@ -151,7 +151,7 @@ function Navigation(): JSX.Element {
         )}
       {screen === ScreenType.settings && <SettingsScreen />}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -160,6 +160,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default Navigation;
+export default Navigation

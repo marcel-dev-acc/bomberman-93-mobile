@@ -1,18 +1,18 @@
-import React from 'react';
-import {Image} from 'react-native';
+import React from 'react'
+import {Image} from 'react-native'
 
-import colors from '../../../constants/colors';
-import {Icons, getIconImage} from './iconMap';
+import colors from '../../../constants/colors'
+import {Icons, getIconImage} from './iconMap'
 
 type IconProps = {
-  name: Icons;
-  size: number;
-  style?: any;
-  color: string;
-};
+  name: Icons
+  size: number
+  style?: any
+  color: string
+}
 
 function Icon(props: IconProps): JSX.Element {
-  let iconSrc = getIconImage(props.name);
+  let iconSrc = getIconImage(props.name)
 
   return (
     <Image
@@ -32,7 +32,7 @@ function Icon(props: IconProps): JSX.Element {
       }
       source={iconSrc}
     />
-  );
+  )
 }
 
-export default Icon;
+export default Icon

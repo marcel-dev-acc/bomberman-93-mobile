@@ -1,12 +1,12 @@
-import React from 'react';
-import {View, StyleSheet, Image, useWindowDimensions} from 'react-native';
-import {getIsVertical} from '../../../constants/screen';
-import imageNames from '../../../constants/imageNames';
-import colors from '../../../constants/colors';
+import React from 'react'
+import {View, StyleSheet, Image, useWindowDimensions} from 'react-native'
+import {getIsVertical} from '../../../constants/screen'
+import imageNames from '../../../constants/imageNames'
+import colors from '../../../constants/colors'
 
 function IntroImage(): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
   return (
     <View
@@ -23,7 +23,7 @@ function IntroImage(): JSX.Element {
         source={imageNames.introImage}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
     backgroundColor: colors.BLACK,
   },
-});
+})
 
-export default IntroImage;
+export default IntroImage

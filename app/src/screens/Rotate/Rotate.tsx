@@ -1,24 +1,24 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, View, useWindowDimensions, Image} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useEffect} from 'react'
+import {StyleSheet, View, useWindowDimensions, Image} from 'react-native'
+import {useDispatch, useSelector} from 'react-redux'
 
-import {Icon, Icons, SplashImage} from '../../components/General';
-import {changeScreen} from '../../state/screens/reducer';
-import colors from '../../constants/colors';
-import imageNames from '../../constants/imageNames';
+import {Icon, Icons, SplashImage} from '../../components/General'
+import {changeScreen} from '../../state/screens/reducer'
+import colors from '../../constants/colors'
+import imageNames from '../../constants/imageNames'
 
 function RotateScreen(): JSX.Element {
-  const {previousScreen} = useSelector((state: any) => state.screens);
-  const {height, width} = useWindowDimensions();
+  const {previousScreen} = useSelector((state: any) => state.screens)
+  const {height, width} = useWindowDimensions()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (width > height) {
       // In landscape mode
-      dispatch(changeScreen(previousScreen));
+      dispatch(changeScreen(previousScreen))
     }
-  }, [width, height, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [width, height, dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <View
@@ -50,7 +50,7 @@ function RotateScreen(): JSX.Element {
         <Icon name={Icons.screenRotation} color={colors.WHITE} size={50} />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default RotateScreen;
+export default RotateScreen

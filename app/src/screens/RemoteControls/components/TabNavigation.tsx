@@ -1,9 +1,9 @@
-import React from 'react';
-import {Image, StyleSheet, TouchableHighlight, View} from 'react-native';
-import sharedStyles from '../SharedStyles';
-import imageNames from '../../../constants/imageNames';
-import colors from '../../../constants/colors';
-import {AndroidGamepadEvent} from '../../../native/interface';
+import React from 'react'
+import {Image, StyleSheet, TouchableHighlight, View} from 'react-native'
+import sharedStyles from '../SharedStyles'
+import imageNames from '../../../constants/imageNames'
+import colors from '../../../constants/colors'
+import {AndroidGamepadEvent} from '../../../native/interface'
 
 export enum Tabs {
   profiles = 'profiles',
@@ -12,11 +12,11 @@ export enum Tabs {
 }
 
 type TabNavigationProps = {
-  activeTab: Tabs;
-  setActiveTab: (activeTab: Tabs) => void;
-  setDisplayDevicesIds: (setDisplayDevicesIds: number[]) => void;
-  setDisplayedEvents: (displayedEvents: AndroidGamepadEvent[]) => void;
-};
+  activeTab: Tabs
+  setActiveTab: (activeTab: Tabs) => void
+  setDisplayDevicesIds: (setDisplayDevicesIds: number[]) => void
+  setDisplayedEvents: (displayedEvents: AndroidGamepadEvent[]) => void
+}
 
 function TabNavigation({
   activeTab,
@@ -30,9 +30,9 @@ function TabNavigation({
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            setActiveTab(Tabs.profiles);
+            setActiveTab(Tabs.profiles)
           }}
           underlayColor="rgba(255,255,255,0.25)"
           style={sharedStyles.remoteControlsTabButton}>
@@ -56,11 +56,11 @@ function TabNavigation({
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            setDisplayDevicesIds([]);
-            setDisplayedEvents([]);
-            setActiveTab(Tabs.devices);
+            setDisplayDevicesIds([])
+            setDisplayedEvents([])
+            setActiveTab(Tabs.devices)
           }}
           underlayColor="rgba(255,255,255,0.25)"
           style={sharedStyles.remoteControlsTabButton}>
@@ -84,11 +84,11 @@ function TabNavigation({
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            setDisplayDevicesIds([]);
-            setDisplayedEvents([]);
-            setActiveTab(Tabs.keys);
+            setDisplayDevicesIds([])
+            setDisplayedEvents([])
+            setActiveTab(Tabs.keys)
           }}
           underlayColor="rgba(255,255,255,0.25)"
           style={sharedStyles.remoteControlsTabButton}>
@@ -109,7 +109,7 @@ function TabNavigation({
         </TouchableHighlight>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
     margin: 2.5,
     padding: 2.5,
   },
-});
+})
 
-export default TabNavigation;
+export default TabNavigation

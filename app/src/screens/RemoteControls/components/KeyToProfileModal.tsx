@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -6,22 +6,22 @@ import {
   TouchableHighlight,
   View,
   useWindowDimensions,
-} from 'react-native';
+} from 'react-native'
 
-import sharedStyles from '../SharedStyles';
-import {Icon, Icons} from '../../../components/General';
-import {AndroidGamepadEvent} from '../../../native/interface';
-import colors from '../../../constants/colors';
-import {AndroidGamepadProfile} from '../types';
-import {getIsVertical} from '../../../constants/screen';
-import {Direction} from '../../../types/serverTypes';
+import sharedStyles from '../SharedStyles'
+import {Icon, Icons} from '../../../components/General'
+import {AndroidGamepadEvent} from '../../../native/interface'
+import colors from '../../../constants/colors'
+import {AndroidGamepadProfile} from '../types'
+import {getIsVertical} from '../../../constants/screen'
+import {Direction} from '../../../types/serverTypes'
 
 type KeyToProfileModalProps = {
-  setShowKeyToProfileModal: (showKeyToProfileModal: boolean) => void;
-  displayProfiles: AndroidGamepadProfile[];
-  activeEvent: AndroidGamepadEvent;
-  handleKeySettingForProfile: (directionOrBomb: Direction | 'bomb') => void;
-};
+  setShowKeyToProfileModal: (showKeyToProfileModal: boolean) => void
+  displayProfiles: AndroidGamepadProfile[]
+  activeEvent: AndroidGamepadEvent
+  handleKeySettingForProfile: (directionOrBomb: Direction | 'bomb') => void
+}
 
 function KeyToProfileModal({
   setShowKeyToProfileModal,
@@ -29,8 +29,8 @@ function KeyToProfileModal({
   activeEvent,
   handleKeySettingForProfile,
 }: KeyToProfileModalProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
   return (
     <View
@@ -47,9 +47,9 @@ function KeyToProfileModal({
         <TouchableHighlight
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
-            setShowKeyToProfileModal(false);
+            setShowKeyToProfileModal(false)
           }}
           underlayColor="rgba(255,255,255,0.25)"
           style={sharedStyles.remoteControlsIcon}>
@@ -106,9 +106,9 @@ function KeyToProfileModal({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                handleKeySettingForProfile(Direction.up);
+                handleKeySettingForProfile(Direction.up)
               }}
               underlayColor="rgba(255,255,255,0.25)"
               style={{
@@ -131,9 +131,9 @@ function KeyToProfileModal({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                handleKeySettingForProfile(Direction.down);
+                handleKeySettingForProfile(Direction.down)
               }}
               underlayColor="rgba(255,255,255,0.25)"
               style={{
@@ -156,9 +156,9 @@ function KeyToProfileModal({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                handleKeySettingForProfile(Direction.left);
+                handleKeySettingForProfile(Direction.left)
               }}
               underlayColor="rgba(255,255,255,0.25)"
               style={{
@@ -181,9 +181,9 @@ function KeyToProfileModal({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                handleKeySettingForProfile(Direction.right);
+                handleKeySettingForProfile(Direction.right)
               }}
               underlayColor="rgba(255,255,255,0.25)"
               style={{
@@ -206,9 +206,9 @@ function KeyToProfileModal({
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
-                handleKeySettingForProfile('bomb');
+                handleKeySettingForProfile('bomb')
               }}
               underlayColor="rgba(255,255,255,0.25)"
               style={{
@@ -223,7 +223,7 @@ function KeyToProfileModal({
         </ScrollView>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -233,6 +233,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 10,
   },
-});
+})
 
-export default KeyToProfileModal;
+export default KeyToProfileModal

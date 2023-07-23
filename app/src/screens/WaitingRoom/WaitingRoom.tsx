@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react'
 import {
   StyleSheet,
   View,
@@ -8,35 +8,35 @@ import {
   TouchableHighlight,
   useWindowDimensions,
   Image,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 
-import {GameText, Icon, Icons, SplashImage} from '../../components/General';
-import type {Session, Player} from '../../types/session';
-import colors from '../../constants/colors';
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import {Socket} from 'socket.io-client';
-import SocketTypes from '../../types/socketTypes';
-import {getIsVertical} from '../../constants/screen';
-import imageNames from '../../constants/imageNames';
+import {GameText, Icon, Icons, SplashImage} from '../../components/General'
+import type {Session, Player} from '../../types/session'
+import colors from '../../constants/colors'
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import {Socket} from 'socket.io-client'
+import SocketTypes from '../../types/socketTypes'
+import {getIsVertical} from '../../constants/screen'
+import imageNames from '../../constants/imageNames'
 import {
   EventGameServerResponse,
   SetTimeGameServerResponse,
-} from '../../types/serverTypes';
-import {DEBUG} from '../../constants/app';
+} from '../../types/serverTypes'
+import {DEBUG} from '../../constants/app'
 
 type PlayerCardProps = {
-  sessionRef: React.MutableRefObject<Session>;
-  playerNumber: number;
-  player: Player;
-};
+  sessionRef: React.MutableRefObject<Session>
+  playerNumber: number
+  player: Player
+}
 
 function PlayerCard({
   sessionRef,
   playerNumber,
   player,
 }: PlayerCardProps): JSX.Element {
-  const {width} = useWindowDimensions();
+  const {width} = useWindowDimensions()
 
   const handlePlayerNameChange = (name: string) => {
     sessionRef.current = {
@@ -51,10 +51,10 @@ function PlayerCard({
           name: name,
         },
       ],
-    };
-  };
+    }
+  }
 
-  const [textInputColor, setTextInputColor] = useState(colors.WHITE);
+  const [textInputColor, setTextInputColor] = useState(colors.WHITE)
 
   return (
     <View
@@ -102,7 +102,7 @@ function PlayerCard({
           underlayColor="rgba(255,255,255,0.25)"
           onPress={pressEvent => {
             if (pressEvent.nativeEvent.target === undefined) {
-              return;
+              return
             }
             if (player.isActive && !player.isReal) {
               sessionRef.current = {
@@ -117,7 +117,7 @@ function PlayerCard({
                     isActive: false,
                   },
                 ],
-              } as Session;
+              } as Session
             } else if (!player.isActive && !player.isReal) {
               sessionRef.current = {
                 ...sessionRef.current,
@@ -131,7 +131,7 @@ function PlayerCard({
                     isActive: true,
                   },
                 ],
-              } as Session;
+              } as Session
             }
           }}>
           <View>
@@ -157,7 +157,7 @@ function PlayerCard({
         </TouchableHighlight>
       </View>
     </View>
-  );
+  )
 }
 
 const playerStyles = StyleSheet.create({
@@ -199,26 +199,26 @@ const playerStyles = StyleSheet.create({
     color: colors.WHITE,
     fontSize: 20,
   },
-});
+})
 
-const countDownTime: number = 120;
+const countDownTime: number = 120
 
 type WaitingRoomScreenProps = {
-  socketRef: React.MutableRefObject<Socket | undefined>;
-  sessionRef: React.MutableRefObject<Session>;
-};
+  socketRef: React.MutableRefObject<Socket | undefined>
+  sessionRef: React.MutableRefObject<Session>
+}
 
 function WaitingRoomScreen({
   socketRef,
   sessionRef,
 }: WaitingRoomScreenProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [timerInner, setTimerInner] = useState(countDownTime);
-  const timer = useRef(countDownTime);
+  const [timerInner, setTimerInner] = useState(countDownTime)
+  const timer = useRef(countDownTime)
 
   socketRef.current?.on(
     SocketTypes.setTimeRelayPositiveResponse,
@@ -227,28 +227,28 @@ function WaitingRoomScreen({
         console.warn(
           `[${SocketTypes.setTimeRelayPositiveResponse}]`,
           JSON.stringify(response),
-        );
+        )
       }
       // Check if incoming response is for player
       if (response.data.sessionName !== sessionRef.current.name) {
-        return;
+        return
       }
       if (sessionRef.current.playerNumber === 1) {
-        return;
+        return
       }
       if (!response.time) {
-        return;
+        return
       }
       // Set the time
-      setTimerInner(response.time);
-      timer.current = response.time;
+      setTimerInner(response.time)
+      timer.current = response.time
       // Change screens when time runs out
-      console.log('timer', timer.current);
+      console.log('timer', timer.current)
       if (timer.current === 1) {
-        dispatch(changeScreen(ScreenType.game));
+        dispatch(changeScreen(ScreenType.game))
       }
     },
-  );
+  )
 
   socketRef.current?.on(
     SocketTypes.eventRelayPositiveResponse,
@@ -257,27 +257,27 @@ function WaitingRoomScreen({
         console.warn(
           `[${SocketTypes.eventRelayPositiveResponse}]`,
           JSON.stringify(response.data),
-        );
+        )
       }
       // Check if objects has keys
       if (Object.keys(response.state).length === 0) {
-        return;
+        return
       }
       // const state = response.state as SessionDetails;
       // Trigger game start
       if (response.data.event.type === 'started') {
-        dispatch(changeScreen(ScreenType.game));
+        dispatch(changeScreen(ScreenType.game))
       }
     },
-  );
+  )
 
   useEffect(() => {
     if (sessionRef.current.playerNumber === 1) {
       if (timer.current > 0) {
         setTimeout(() => {
-          setTimerInner(timerInner - 1);
-          timer.current = timerInner - 1;
-        }, 1000);
+          setTimerInner(timerInner - 1)
+          timer.current = timerInner - 1
+        }, 1000)
       } else {
         // Emit event to socket to start the game, if player 1
         if (sessionRef.current.playerNumber === 1) {
@@ -286,7 +286,7 @@ function WaitingRoomScreen({
             playerNumber: sessionRef.current.playerNumber,
             secret: sessionRef.current.secret,
             event: {type: 'started'},
-          });
+          })
         }
       }
       socketRef.current?.emit(SocketTypes.setTimeRelay, {
@@ -294,16 +294,16 @@ function WaitingRoomScreen({
         playerNumber: sessionRef.current.playerNumber,
         secret: sessionRef.current.secret,
         time: timer.current,
-      });
+      })
     }
-  }, [timerInner, sessionRef, socketRef]);
+  }, [timerInner, sessionRef, socketRef])
 
   useEffect(() => {
     if (width < height) {
       // In portrait mode
-      dispatch(changeScreen(ScreenType.rotate));
+      dispatch(changeScreen(ScreenType.rotate))
     }
-  }, [width, height, dispatch]);
+  }, [width, height, dispatch])
 
   return (
     <View
@@ -409,21 +409,21 @@ function WaitingRoomScreen({
                 playerNumber={idx + 1}
                 player={player}
               />
-            );
+            )
           })}
         {sessionRef.current.playerNumber === 1 && (
           <View style={styles.waitingRoomButtonContainer}>
             <TouchableHighlight
               onPress={pressEvent => {
                 if (pressEvent.nativeEvent.target === undefined) {
-                  return;
+                  return
                 }
                 socketRef.current?.emit(SocketTypes.eventRelay, {
                   sessionName: sessionRef.current.name,
                   playerNumber: sessionRef.current.playerNumber,
                   secret: sessionRef.current.secret,
                   event: {type: 'started'},
-                });
+                })
               }}
               style={{
                 ...styles.waitingRoomButton,
@@ -443,7 +443,7 @@ function WaitingRoomScreen({
         )}
       </ScrollView>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -475,6 +475,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+})
 
-export default WaitingRoomScreen;
+export default WaitingRoomScreen

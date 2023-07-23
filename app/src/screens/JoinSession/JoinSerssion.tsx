@@ -1,54 +1,54 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react'
 import {
   StyleSheet,
   View,
   useWindowDimensions,
   TouchableHighlight,
   ScrollView,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 
-import {BackButton, GameText, SplashImage} from '../../components/General';
-import type {Session} from '../../types/session';
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import {getIsVertical} from '../../constants/screen';
-import {Socket} from 'socket.io-client';
-import SocketTypes from '../../types/socketTypes';
+import {BackButton, GameText, SplashImage} from '../../components/General'
+import type {Session} from '../../types/session'
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import {getIsVertical} from '../../constants/screen'
+import {Socket} from 'socket.io-client'
+import SocketTypes from '../../types/socketTypes'
 import {
   JoinSessionGameServerResponse,
   SessionNames,
-} from '../../types/serverTypes';
-import {addError} from '../../state/errors/reducer';
-import colors from '../../constants/colors';
-import {DEBUG} from '../../constants/app';
+} from '../../types/serverTypes'
+import {addError} from '../../state/errors/reducer'
+import colors from '../../constants/colors'
+import {DEBUG} from '../../constants/app'
 
 type JoinSessionScreenProps = {
-  socketRef: React.MutableRefObject<Socket | undefined>;
-  sessionRef: React.MutableRefObject<Session>;
-};
+  socketRef: React.MutableRefObject<Socket | undefined>
+  sessionRef: React.MutableRefObject<Session>
+}
 
 function JoinSessionScreen({
   socketRef,
   sessionRef,
 }: JoinSessionScreenProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const [displaySessionNames, setDisplaySessionNames] = useState(
     undefined as SessionNames | undefined,
-  );
+  )
 
-  const sessionNameRef = useRef(undefined as string | undefined);
-  const sessionPlayerNumberRef = useRef(2);
+  const sessionNameRef = useRef(undefined as string | undefined)
+  const sessionPlayerNumberRef = useRef(2)
 
   socketRef.current?.on(
     SocketTypes.joinableSessionsRelayPositiveResponse,
     (sessionNames: SessionNames) => {
-      setDisplaySessionNames(sessionNames);
+      setDisplaySessionNames(sessionNames)
     },
-  );
+  )
 
   socketRef.current?.on(
     SocketTypes.joinSessionRelayPositiveResponse,
@@ -62,14 +62,14 @@ function JoinSessionScreen({
           `[${SocketTypes.joinSessionRelayPositiveResponse}]`,
           JSON.stringify(response.data),
           response.secret,
-        );
+        )
       }
       // Check if incoming response is for player
       if (
         response.data.sessionName !== sessionNameRef.current ||
         response.data.playerNumber !== sessionPlayerNumberRef.current
       ) {
-        return;
+        return
       }
       // Set the session details
       sessionRef.current = {
@@ -77,11 +77,11 @@ function JoinSessionScreen({
         name: sessionNameRef.current,
         secret: response.secret,
         playerNumber: sessionPlayerNumberRef.current,
-      } as Session;
+      } as Session
       // Change the screen to the waiing room
-      dispatch(changeScreen(ScreenType.waitingRoom));
+      dispatch(changeScreen(ScreenType.waitingRoom))
     },
-  );
+  )
 
   socketRef.current?.on(
     SocketTypes.joinSessionRelayNegativeResponse,
@@ -94,28 +94,28 @@ function JoinSessionScreen({
         console.warn(
           `[${SocketTypes.joinSessionRelayNegativeResponse}]`,
           JSON.stringify(response.data),
-        );
+        )
       }
       // Check if incoming response is for player
       if (
         response.data?.sessionName !== sessionNameRef.current ||
         response.data?.playerNumber !== sessionPlayerNumberRef.current
       ) {
-        return;
+        return
       }
       dispatch(
         addError({
           title: `[${SocketTypes.joinSessionRelayNegativeResponse}] Server error response`,
           value: response.error,
         }),
-      );
+      )
     },
-  );
+  )
 
   // Fetch a list of sessions to join
   useEffect(() => {
-    socketRef.current?.emit(SocketTypes.joinableSessionsRelay);
-  }, [socketRef]);
+    socketRef.current?.emit(SocketTypes.joinableSessionsRelay)
+  }, [socketRef])
 
   return (
     <View
@@ -127,9 +127,9 @@ function JoinSessionScreen({
       <BackButton
         onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) {
-            return;
+            return
           }
-          dispatch(changeScreen(ScreenType.welcome));
+          dispatch(changeScreen(ScreenType.welcome))
         }}
       />
       <View style={{marginTop: 15, width: width, alignItems: 'center'}}>
@@ -148,28 +148,28 @@ function JoinSessionScreen({
                     borderBottomWidth: 1,
                   }}>
                   {[1, 2, 3, 4, 5].map((playerNumber, jdx) => {
-                    const _playerNumber = playerNumber as 1 | 2 | 3 | 4 | 5;
+                    const _playerNumber = playerNumber as 1 | 2 | 3 | 4 | 5
                     if (
                       displaySessionNames[sessionName][_playerNumber].hasJoined
                     ) {
-                      return <View key={jdx} />;
+                      return <View key={jdx} />
                     }
                     return (
                       <View key={jdx} style={{marginTop: 10}}>
                         <TouchableHighlight
                           onPress={pressEvent => {
                             if (pressEvent.nativeEvent.target === undefined) {
-                              return;
+                              return
                             }
-                            sessionNameRef.current = sessionName;
-                            sessionPlayerNumberRef.current = playerNumber;
+                            sessionNameRef.current = sessionName
+                            sessionPlayerNumberRef.current = playerNumber
                             socketRef.current?.emit(
                               SocketTypes.joinSessionRelay,
                               {
                                 sessionName: sessionName,
                                 playerNumber: playerNumber,
                               },
-                            );
+                            )
                           }}
                           underlayColor="rgba(255,255,255,0.25)">
                           <GameText
@@ -178,15 +178,15 @@ function JoinSessionScreen({
                           />
                         </TouchableHighlight>
                       </View>
-                    );
+                    )
                   })}
                 </View>
-              );
+              )
             })}
         </ScrollView>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -195,6 +195,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-});
+})
 
-export default JoinSessionScreen;
+export default JoinSessionScreen

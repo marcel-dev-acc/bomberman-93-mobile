@@ -1,4 +1,4 @@
-import ENV from '../../../env';
+import ENV from '../../../env'
 
 const post = async (
   url: string,
@@ -14,27 +14,27 @@ const post = async (
       },
       body: JSON.stringify(payload),
       redirect: 'follow',
-    } as any);
-    return res;
+    } as any)
+    return res
   } catch (err) {
-    return undefined;
+    return undefined
   }
-};
+}
 
 interface RequestTokenResponse {
-  ok: boolean;
-  message: string;
+  ok: boolean
+  message: string
 }
 
 export const requestToken = async (
   email: string,
 ): Promise<RequestTokenResponse> => {
-  const res = await post(ENV.registrationUrl, {email}, {});
+  const res = await post(ENV.registrationUrl, {email}, {})
   if (!res) {
     return {
       ok: false,
       message: 'Failed to register',
-    };
+    }
   }
-  return JSON.parse(await res.text());
-};
+  return JSON.parse(await res.text())
+}

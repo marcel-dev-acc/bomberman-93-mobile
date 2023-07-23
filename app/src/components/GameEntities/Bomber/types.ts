@@ -1,18 +1,18 @@
-import {PerkType} from '../../../constants/Boards/general';
-import {Direction} from '../../../constants/types';
+import {PerkType} from '../../../constants/Boards/general'
+import {Direction} from '../../../constants/types'
 
 export type BomberProps = {
-  top: number;
-  left: number;
-  color: string;
-  number: number;
-  direction: Direction;
-  previous: any;
-  isMovementChangeable: boolean;
-  isLeft: boolean;
-  chaosType: PerkType | undefined;
-  bomberCount: number;
-};
+  top: number
+  left: number
+  color: string
+  number: number
+  direction: Direction
+  previous: any
+  isMovementChangeable: boolean
+  isLeft: boolean
+  chaosType: PerkType | undefined
+  bomberCount: number
+}
 
 export enum Animations {
   upStationary = 'up-stationary',

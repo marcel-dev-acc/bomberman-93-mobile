@@ -1,12 +1,12 @@
-import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import React from 'react'
+import {StyleSheet, View, Image} from 'react-native'
 
-import {entitySizes} from '../../../constants/entitySizes';
-import {useSelector} from 'react-redux';
-import {BomberProps} from './types';
-import {getAnimation, getSpriteCoordinates} from './animation';
-import {Direction} from '../../../constants/types';
-import imageNames from '../../../constants/imageNames';
+import {entitySizes} from '../../../constants/entitySizes'
+import {useSelector} from 'react-redux'
+import {BomberProps} from './types'
+import {getAnimation, getSpriteCoordinates} from './animation'
+import {Direction} from '../../../constants/types'
+import imageNames from '../../../constants/imageNames'
 
 const {
   bomberWhiteSprite,
@@ -19,12 +19,12 @@ const {
   bomberRedInvertedSprite,
   bomberGreenSprite,
   bomberGreenInvertedSprite,
-} = imageNames;
+} = imageNames
 
 function Bomber(props: BomberProps): JSX.Element {
   const graphicsEnabled: boolean = useSelector(
     (state: any) => state.screens.graphicsEnabled,
-  );
+  )
 
   // Calculate what movement animation should be shown
   const {top: spriteTop, left: spriteLeft} = getSpriteCoordinates(
@@ -38,41 +38,41 @@ function Bomber(props: BomberProps): JSX.Element {
       props.isMovementChangeable,
       props.isLeft,
     ),
-  );
+  )
 
   // Set the bomber sprite
-  let bomberSprite = bomberWhiteSprite;
+  let bomberSprite = bomberWhiteSprite
   switch (props.number) {
     case 1:
       bomberSprite =
         props.chaosType && props.isMovementChangeable
           ? bomberWhiteInvertedSprite
-          : bomberWhiteSprite;
-      break;
+          : bomberWhiteSprite
+      break
     case 2:
       bomberSprite =
         props.chaosType && props.isMovementChangeable
           ? bomberRedInvertedSprite
-          : bomberRedSprite;
-      break;
+          : bomberRedSprite
+      break
     case 3:
       bomberSprite =
         props.chaosType && props.isMovementChangeable
           ? bomberGreenInvertedSprite
-          : bomberGreenSprite;
-      break;
+          : bomberGreenSprite
+      break
     case 4:
       bomberSprite =
         props.chaosType && props.isMovementChangeable
           ? bomberBlueInvertedSprite
-          : bomberBlueSprite;
-      break;
+          : bomberBlueSprite
+      break
     case 5:
       bomberSprite =
         props.chaosType && props.isMovementChangeable
           ? bomberBlackInvertedSprite
-          : bomberBlackSprite;
-      break;
+          : bomberBlackSprite
+      break
   }
 
   // Return the bomber by number
@@ -108,7 +108,7 @@ function Bomber(props: BomberProps): JSX.Element {
         resizeMode="contain"
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'absolute',
   },
-});
+})
 
-export default Bomber;
+export default Bomber

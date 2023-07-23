@@ -1,9 +1,9 @@
-import {Socket} from 'socket.io-client';
-import {AndroidGamepadEvent} from '../../native/interface';
-import {Session} from '../../types/session';
-import {Direction, GameEventProps} from '../../types/serverTypes';
-import SocketTypes from '../../types/socketTypes';
-import {AndroidGamepadProfile} from './types';
+import {Socket} from 'socket.io-client'
+import {AndroidGamepadEvent} from '../../native/interface'
+import {Session} from '../../types/session'
+import {Direction, GameEventProps} from '../../types/serverTypes'
+import SocketTypes from '../../types/socketTypes'
+import {AndroidGamepadProfile} from './types'
 
 const eventCatcher = (
   event: AndroidGamepadEvent,
@@ -13,50 +13,50 @@ const eventCatcher = (
 ) => {
   // Check if the session is populated
   if (!session.secret) {
-    return;
+    return
   }
   // Check if the event is a bomb key press
   if (event.keyCode === activeGamepadProfile.bombKey) {
     const socketEvent: GameEventProps = {
       type: 'bomb',
-    };
+    }
     socketRef.current.emit(SocketTypes.eventRelay, {
       sessionName: session.name,
       playerNumber: session.playerNumber,
       secret: session.secret,
       event: socketEvent,
-    });
-    return;
+    })
+    return
   }
   // Define the direction of the event keyCode
-  let direction: Direction | undefined;
+  let direction: Direction | undefined
   switch (event.keyCode) {
     case activeGamepadProfile.upKey:
-      direction = Direction.up;
-      break;
+      direction = Direction.up
+      break
     case activeGamepadProfile.downKey:
-      direction = Direction.down;
-      break;
+      direction = Direction.down
+      break
     case activeGamepadProfile.leftKey:
-      direction = Direction.left;
-      break;
+      direction = Direction.left
+      break
     case activeGamepadProfile.rightKey:
-      direction = Direction.right;
-      break;
+      direction = Direction.right
+      break
   }
   if (!direction) {
-    return;
+    return
   }
   const socketEvent: GameEventProps = {
     type: 'movement',
     movement: direction,
-  };
+  }
   socketRef.current.emit(SocketTypes.eventRelay, {
     sessionName: session.name,
     playerNumber: session.playerNumber,
     secret: session.secret,
     event: socketEvent,
-  });
-};
+  })
+}
 
-export default eventCatcher;
+export default eventCatcher

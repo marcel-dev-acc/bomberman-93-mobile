@@ -1,39 +1,39 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import {
   StyleSheet,
   View,
   TouchableHighlight,
   useWindowDimensions,
   Image,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
+} from 'react-native'
+import {useDispatch} from 'react-redux'
 
-import {ScreenType, changeScreen} from '../../state/screens/reducer';
-import {BackButton, GameText, SplashImage} from '../../components/General';
-import {getIsVertical} from '../../constants/screen';
-import imageNames from '../../constants/imageNames';
-import {StorageKeys, fetchData, removeData} from '../../utils/localStorage';
+import {ScreenType, changeScreen} from '../../state/screens/reducer'
+import {BackButton, GameText, SplashImage} from '../../components/General'
+import {getIsVertical} from '../../constants/screen'
+import imageNames from '../../constants/imageNames'
+import {StorageKeys, fetchData, removeData} from '../../utils/localStorage'
 
 function SettingsScreen(): JSX.Element {
-  const {height, width} = useWindowDimensions();
-  const isVertical = getIsVertical(width, height);
+  const {height, width} = useWindowDimensions()
+  const isVertical = getIsVertical(width, height)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleFetchToken = async () => {
-    const _token = await fetchData(StorageKeys.token);
+    const _token = await fetchData(StorageKeys.token)
     if (_token) {
-      setToken(_token);
+      setToken(_token)
     }
-  };
+  }
 
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState('')
 
   useEffect(() => {
     if (!token) {
-      handleFetchToken();
+      handleFetchToken()
     }
-  }, [token]);
+  }, [token])
 
   return (
     <View
@@ -45,9 +45,9 @@ function SettingsScreen(): JSX.Element {
       <BackButton
         onPress={pressEvent => {
           if (pressEvent.nativeEvent.target === undefined) {
-            return;
+            return
           }
-          dispatch(changeScreen(ScreenType.welcome));
+          dispatch(changeScreen(ScreenType.welcome))
         }}
       />
       <View>
@@ -55,9 +55,9 @@ function SettingsScreen(): JSX.Element {
           <TouchableHighlight
             onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              dispatch(changeScreen(ScreenType.remoteControls));
+              dispatch(changeScreen(ScreenType.remoteControls))
             }}
             style={{
               ...styles.settingsButton,
@@ -78,10 +78,10 @@ function SettingsScreen(): JSX.Element {
           <TouchableHighlight
             onPress={pressEvent => {
               if (pressEvent.nativeEvent.target === undefined) {
-                return;
+                return
               }
-              removeData(StorageKeys.token);
-              dispatch(changeScreen(ScreenType.welcome));
+              removeData(StorageKeys.token)
+              dispatch(changeScreen(ScreenType.welcome))
             }}
             style={{
               ...styles.settingsButton,
@@ -103,7 +103,7 @@ function SettingsScreen(): JSX.Element {
         <GameText text={token} charSize={isVertical ? 10 : 15} />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -124,6 +124,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
   },
-});
+})
 
-export default SettingsScreen;
+export default SettingsScreen

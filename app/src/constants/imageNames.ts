@@ -124,5 +124,5 @@ const imageNames = {
   splashHorizontal: require('../assets/images/splash-horizontal.png'),
   splashVerticalWithouthHeader: require('../assets/images/splash-vertical-without-header.png'),
   splashVertical: require('../assets/images/splash-vertical.png'),
-};
-export default imageNames;
+}
+export default imageNames
