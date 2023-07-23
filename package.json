@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/marcel-dev-acc/bomberman-93-mobile#readme",
   "devDependencies": {
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^37.0.0",
