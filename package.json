@@ -4,6 +4,7 @@
   "description": "## Purpose",
   "main": "app/index.js",
   "scripts": {
+    "prettier": "prettier --write",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/marcel-dev-acc/bomberman-93-mobile#readme",
   "devDependencies": {
     "husky": "^8.0.0",
-    "lint-staged": "^13.2.3"
+    "lint-staged": "^13.2.3",
+    "prettier": "^2.4.1"
   }
 }
