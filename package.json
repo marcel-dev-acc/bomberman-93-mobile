@@ -4,6 +4,7 @@
   "description": "## Purpose",
   "main": "app/index.js",
   "scripts": {
+    "lint": "eslint --fix .",
     "prettier": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
@@ -19,8 +20,16 @@
   },
   "homepage": "https://github.com/marcel-dev-acc/bomberman-93-mobile#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^37.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.33.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.3",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "typescript": "*"
   }
 }
