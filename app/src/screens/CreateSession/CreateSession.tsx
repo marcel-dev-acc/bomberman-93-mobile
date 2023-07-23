@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   TextInput,
   useWindowDimensions,
   TouchableHighlight,
@@ -63,7 +62,7 @@ function CreateSessionScreen({
       // In portrait mode
       dispatch(changeScreen(ScreenType.rotate));
     }
-  }, [width, height]);
+  }, [width, height, dispatch]);
 
   socketRef.current?.on(
     SocketTypes.createSessionRelayPositiveResponse,

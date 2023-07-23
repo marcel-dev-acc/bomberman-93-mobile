@@ -94,7 +94,7 @@ function Navigation(): JSX.Element {
 
   useEffect(() => {
     handleFetchStoredToken();
-  }, [screen]);
+  }, [screen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Register a connection error handler
   if (socketRef.current) {

@@ -1,10 +1,5 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import React from 'react';
+import {ScrollView, Text, TouchableHighlight, View} from 'react-native';
 import sharedStyles from '../SharedStyles';
 import {AndroidGamepadProfile} from '../types';
 import {Icon, Icons} from '../../../components/General';

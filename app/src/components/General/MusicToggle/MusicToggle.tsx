@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -27,7 +27,7 @@ function MusicToggle(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const handlePlayMusic = async () => {
+  const handlePlayMusic = useCallback(async () => {
     if (Platform.OS === 'android') {
       if (await isMusicPlayerModuleAvailableOnAndroid()) {
         setMusicPlayerIsAvailable(true);
@@ -35,16 +35,16 @@ function MusicToggle(): JSX.Element {
         dispatch(toggleMusic(isPlaying));
       }
     }
-  };
+  }, [dispatch]);
 
-  const handleStopMusic = async () => {
+  const handleStopMusic = useCallback(async () => {
     if (Platform.OS === 'android') {
       if (await isMusicPlayerModuleAvailableOnAndroid()) {
-        const isPlaying = await playSoundOnAndroid(music.nothing);
+        await playSoundOnAndroid(music.nothing);
         dispatch(toggleMusic(false));
       }
     }
-  };
+  }, [dispatch]);
 
   const handleMusicToggle = async () => {
     if (!musicEnabled) {
@@ -69,7 +69,7 @@ function MusicToggle(): JSX.Element {
         handleStopMusic();
       }
     });
-  }, [trackIsPlaying.current]);
+  }, [handlePlayMusic, handleStopMusic]);
 
   // Disabled for certain screens
   if (

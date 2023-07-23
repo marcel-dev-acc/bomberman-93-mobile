@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, Dispatch} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   StyleSheet,
   TouchableHighlight,
@@ -51,32 +51,6 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
   );
 
   const dispatch = useDispatch();
-
-  const handleEvent = (e: GameEventProps) => {
-    if (e.type === 'winner' && e.winner) {
-      sessionRef.current = {
-        ...sessionRef.current,
-        winner: sessionRef.current.players[e.winner - 1],
-      } as Session;
-      // Set entities to an empty object
-      setEntities({});
-      setGameRunning(false);
-      // Navigate to outcome screen
-      dispatch(changeScreen(ScreenType.winner));
-    }
-    if (e.type === 'stopped') {
-    }
-    if (e.type === 'bomb') {
-      // Handle any extra bomb specific UI
-    }
-    if (e.type === 'add-bomb') {
-      // Handle any extra add-bomb specific UI
-    }
-    if (e.type === 'add-bomb-strength') {
-      const newBombsStrengthCount = fireCount + 1;
-      setFireCount(newBombsStrengthCount);
-    }
-  };
 
   const handleMovePress = (direction: Direction, isMoving: boolean) => {
     const event: GameEventProps = {
@@ -135,17 +109,6 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
     setTimer(countDownTime);
   };
 
-  const dispatcher = (event: GameEventProps) => {
-    // Emit an event to the socket
-    socketRef.current?.emit(SocketTypes.eventRelay, {
-      sessionName: sessionRef.current.name,
-      playerNumber: sessionRef.current.playerNumber,
-      secret: sessionRef.current.secret,
-      event: event,
-    });
-    handleEvent(event);
-  };
-
   const gameStartedRef = useRef(false);
   const gameTickRef = useRef(0);
   const isMovingUp = useRef(false);
@@ -159,19 +122,48 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
   const [entities, setEntities] = useState({} as any);
   const [timer, setTimer] = useState(countDownTime);
 
-  useEffect(() => {
-    if (width < height) {
-      // In portrait mode
-      dispatch(changeScreen(ScreenType.rotate));
-    }
-  }, [width, height]);
+  const handleEvent = useCallback(
+    (e: GameEventProps) => {
+      if (e.type === 'winner' && e.winner) {
+        sessionRef.current = {
+          ...sessionRef.current,
+          winner: sessionRef.current.players[e.winner - 1],
+        } as Session;
+        // Set entities to an empty object
+        setEntities({});
+        setGameRunning(false);
+        // Navigate to outcome screen
+        dispatch(changeScreen(ScreenType.winner));
+      }
+      if (e.type === 'stopped') {
+      }
+      if (e.type === 'bomb') {
+        // Handle any extra bomb specific UI
+      }
+      if (e.type === 'add-bomb') {
+        // Handle any extra add-bomb specific UI
+      }
+      if (e.type === 'add-bomb-strength') {
+        const newBombsStrengthCount = fireCount + 1;
+        setFireCount(newBombsStrengthCount);
+      }
+    },
+    [dispatch, fireCount, sessionRef],
+  );
 
-  // Get the initial game state
-  useEffect(() => {
-    if (!gameStartedRef.current) {
-      dispatcher({type: 'started'});
-    }
-  }, [gameStartedRef.current]);
+  const dispatcher = useCallback(
+    (event: GameEventProps) => {
+      // Emit an event to the socket
+      socketRef.current?.emit(SocketTypes.eventRelay, {
+        sessionName: sessionRef.current.name,
+        playerNumber: sessionRef.current.playerNumber,
+        secret: sessionRef.current.secret,
+        event: event,
+      });
+      handleEvent(event);
+    },
+    [socketRef, sessionRef, handleEvent],
+  );
 
   socketRef.current?.on(
     SocketTypes.eventRelayPositiveResponse,
@@ -226,6 +218,20 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
       console.warn('[EVENT ERROR]', response.error);
     },
   );
+
+  useEffect(() => {
+    if (width < height) {
+      // In portrait mode
+      dispatch(changeScreen(ScreenType.rotate));
+    }
+  }, [width, height, dispatch]);
+
+  // Get the initial game state
+  useEffect(() => {
+    if (!gameStartedRef.current) {
+      dispatcher({type: 'started'});
+    }
+  }, [dispatcher]);
 
   return (
     <View

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   DeviceEventEmitter,
   Platform,
@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 
-import {Direction} from '../../constants/types';
+import {Direction} from '../../types/serverTypes';
 import colors from '../../constants/colors';
 import {BackButton, SplashImage} from '../../components/General';
 import {
@@ -151,20 +151,53 @@ function RemoteControlsScreen({
   const displayEventsRef = useRef(displayedEvents);
 
   const buttonReleased = useRef(false);
-  const buttonLooper = (
-    event: AndroidGamepadEvent,
-    session: Session,
-    socketRef: React.MutableRefObject<Socket>,
-    activeGamepadProfile: AndroidGamepadProfile,
-  ) => {
-    setTimeout(() => {
-      eventCatcher(event, session, socketRef, activeGamepadProfile);
-      // Check if loop needs to re-initialised
-      if (!buttonReleased) {
-        buttonLooper(event, session, socketRef, activeGamepadProfile);
-      }
-    }, 500);
-  };
+  const buttonLooper = useCallback(
+    (
+      event: AndroidGamepadEvent,
+      session: Session,
+      _socketRef: React.MutableRefObject<Socket>,
+      activeGamepadProfile: AndroidGamepadProfile,
+    ) => {
+      setTimeout(() => {
+        eventCatcher(event, session, _socketRef, activeGamepadProfile);
+        // Check if loop needs to re-initialised
+        if (!buttonReleased) {
+          buttonLooper(event, session, _socketRef, activeGamepadProfile);
+        }
+      }, 500);
+    },
+    [],
+  );
+
+  const androidEventHandler = useCallback(() => {
+    DeviceEventEmitter.addListener(
+      'onGamepadKeyEvent',
+      (event: AndroidGamepadEvent) => {
+        try {
+          // Set the events to display
+          const currentDisplayEvents = [...displayEventsRef.current, event];
+          displayEventsRef.current = currentDisplayEvents;
+          setDisplayedEvents(currentDisplayEvents);
+
+          // Define a unique list of device id's to show
+          if (!displayDeviceIds.some(id => id === event.deviceId)) {
+            setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
+          }
+
+          // Emit the event to the game server
+          if (event.deviceId === activeGamepadProfileRef.current?.deviceId) {
+            buttonReleased.current = event.action === 1;
+            buttonLooper(
+              event,
+              sessionRef.current,
+              socketRef,
+              activeGamepadProfileRef.current,
+            );
+          }
+        } catch (err: any) {}
+      },
+    );
+  }, [buttonLooper, displayDeviceIds, sessionRef, socketRef]);
 
   useEffect(() => {
     if (displayProfiles.length === 0) {
@@ -177,38 +210,15 @@ function RemoteControlsScreen({
     // Add listener for events
     if (gamepadIsEnabled && gamepadModuleIsAvailable) {
       if (Platform.OS === 'android') {
-        DeviceEventEmitter.addListener(
-          'onGamepadKeyEvent',
-          (event: AndroidGamepadEvent) => {
-            try {
-              // Set the events to display
-              const currentDisplayEvents = [...displayEventsRef.current, event];
-              displayEventsRef.current = currentDisplayEvents;
-              setDisplayedEvents(currentDisplayEvents);
-
-              // Define a unique list of device id's to show
-              if (!displayDeviceIds.some(id => id === event.deviceId)) {
-                setDisplayDevicesIds([...displayDeviceIds, event.deviceId]);
-              }
-
-              // Emit the event to the game server
-              if (
-                event.deviceId === activeGamepadProfileRef.current?.deviceId
-              ) {
-                buttonReleased.current = event.action === 1;
-                buttonLooper(
-                  event,
-                  sessionRef.current,
-                  socketRef,
-                  activeGamepadProfileRef.current,
-                );
-              }
-            } catch (err: any) {}
-          },
-        );
+        androidEventHandler();
       }
     }
-  }, [gamepadModuleIsAvailable, gamepadIsEnabled]);
+  }, [
+    displayProfiles.length,
+    gamepadModuleIsAvailable,
+    gamepadIsEnabled,
+    androidEventHandler,
+  ]);
 
   return (
     <View

@@ -18,7 +18,7 @@ function RotateScreen(): JSX.Element {
       // In landscape mode
       dispatch(changeScreen(previousScreen));
     }
-  }, [width, height]);
+  }, [width, height, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <View

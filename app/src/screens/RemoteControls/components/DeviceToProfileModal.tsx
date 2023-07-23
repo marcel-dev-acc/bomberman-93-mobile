@@ -1,8 +1,7 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableHighlight,
   View,
@@ -165,7 +164,8 @@ function DeviceToProfileModal({
                       }
                       const newProfiles = [
                         ...displayProfiles.filter(
-                          profile => profile.profileName !== activeProfileName,
+                          _profile =>
+                            _profile.profileName !== activeProfileName,
                         ),
                         {
                           profileName: profile.profileName,

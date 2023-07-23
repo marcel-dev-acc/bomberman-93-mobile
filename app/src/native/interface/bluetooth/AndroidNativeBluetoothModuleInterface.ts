@@ -123,7 +123,9 @@ export const listDeviceServices = async (address: string) => {
       NativeModules.AndroidBluetoothModule.listDeviceServices
     ) {
       const services: any[][] =
-        await NativeModules.AndroidBluetoothModule.listBluetoothDevices();
+        await NativeModules.AndroidBluetoothModule.listBluetoothDevices(
+          address,
+        );
       if (services === null) {
         console.warn('[listDeviceServices] Bluetooth permission not granted');
         return [] as any[];

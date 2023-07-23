@@ -115,7 +115,7 @@ function JoinSessionScreen({
   // Fetch a list of sessions to join
   useEffect(() => {
     socketRef.current?.emit(SocketTypes.joinableSessionsRelay);
-  }, []);
+  }, [socketRef]);
 
   return (
     <View
@@ -147,15 +147,15 @@ function JoinSessionScreen({
                     borderBottomColor: colors.WHITE,
                     borderBottomWidth: 1,
                   }}>
-                  {[1, 2, 3, 4, 5].map((playerNumber, idx) => {
+                  {[1, 2, 3, 4, 5].map((playerNumber, jdx) => {
                     const _playerNumber = playerNumber as 1 | 2 | 3 | 4 | 5;
                     if (
                       displaySessionNames[sessionName][_playerNumber].hasJoined
                     ) {
-                      return <View key={idx} />;
+                      return <View key={jdx} />;
                     }
                     return (
-                      <View key={idx} style={{marginTop: 10}}>
+                      <View key={jdx} style={{marginTop: 10}}>
                         <TouchableHighlight
                           onPress={pressEvent => {
                             if (pressEvent.nativeEvent.target === undefined) {

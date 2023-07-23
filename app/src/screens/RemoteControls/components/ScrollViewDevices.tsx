@@ -1,3 +1,4 @@
+import React from 'react';
 import {ScrollView, Text, View, useWindowDimensions} from 'react-native';
 import sharedStyles from '../SharedStyles';
 import {AndroidGamepadProfile} from '../types';
@@ -31,7 +32,7 @@ function ScrollViewDevices({
         displayDeviceIds.length > 0 &&
         displayDeviceIds.map((id, idx) => {
           const event = displayedEvents.filter(
-            event => event.deviceId === id,
+            _event => _event.deviceId === id,
           )[0];
           return (
             <View key={idx} style={sharedStyles.remoteControlsScrollViewItem}>

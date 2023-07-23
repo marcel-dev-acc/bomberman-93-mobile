@@ -1,4 +1,5 @@
-import {ScrollView, Text, View, useWindowDimensions} from 'react-native';
+import React from 'react';
+import {ScrollView, View, useWindowDimensions} from 'react-native';
 import sharedStyles from '../SharedStyles';
 import {Button, GameText} from '../../../components/General';
 import {AndroidGamepadEvent} from '../../../native/interface';

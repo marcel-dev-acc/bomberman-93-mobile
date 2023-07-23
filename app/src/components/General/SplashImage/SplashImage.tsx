@@ -30,7 +30,7 @@ function SplashImage({includeHeader}: SplashImageProps): JSX.Element {
     } else {
       setSplash(splashVerticalWithouthHeader);
     }
-  }, [width, height]);
+  }, [includeHeader, isVertical]);
 
   return (
     <View

@@ -50,7 +50,7 @@ function Loop({
     (state: any) => state.screens.debuggerEnabled,
   );
 
-  const updateHandler = (args: GameLoopUpdateEventOptionType) => {
+  const updateHandler = (_args: GameLoopUpdateEventOptionType) => {
     // Disable updateHandler loop if debugger is enabled
     if (DEBUG && debuggerEnabled) {
       return;

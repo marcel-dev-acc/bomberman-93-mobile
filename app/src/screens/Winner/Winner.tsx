@@ -40,7 +40,7 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
 
   useEffect(() => {
     socketRef.current = undefined;
-  }, []);
+  }, [socketRef]);
 
   return (
     <View
@@ -55,10 +55,7 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
           <Image
             source={imageNames.theWinnerIsText}
             resizeMode="contain"
-            style={{
-              width: 240,
-              height: 45,
-            }}
+            style={styles.winnerTextImg}
           />
           <GameText text={sessionRef.current.winner.name} charSize={50} />
         </View>
@@ -71,10 +68,7 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
           <Image
             source={imageNames.playAgainText}
             resizeMode="contain"
-            style={{
-              width: 200,
-              height: 45,
-            }}
+            style={styles.winnerTextImg}
           />
         </TouchableHighlight>
       </View>
@@ -100,6 +94,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  winnerTextImg: {
+    width: 200,
+    height: 45,
   },
 });
 

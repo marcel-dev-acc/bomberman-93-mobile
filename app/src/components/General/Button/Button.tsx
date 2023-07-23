@@ -23,7 +23,7 @@ function Button({
   onPress,
   text,
 }: ButtonProps): JSX.Element {
-  const {height, width} = useWindowDimensions();
+  const {width} = useWindowDimensions();
 
   return (
     <TouchableHighlight

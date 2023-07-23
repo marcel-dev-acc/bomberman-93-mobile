@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
-import {GameText, Icon, Icons} from '../../General';
+import {Icon, Icons} from '../../General';
 import colors from '../../../constants/colors';
 import {useSelector} from 'react-redux';
-import {GameEventProps} from '../../../constants/types';
+import {GameEventProps} from '../../../types/serverTypes';
 import {DEBUG} from '../../../constants/app';
 
 type TimerProps = {
@@ -32,7 +32,7 @@ function Timer({baseTimer, dispatcher}: TimerProps): JSX.Element {
         }
       }, 1000);
     }
-  }, [debuggerEnabled, timerInner]);
+  }, [debuggerEnabled, timerInner, dispatcher]);
 
   return (
     <View style={styles.timerContainer}>

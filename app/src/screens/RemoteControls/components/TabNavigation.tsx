@@ -1,3 +1,4 @@
+import React from 'react';
 import {Image, StyleSheet, TouchableHighlight, View} from 'react-native';
 import sharedStyles from '../SharedStyles';
 import imageNames from '../../../constants/imageNames';

@@ -21,7 +21,6 @@ import {getIsVertical} from '../../constants/screen';
 import imageNames from '../../constants/imageNames';
 import {
   EventGameServerResponse,
-  SessionDetails,
   SetTimeGameServerResponse,
 } from '../../types/serverTypes';
 import {DEBUG} from '../../constants/app';
@@ -45,7 +44,7 @@ function PlayerCard({
       playerNumber: playerNumber,
       players: [
         ...sessionRef.current.players.filter(
-          (player, idx) => idx !== playerNumber - 1,
+          (_player, idx) => idx !== playerNumber - 1,
         ),
         {
           ...sessionRef.current.players[playerNumber - 1],
@@ -111,7 +110,7 @@ function PlayerCard({
                 playerNumber: playerNumber,
                 players: [
                   ...sessionRef.current.players.filter(
-                    (player, idx) => idx !== playerNumber - 1,
+                    (_player, idx) => idx !== playerNumber - 1,
                   ),
                   {
                     ...sessionRef.current.players[playerNumber - 1],
@@ -125,7 +124,7 @@ function PlayerCard({
                 playerNumber: playerNumber,
                 players: [
                   ...sessionRef.current.players.filter(
-                    (player, idx) => idx !== playerNumber - 1,
+                    (_player, idx) => idx !== playerNumber - 1,
                   ),
                   {
                     ...sessionRef.current.players[playerNumber - 1],
@@ -297,14 +296,14 @@ function WaitingRoomScreen({
         time: timer.current,
       });
     }
-  }, [timerInner]);
+  }, [timerInner, sessionRef, socketRef]);
 
   useEffect(() => {
     if (width < height) {
       // In portrait mode
       dispatch(changeScreen(ScreenType.rotate));
     }
-  }, [width, height]);
+  }, [width, height, dispatch]);
 
   return (
     <View

@@ -33,7 +33,7 @@ function SettingsScreen(): JSX.Element {
     if (!token) {
       handleFetchToken();
     }
-  }, []);
+  }, [token]);
 
   return (
     <View

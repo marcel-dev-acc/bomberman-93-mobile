@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -13,7 +14,7 @@ import {AndroidGamepadEvent} from '../../../native/interface';
 import colors from '../../../constants/colors';
 import {AndroidGamepadProfile} from '../types';
 import {getIsVertical} from '../../../constants/screen';
-import {Direction} from '../../../constants/types';
+import {Direction} from '../../../types/serverTypes';
 
 type KeyToProfileModalProps = {
   setShowKeyToProfileModal: (showKeyToProfileModal: boolean) => void;

@@ -9,7 +9,7 @@ type PillarProps = {
   left: number;
 };
 
-function Pillar(props: any): JSX.Element {
+function Pillar(props: PillarProps): JSX.Element {
   return (
     <View
       style={{
