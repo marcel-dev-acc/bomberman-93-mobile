@@ -9,7 +9,15 @@ cat $ROOT/src/constants/app.ts
 echo
 echo
 
-# TODO -> If stored password is empty, ask user to input it
+echo "What is the value of BOMB_WITH_ME_STORE_PASSWORD ?"
+read BOMB_WITH_ME_STORE_PASSWORD
+export BOMB_WITH_ME_STORE_PASSWORD=$BOMB_WITH_ME_STORE_PASSWORD
+echo
+
+echo "What is the value of BOMB_WITH_ME_KEY_PASSWORD ?"
+read BOMB_WITH_ME_KEY_PASSWORD
+export BOMB_WITH_ME_KEY_PASSWORD=$BOMB_WITH_ME_KEY_PASSWORD
+echo
 
 # Create android index file
 npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/

@@ -135,6 +135,17 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
         // Navigate to outcome screen
         dispatch(changeScreen(ScreenType.winner))
       }
+      if (e.type === 'draw') {
+        sessionRef.current = {
+          ...sessionRef.current,
+          winner: undefined,
+        } as Session
+        // Set entities to an empty object
+        setEntities({})
+        setGameRunning(false)
+        // Navigate to outcome screen
+        dispatch(changeScreen(ScreenType.winner))
+      }
       if (e.type === 'stopped') {
       }
       if (e.type === 'bomb') {
@@ -215,7 +226,7 @@ function GameScreen({socketRef, sessionRef}: GameScreenProps): JSX.Element {
       if (response.data?.secret !== sessionRef.current.secret) {
         return
       }
-      console.warn('[EVENT ERROR]', response.error)
+      console.warn('[EVENT ERROR]', response.error, response.data)
     },
   )
 

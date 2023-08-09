@@ -24,9 +24,13 @@ import {StorageKeys, storeData} from '../../utils/localStorage'
 
 type RegisterScreenProps = {
   setServerStatus: (serverStatus: ServerStatus) => void
+  serverStatusRef: React.MutableRefObject<ServerStatus>
 }
 
-function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
+function RegisterScreen({
+  setServerStatus,
+  serverStatusRef,
+}: RegisterScreenProps): JSX.Element {
   const {height, width} = useWindowDimensions()
   const isVertical = getIsVertical(width, height)
 
@@ -205,6 +209,7 @@ function RegisterScreen({setServerStatus}: RegisterScreenProps): JSX.Element {
               // Store the code locally
               await storeData(StorageKeys.token, code)
               setServerStatus(ServerStatus.localToken)
+              serverStatusRef.current = ServerStatus.localToken
               // Go back to welcome screen
               dispatch(changeScreen(ScreenType.welcome))
             }}

@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {memo} from 'react'
 import {StyleSheet, View, Image} from 'react-native'
 
 import colors from '../../../constants/colors'
 import {entitySizes} from '../../../constants/entitySizes'
 import {useSelector} from 'react-redux'
-import {FireType} from '../../../constants/types'
+import {FireType} from '../../../types/serverTypes'
 import {getSpriteCoordinates} from './animation'
 import imageNames from '../../../constants/imageNames'
 
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Fire
+export default memo(Fire)

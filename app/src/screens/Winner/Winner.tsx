@@ -10,7 +10,7 @@ import {
 import {useDispatch} from 'react-redux'
 import {Socket} from 'socket.io-client'
 
-import {GameText, SplashImage} from '../../components/General'
+import {GameText, SplashImage, WinnerAnimation} from '../../components/General'
 import type {Session} from '../../types/session'
 import {ScreenType, changeScreen} from '../../state/screens/reducer'
 import imageNames from '../../constants/imageNames'
@@ -46,12 +46,24 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
     <View
       style={{
         ...styles.winnerContainer,
+        justifyContent: sessionRef.current.winner
+          ? isVertical
+            ? 'space-between'
+            : 'flex-end'
+          : 'center',
         width: width,
       }}>
-      {isVertical && <SplashImage includeHeader />}
-      {!isVertical && <SplashImage />}
+      {!sessionRef.current.winner && isVertical && (
+        <SplashImage includeHeader />
+      )}
+      {!sessionRef.current.winner && !isVertical && <SplashImage />}
+      {sessionRef.current.winner && <WinnerAnimation />}
       {sessionRef.current.winner && (
-        <View style={styles.winnerTextContainer}>
+        <View
+          style={{
+            ...styles.winnerTextContainer,
+            marginTop: isVertical ? height * 0.1 : 0,
+          }}>
           <Image
             source={imageNames.theWinnerIsText}
             resizeMode="contain"
@@ -60,7 +72,15 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
           <GameText text={sessionRef.current.winner.name} charSize={50} />
         </View>
       )}
-      <View style={styles.winnerButtonContainer}>
+      <View
+        style={{
+          ...styles.winnerButtonContainer,
+          marginBottom: sessionRef.current.winner
+            ? isVertical
+              ? height * 0.15
+              : 10
+            : 0,
+        }}>
         <TouchableHighlight
           onPress={handleGameReset}
           style={styles.winnerButton}
@@ -79,7 +99,6 @@ function WinnerScreen({socketRef, sessionRef}: WinnerScreenProps): JSX.Element {
 const styles = StyleSheet.create({
   winnerContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   winnerTextContainer: {

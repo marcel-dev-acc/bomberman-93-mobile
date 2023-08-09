@@ -124,5 +124,8 @@ const imageNames = {
   splashHorizontal: require('../assets/images/splash-horizontal.png'),
   splashVerticalWithouthHeader: require('../assets/images/splash-vertical-without-header.png'),
   splashVertical: require('../assets/images/splash-vertical.png'),
+
+  winnerLoopRed: require('../assets/images/winner-loop-red.gif'),
+  winnerGrassBackground: require('../assets/images/winner-grass-background.png'),
 }
 export default imageNames

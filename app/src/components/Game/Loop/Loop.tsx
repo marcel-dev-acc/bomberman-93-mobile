@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {StyleSheet, View, TouchableHighlight} from 'react-native'
 import {GameLoop, GameLoopUpdateEventOptionType} from 'react-native-game-engine'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Icon, Icons} from '../../General'
 
 import {
@@ -23,6 +23,7 @@ import {
   NegativeResponse,
   TickGameServerResponse,
 } from '../../../types/serverTypes'
+import {addError} from '../../../state/errors/reducer'
 
 type LoopProps = {
   socketRef: React.MutableRefObject<Socket | undefined>
@@ -47,7 +48,13 @@ function Loop({
     (state: any) => state.screens.debuggerEnabled,
   )
 
+  const dispatch = useDispatch()
+
   const updateHandler = (_args: GameLoopUpdateEventOptionType) => {
+    // Update handler is disabled for all players except the game owner
+    if (sessionRef.current.playerNumber !== 1) {
+      return
+    }
     // Disable updateHandler loop if debugger is enabled
     if (DEBUG && debuggerEnabled) {
       return
@@ -96,10 +103,17 @@ function Loop({
       }
       const state = response.state as SessionDetails
       // Validate that the tick has been kept correctly
-      if (state && state.tick === gameTickRef.current + 1) {
-        gameTickRef.current = state.tick
-        setVolatileEntities(state.entities)
-      }
+      // if (
+      //   sessionRef.current.playerNumber === 1 &&
+      //   state &&
+      //   state.tick !== gameTickRef.current + 1
+      // ) {
+      //   console.log('Tick count is out of sync', state.tick, gameTickRef.current)
+      //   return
+      // }
+      // Set the entitites
+      gameTickRef.current = state.tick
+      setVolatileEntities(state.entities)
       // Check if a winner has been defined
       if (
         state &&
@@ -126,7 +140,12 @@ function Loop({
       if (response.data?.secret !== sessionRef.current.secret) {
         return
       }
-      console.warn('[TICK ERROR]', response.error)
+      dispatch(
+        addError({
+          title: `[${SocketTypes.tickRelayNegativeResponse}]`,
+          value: response.error,
+        }),
+      )
     },
   )
 

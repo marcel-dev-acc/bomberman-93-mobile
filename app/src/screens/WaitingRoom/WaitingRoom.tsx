@@ -243,7 +243,6 @@ function WaitingRoomScreen({
       setTimerInner(response.time)
       timer.current = response.time
       // Change screens when time runs out
-      console.log('timer', timer.current)
       if (timer.current === 1) {
         dispatch(changeScreen(ScreenType.game))
       }
@@ -263,7 +262,7 @@ function WaitingRoomScreen({
       if (Object.keys(response.state).length === 0) {
         return
       }
-      // const state = response.state as SessionDetails;
+
       // Trigger game start
       if (response.data.event.type === 'started') {
         dispatch(changeScreen(ScreenType.game))

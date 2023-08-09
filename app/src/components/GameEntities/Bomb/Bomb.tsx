@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import {StyleSheet, View, Image} from 'react-native'
 
 import colors from '../../../constants/colors'
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Bomb
+export default memo(Bomb)

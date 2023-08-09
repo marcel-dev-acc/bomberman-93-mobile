@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native'
 import colors from '../../../constants/colors'
 
 export enum ServerStatus {
-  localToken = 'local-token',
+  localToken = 'token',
   unregistered = 'unregistered',
   connected = 'connected',
   disconnected = 'disconnected',

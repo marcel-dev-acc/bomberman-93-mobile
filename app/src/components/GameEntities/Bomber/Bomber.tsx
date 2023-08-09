@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {memo} from 'react'
 import {StyleSheet, View, Image} from 'react-native'
 
 import {entitySizes} from '../../../constants/entitySizes'
 import {useSelector} from 'react-redux'
 import {BomberProps} from './types'
 import {getAnimation, getSpriteCoordinates} from './animation'
-import {Direction} from '../../../constants/types'
+import {Direction} from '../../../types/serverTypes'
 import imageNames from '../../../constants/imageNames'
 
 const {
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Bomber
+export default memo(Bomber)

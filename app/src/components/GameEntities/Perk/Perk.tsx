@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import {StyleSheet, View} from 'react-native'
 
 import colors from '../../../constants/colors'
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Perk
+export default memo(Perk)
